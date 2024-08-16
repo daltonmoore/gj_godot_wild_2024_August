@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://cjh4kr7do3ddx"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_kavjx"]
+[ext_resource type="Texture2D" uid="uid://devgir160p8ta" path="res://art/duck/Idle (36x36).png" id="2_f6ghp"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jhqtj"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_teywy"]
+polygon = PackedVector2Array(-11, 18, -10, 18, -9, 17, -9, 15, -8, 15, -5, 16, -4, 17, 5, 17, 6, 16, 7, 15, 8, 15, 8, 17, 9, 18, 10, 18, 10, 18, 11, 17, 11, 14, 10, 13, 10.8196, 12.0165, 11, 9, 12, 8, 12, 6, 14, 6, 15, 6, 15, 4, 14, 0, 8, -1, 6, 4, 2, 3, 5, -3, 4, -9, -3, -11, -9, -9, -11, -4, -15, 0, -15, 4, -14, 6, -10, 6, -9, 6, -9, 8, -9, 11, -11, 12, -12, 13, -12, 15, -12, 17)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_kavjx")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_jhqtj")
+metadata/_edit_lock_ = true
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+show_behind_parent = true
+occluder = SubResource("OccluderPolygon2D_teywy")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_f6ghp")
+hframes = 10
+metadata/_edit_lock_ = true

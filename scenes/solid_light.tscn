@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://chkgcm8nakl6i"]
+
+[ext_resource type="Texture2D" uid="uid://nfl6vlll8j3w" path="res://art/light.png" id="1_15b58"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s4o6q"]
+
+[node name="StaticBody2D" type="StaticBody2D"]
+position = Vector2(296, 132)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_s4o6q")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+energy = 0.89
+shadow_enabled = true
+texture = ExtResource("1_15b58")

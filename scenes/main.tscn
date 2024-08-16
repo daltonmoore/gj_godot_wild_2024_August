@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://cmw2100mkgw3c"]
+
+[ext_resource type="Texture2D" uid="uid://bkafhum3ao8n5" path="res://art/background.png" id="1_r7lxv"]
+[ext_resource type="PackedScene" uid="uid://cjh4kr7do3ddx" path="res://scenes/player.tscn" id="1_skd3a"]
+[ext_resource type="PackedScene" uid="uid://chkgcm8nakl6i" path="res://scenes/solid_light.tscn" id="4_de4e4"]
+[ext_resource type="Texture2D" uid="uid://cerxeu2jkp8k1" path="res://art/caster.png" id="4_vjvs3"]
+[ext_resource type="PackedScene" uid="uid://bbqvgiqtvvj75" path="res://scenes/enemy.tscn" id="5_gmj38"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_wnexk"]
+polygon = PackedVector2Array(-16, 16, 16, 16, 16, -16, -16, -16)
+
+[node name="main" type="Node2D"]
+metadata/_edit_lock_ = true
+
+[node name="Ambient" type="CanvasModulate" parent="."]
+position = Vector2(562, 320)
+scale = Vector2(128, 128)
+color = Color(0.485703, 0.485704, 0.485703, 1)
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(562, 320)
+scale = Vector2(128, 128)
+texture = ExtResource("1_r7lxv")
+metadata/_edit_lock_ = true
+
+[node name="Player" parent="." instance=ExtResource("1_skd3a")]
+position = Vector2(194, 43)
+
+[node name="Enemy" parent="." instance=ExtResource("5_gmj38")]
+position = Vector2(311, 78)
+
+[node name="SolidLight" parent="." instance=ExtResource("4_de4e4")]
+position = Vector2(207, 191)
+metadata/_edit_lock_ = true
+
+[node name="ShadowCaster" type="Sprite2D" parent="."]
+position = Vector2(121, 115)
+texture = ExtResource("4_vjvs3")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="ShadowCaster"]
+occluder = SubResource("OccluderPolygon2D_wnexk")
