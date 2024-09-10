@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://drwxme0yhjdc2"]
+
+[ext_resource type="Script" path="res://scripts/selection_handler.gd" id="1_ovvue"]
+
+[node name="SelectionHandler" type="Node2D"]
+light_mask = 0
+script = ExtResource("1_ovvue")

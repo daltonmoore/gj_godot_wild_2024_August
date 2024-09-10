@@ -1,0 +1,118 @@
+[gd_scene load_steps=13 format=3 uid="uid://bbqvgiqtvvj75"]
+
+[ext_resource type="Script" path="res://scripts/module_navigation.gd" id="1_to1tx"]
+[ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_smnw2"]
+[ext_resource type="Texture2D" uid="uid://b6edb4q0u85hr" path="res://art/creatures/slimes/green_slime/Green_Dark_Slime_Idle.png" id="2_w53dw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]
+radius = 7.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wjgha"]
+atlas = ExtResource("2_w53dw")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wb26w"]
+atlas = ExtResource("2_w53dw")
+region = Rect2(96, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ady2"]
+atlas = ExtResource("2_w53dw")
+region = Rect2(192, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iluj6"]
+atlas = ExtResource("2_w53dw")
+region = Rect2(288, 0, 96, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5imfe"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wjgha")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wb26w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ady2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iluj6")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kikdj"]
+radius = 225.18
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_n7gtl"]
+radius = 51.0882
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ko4iw"]
+
+[node name="Unit" type="CharacterBody2D"]
+script = ExtResource("1_to1tx")
+movement_speed = 50.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2)
+shape = SubResource("CircleShape2D_78wmw")
+metadata/_edit_lock_ = true
+
+[node name="Selection Circle" type="Sprite2D" parent="."]
+visible = false
+self_modulate = Color(0, 1, 0, 1)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_smnw2")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -27)
+sprite_frames = SubResource("SpriteFrames_5imfe")
+animation = &"idle"
+frame_progress = 0.39847
+metadata/_edit_lock_ = true
+
+[node name="ChaseRadius" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChaseRadius"]
+shape = SubResource("CircleShape2D_kikdj")
+debug_color = Color(0.994425, 0, 0.222291, 0.42)
+
+[node name="WakeTrigger" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WakeTrigger"]
+shape = SubResource("CircleShape2D_n7gtl")
+
+[node name="WeaponTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="WeaponPivot" type="Node2D" parent="."]
+visible = false
+metadata/_edit_group_ = true
+
+[node name="WeaponTrigger" type="Area2D" parent="WeaponPivot"]
+position = Vector2(21, 1.06581e-14)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WeaponPivot/WeaponTrigger"]
+shape = SubResource("CircleShape2D_ko4iw")
+debug_color = Color(0.830114, 0.393404, 3.85046e-07, 0.42)
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_desired_distance = 30.0
+target_desired_distance = 50.0
+avoidance_enabled = true
+radius = 15.0
+max_neighbors = 5
+max_speed = 300.0
+
+[connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="body_exited" from="ChaseRadius" to="." method="_on_chase_radius_body_exited"]
+[connection signal="body_entered" from="WakeTrigger" to="." method="_on_wake_trigger_body_entered"]
+[connection signal="timeout" from="WeaponTimer" to="." method="_on_weapon_timer_timeout"]
+[connection signal="body_entered" from="WeaponPivot/WeaponTrigger" to="." method="_on_weapon_trigger_body_entered"]
+[connection signal="body_exited" from="WeaponPivot/WeaponTrigger" to="." method="_on_weapon_trigger_body_exited"]
