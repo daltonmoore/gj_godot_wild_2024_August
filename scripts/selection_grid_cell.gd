@@ -10,6 +10,12 @@ func _ready() -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	_selection_grid.cell_entered(self, body)
+	var u = body as Unit
+	if u != null:
+		if u.current_cell != null:
+			_selection_grid.cell_exited(u.current_cell, body)
+		else:
+			u.current_cell = self
 
 
 func _on_body_exited(body: Node2D) -> void:

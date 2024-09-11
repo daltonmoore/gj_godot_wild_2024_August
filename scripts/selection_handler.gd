@@ -8,6 +8,7 @@ var _stop_drawing_dude = true
 var _selection_box_start_pos
 var _select_box = Rect2()
 var _selection_grid
+var _selected_units = []
 
 @export var _debug_selection = false
 
@@ -75,7 +76,7 @@ func _input(event: InputEvent) -> void:
 		var bot_left = Vector2(start.x, _select_box.end.y)
 		var end = _select_box.end
 		
-		
+		#region Debug Selection
 		if _debug_selection:
 			# Axes
 			DebugDraw2d.line_vector(Vector2.ZERO,Vector2.UP*40, Color.BLACK, 1, INF)
@@ -104,6 +105,7 @@ func _input(event: InputEvent) -> void:
 			DebugDraw2d.line(start,bot_left, Color.GREEN, .5, debug_box_lifetime)
 			DebugDraw2d.line(bot_left,end, Color.GREEN, .5, debug_box_lifetime)
 			DebugDraw2d.line(top_right,end, Color.GREEN, .5, debug_box_lifetime)
+		#endregion
 		
 		# Storing everything in Plane2Ds
 		var top_plane = Plane2D.new(start, top_right)
@@ -115,27 +117,16 @@ func _input(event: InputEvent) -> void:
 			print("returning early because select box is size zero")
 			return
 		
-		_selection_grid.get_units_in_select_box(_select_box)
-		
-		#var planes = [top_plane, right_plane, bot_plane, left_plane]
-		#var inside = true
-		#for p in planes:
-			#var distance = p.normal.dot(unit_array[0].position) - p.d
-			#if (distance > 0):
-				#inside = false
-				#break
-		#if inside:
-			#DebugDraw2d.circle(unit_array[0].position, 10, 32, Color.GREEN, 1, 4)
-		#else:
-			#DebugDraw2d.circle(unit_array[0].position, 10, 32, Color.RED, 1, 4)
+		_selected_units = _selection_grid.get_units_in_select_box(_select_box)
+	elif event.is_action_pressed("Right Click"):
+		if _selected_units == null:
+			return
+		for u in _selected_units:
+			u.order_move()
 
 
 func timer_timeout():
 	_selection_grid = get_node("/root/main/SelectionGrid")
 	if(_selection_grid == null):
 		get_tree().create_timer(.2).timeout.connect(timer_timeout)
-	
-
-
-
 

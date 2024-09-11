@@ -59,8 +59,12 @@ func cell_entered(cell, body):
 
 
 func cell_exited(cell, body):
-	cell_to_units_dict[cell.grid_pos].erase(body)
-	print("Body %s exited cell %s" % [body.name, cell.grid_pos])	
+	# could be slow since we shift everything after the item
+	if cell_to_units_dict[cell.grid_pos].has(body):
+		cell_to_units_dict[cell.grid_pos].erase(body)
+		print("Body %s exited cell %s" % [body.name, cell.grid_pos])
+	else:
+		print("Body %s is not in cell %s" % [body.name, cell.grid_pos])
 
 
 # Thought Process to not have to iterate through entire grid 
@@ -72,7 +76,7 @@ func cell_exited(cell, body):
 # we'll have start cell = (5,3) and end cell = (2, 2)
 # so instead of starting at cell (0, 0), we will just start at (2, 2) 
 # because it is the lesser of the two points. And we can iterate
-#TODO: this function is too big
+# TODO: this function is too big
 func get_units_in_select_box(select_box):
 	var top_right = Vector2(select_box.end.x, select_box.position.y)
 	var bot_left = Vector2(select_box.position.x, select_box.end.y)
@@ -121,9 +125,9 @@ func get_units_in_select_box(select_box):
 		top_right_coord = end_coord
 		end_coord = temp
 	
-	print("Box Size %.v" % select_box.size)
-	print("top_right %.v" % top_right_coord)
-	print("bot_left %.v" % bot_left_coord)
+	#print("Box Size %.v" % select_box.size)
+	#print("top_right %.v" % top_right_coord)
+	#print("bot_left %.v" % bot_left_coord)
 	
 	#DebugDraw2d.circle(top_right, 10, 16, Color(0, 1, 0), 1, 2)
 	#DebugDraw2d.circle(bot_left, 10, 16, Color(0, 0, 1), 1, 2)
@@ -173,19 +177,23 @@ func get_units_in_select_box(select_box):
 			pass
 	
 	var planes = [top_plane, right_plane, bot_plane, left_plane]
-	var inside = true
+	
+	var selected_units = []
 	for u in unit_array:
-		print(u)
+		var inside = true
+		var p_index = 0
 		for p in planes:
 			var distance = p.normal.dot(u.position) - p.d
 			if (distance > 0):
 				inside = false
 				break
+			p_index += 1
 		if inside:
-			DebugDraw2d.circle(u.position, 10, 32, Color.GREEN, 1, 4)
+			DebugDraw2d.circle(u.position, 10, 32, Color.GREEN, 1, INF)
+			selected_units.append(u)
 		else:
-			DebugDraw2d.circle(u.position, 10, 32, Color.RED, 1, 4)
-	
+			DebugDraw2d.circle(u.position, 10, 32, Color.RED, 1, INF)
+	return selected_units
 	
 
 class Plane2D:

@@ -3289,14 +3289,15 @@ metadata/_edit_use_anchors_ = true
 [node name="Enemies" type="Node2D" parent="."]
 
 [node name="Enemy2" parent="Enemies" instance=ExtResource("5_gmj38")]
-position = Vector2(-8, -65)
+position = Vector2(86, 39)
 
 [node name="Enemy3" parent="Enemies" instance=ExtResource("5_gmj38")]
-position = Vector2(22, -49)
+position = Vector2(35, 56)
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 position = Vector2(5, 42)
 navigation_polygon = SubResource("NavigationPolygon_60m1h")
+metadata/_edit_lock_ = true
 
 [node name="Polygon2D" type="Polygon2D" parent="NavigationRegion2D"]
 position = Vector2(145, 2)
