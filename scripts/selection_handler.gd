@@ -67,63 +67,85 @@ func _input(event: InputEvent) -> void:
 		_stop_drawing_dude = false
 		_selection_box_start_pos = get_global_mouse_position()
 	elif event.is_action_released("Left Click"):
-		_stop_drawing_dude = true
-		
-		var start = _select_box.position
-		# (if size is negative then this will be the bottom left position) 
-		var top_right = Vector2(_select_box.end.x, start.y)
-		# (if size is negative then this will be the top right position) 
-		var bot_left = Vector2(start.x, _select_box.end.y)
-		var end = _select_box.end
-		
-		#region Debug Selection
-		if _debug_selection:
-			# Axes
-			DebugDraw2d.line_vector(Vector2.ZERO,Vector2.UP*40, Color.BLACK, 1, INF)
-			DebugDraw2d.line_vector(Vector2.ZERO,Vector2.DOWN*40, Color.BLACK, 1, INF)
-			DebugDraw2d.line_vector(Vector2.ZERO,Vector2.RIGHT*40, Color.BLACK, 1, INF)
-			DebugDraw2d.line_vector(Vector2.ZERO,Vector2.LEFT*40, Color.BLACK, 1, INF)
-		
-			var debug_box_lifetime = 3
-			# _________________________________________________________________
-			# Draw circles at the corners of the select box
-			#
-			# 1. Draw a circle at the start position of the select box
-			DebugDraw2d.circle(start, 1, 32, Color.GREEN, 1, debug_box_lifetime)
-			
-			# 2. Draw a circle at the top right position of the select box
-			DebugDraw2d.circle(top_right, 1, 32, Color.YELLOW, 1, debug_box_lifetime)
-			
-			# 3. Draw a circle at the bottom left position of the select box
-			DebugDraw2d.circle(bot_left, 1, 32, Color.BLUE, 1, debug_box_lifetime)
-			
-			# 4. Draw a circle at the end position of the select box
-			DebugDraw2d.circle(end, 1, 32, Color.DARK_ORANGE, 1, debug_box_lifetime)
-			# _________________________________________________________________
-			
-			DebugDraw2d.line(start,top_right, Color.GREEN, .5, debug_box_lifetime)
-			DebugDraw2d.line(start,bot_left, Color.GREEN, .5, debug_box_lifetime)
-			DebugDraw2d.line(bot_left,end, Color.GREEN, .5, debug_box_lifetime)
-			DebugDraw2d.line(top_right,end, Color.GREEN, .5, debug_box_lifetime)
-		#endregion
-		
-		# Storing everything in Plane2Ds
-		var top_plane = Plane2D.new(start, top_right)
-		var right_plane = Plane2D.new(top_right, end)
-		var bot_plane = Plane2D.new(end, bot_left)
-		var left_plane = Plane2D.new(bot_left, start)
-		
-		if _select_box.size.length() == 0:
-			print("returning early because select box is size zero")
-			return
-		
-		_selected_units = _selection_grid.get_units_in_select_box(_select_box)
+		handle_click_release()
 	elif event.is_action_pressed("Right Click"):
 		if _selected_units == null:
 			return
 		for u in _selected_units:
 			u.order_move()
 
+
+func handle_click_release():
+	_stop_drawing_dude = true
+		
+	var start = _select_box.position
+	# (if size is negative then this will be the bottom left position) 
+	var top_right = Vector2(_select_box.end.x, start.y)
+	# (if size is negative then this will be the top right position) 
+	var bot_left = Vector2(start.x, _select_box.end.y)
+	var end = _select_box.end
+	
+	#region Debug Selection
+	if _debug_selection:
+		# Axes
+		DebugDraw2d.line_vector(Vector2.ZERO,Vector2.UP*40, Color.BLACK, 1, INF)
+		DebugDraw2d.line_vector(Vector2.ZERO,Vector2.DOWN*40, Color.BLACK, 1, INF)
+		DebugDraw2d.line_vector(Vector2.ZERO,Vector2.RIGHT*40, Color.BLACK, 1, INF)
+		DebugDraw2d.line_vector(Vector2.ZERO,Vector2.LEFT*40, Color.BLACK, 1, INF)
+	
+		var debug_box_lifetime = 3
+		# _________________________________________________________________
+		# Draw circles at the corners of the select box
+		#
+		# 1. Draw a circle at the start position of the select box
+		DebugDraw2d.circle(start, 1, 32, Color.GREEN, 1, debug_box_lifetime)
+		
+		# 2. Draw a circle at the top right position of the select box
+		DebugDraw2d.circle(top_right, 1, 32, Color.YELLOW, 1, debug_box_lifetime)
+		
+		# 3. Draw a circle at the bottom left position of the select box
+		DebugDraw2d.circle(bot_left, 1, 32, Color.BLUE, 1, debug_box_lifetime)
+		
+		# 4. Draw a circle at the end position of the select box
+		DebugDraw2d.circle(end, 1, 32, Color.DARK_ORANGE, 1, debug_box_lifetime)
+		# _________________________________________________________________
+		
+		DebugDraw2d.line(start,top_right, Color.GREEN, .5, debug_box_lifetime)
+		DebugDraw2d.line(start,bot_left, Color.GREEN, .5, debug_box_lifetime)
+		DebugDraw2d.line(bot_left,end, Color.GREEN, .5, debug_box_lifetime)
+		DebugDraw2d.line(top_right,end, Color.GREEN, .5, debug_box_lifetime)
+	#endregion
+	
+	# Storing everything in Plane2Ds
+	var top_plane = Plane2D.new(start, top_right)
+	var right_plane = Plane2D.new(top_right, end)
+	var bot_plane = Plane2D.new(end, bot_left)
+	var left_plane = Plane2D.new(bot_left, start)
+	
+	if _select_box.size.length() == 0:
+		print("returning early because select box is size zero")
+		for u in _selected_units:
+			u.set_selection_circle_visible(false)
+		_selected_units = []
+		return
+	
+	var units = _selection_grid.get_units_in_select_box(_select_box)
+	
+	# selected none
+	if units.size() == 0:
+		# gotta turn off selection circle for old selected units
+		# TODO: could probably optimize this to leave units 
+		#		in both old and new selection alone
+		for u in _selected_units:
+			u.set_selection_circle_visible(false)
+
+	# finished with old units, store new selected units
+	_selected_units = units
+	
+	for u in _selected_units:	
+		u.set_selection_circle_visible(true)
+
+	
 
 func timer_timeout():
 	_selection_grid = get_node("/root/main/SelectionGrid")

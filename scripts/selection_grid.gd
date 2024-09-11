@@ -91,11 +91,13 @@ func get_units_in_select_box(select_box):
 			floori(bot_left.y / size.x))
 	
 	if start_coord.y < end_coord.y:
-		print("s's y is less than e's")
+		print()
+		#print("s's y is less than e's")
 	elif start_coord.x < end_coord.x:
-		print("s's x is less than e's")
+		print()
+		#print("s's x is less than e's")
 	else:
-		print("e's y/x is less than s's")
+		#print("e's y/x is less than s's")
 		var temp = start_coord
 		start_coord = end_coord
 		end_coord = temp
@@ -189,10 +191,10 @@ func get_units_in_select_box(select_box):
 				break
 			p_index += 1
 		if inside:
-			DebugDraw2d.circle(u.position, 10, 32, Color.GREEN, 1, INF)
+			DebugDraw2d.circle(u.position, 10, 32, Color.GREEN, 1, 1)
 			selected_units.append(u)
 		else:
-			DebugDraw2d.circle(u.position, 10, 32, Color.RED, 1, INF)
+			DebugDraw2d.circle(u.position, 10, 32, Color.RED, 1, 1)
 	return selected_units
 	
 
