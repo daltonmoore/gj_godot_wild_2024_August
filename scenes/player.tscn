@@ -1,49 +1,11 @@
-[gd_scene load_steps=16 format=3 uid="uid://cjh4kr7do3ddx"]
+[gd_scene load_steps=2 format=3 uid="uid://cjh4kr7do3ddx"]
 
-[ext_resource type="Script" path="res://scripts/player.gd" id="1_kavjx"]
-[ext_resource type="AudioStream" uid="uid://chojikkx1xecr" path="res://sound/Goblin/Goblin Wounded 2.mp3" id="3_kau5s"]
-[ext_resource type="AudioStream" uid="uid://discj5w3ukyhh" path="res://sound/Goblin/Goblin Wounded 1.mp3" id="3_tdwtp"]
-[ext_resource type="AudioStream" uid="uid://cvmqjaujurewn" path="res://sound/Orcs/Orc Wounded 1.mp3" id="4_qesi1"]
-[ext_resource type="AudioStream" uid="uid://cdqgoaxgewnfx" path="res://sound/Orcs/Orc Wounded 2.mp3" id="5_7nquk"]
-[ext_resource type="AudioStream" uid="uid://hbl1dlet0pnq" path="res://sound/Orcs/Orc Wounded 3.mp3" id="6_ltpu0"]
-[ext_resource type="AudioStream" uid="uid://d0at8rfhixnxi" path="res://sound/Orcs/Orc Wounded 4.mp3" id="7_dh67l"]
-[ext_resource type="AudioStream" uid="uid://u5kkqcm68afm" path="res://sound/Orcs/Orc Wounded 5.mp3" id="8_6aii7"]
-[ext_resource type="AudioStream" uid="uid://dofqtjl4c653f" path="res://sound/Orcs/Orcs Babbling.mp3" id="9_vpsd4"]
-[ext_resource type="AudioStream" uid="uid://cxsnyvudq81eb" path="res://sound/Orcs/Orc Laughing 1.mp3" id="10_71jjb"]
-[ext_resource type="AudioStream" uid="uid://fnb3mj656du6" path="res://sound/Orcs/Orc Laughing 2.mp3" id="11_0yanj"]
-[ext_resource type="AudioStream" uid="uid://udo2mnmfm141" path="res://sound/Orcs/Orc Laughing 3.mp3" id="12_cylbk"]
-[ext_resource type="Texture2D" uid="uid://devgir160p8ta" path="res://art/creatures/duck/Idle (36x36).png" id="13_xjnn7"]
+[ext_resource type="Script" path="res://scripts/player_camera.gd" id="1_oxoyr"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jhqtj"]
-
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_teywy"]
-polygon = PackedVector2Array(-11, 18, -10, 18, -9, 17, -9, 15, -8, 15, -5, 16, -4, 17, 5, 17, 6, 16, 7, 15, 8, 15, 8, 17, 9, 18, 10, 18, 10, 18, 11, 17, 11, 14, 10, 13, 10.8196, 12.0165, 11, 9, 12, 8, 12, 6, 14, 6, 15, 6, 15, 4, 14, 0, 8, -1, 6, 4, 2, 3, 5, -3, 4, -9, -3, -11, -9, -9, -11, -4, -15, 0, -15, 4, -14, 6, -10, 6, -9, 6, -9, 8, -9, 11, -11, 12, -12, 13, -12, 15, -12, 17)
-
-[node name="Player" type="CharacterBody2D"]
-script = ExtResource("1_kavjx")
-wounded_sounds = Array[AudioStream]([ExtResource("3_tdwtp"), ExtResource("3_kau5s"), ExtResource("4_qesi1"), ExtResource("5_7nquk"), ExtResource("6_ltpu0"), ExtResource("7_dh67l"), ExtResource("8_6aii7"), ExtResource("9_vpsd4"), ExtResource("10_71jjb"), ExtResource("11_0yanj"), ExtResource("12_cylbk")])
+[node name="Player" type="Node2D"]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-visible = false
-texture = ExtResource("13_xjnn7")
-hframes = 10
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-shape = SubResource("CapsuleShape2D_jhqtj")
-disabled = true
-metadata/_edit_lock_ = true
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-visible = false
-show_behind_parent = true
-occluder = SubResource("OccluderPolygon2D_teywy")
-
-[node name="Timer" type="Timer" parent="."]
-
-[node name="WoundedSound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("3_tdwtp")
+script = ExtResource("1_oxoyr")
+camera_speed = 450.0
+camera_bounds = Rect2(0, 0, 1000, 1000)

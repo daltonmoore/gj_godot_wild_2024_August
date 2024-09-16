@@ -12,6 +12,8 @@ var cell_to_units_dict = {}
 var grid_width = 5
 var grid_height = 5
 
+var debug = true
+
 @export var size = Vector2(100,100)
 
 func _ready() -> void:	
@@ -21,7 +23,8 @@ func _ready() -> void:
 	for i in grid_height:
 		for k in grid_width:
 			var pos = Vector2(x, y) + grid_start_offset
-			DebugDraw2d.rect(pos, size, Color(1, 0, 1), 1, INF)
+			if debug:
+				DebugDraw2d.rect(pos, size, Color(1, 0, 1), 1, INF)
 			
 			var cell = selection_grid_cell.instantiate()
 			cell.position = pos
@@ -30,11 +33,12 @@ func _ready() -> void:
 			cell.grid_index = cell.grid_pos.x + (cell.grid_pos.y * grid_width)
 			add_child(cell)
 			
-			# Debug coordinate text
-			var label = Label.new()
-			label.text = "%.v" % cell.grid_pos
-			cell.add_child(label)
-			label.position = Vector2(-size.x/2,-size.x/2) # is relative pos
+			if debug:
+				# Debug coordinate text
+				var label = Label.new()
+				label.text = "%.v" % cell.grid_pos
+				cell.add_child(label)
+				label.position = Vector2(-size.x/2,-size.x/2) # is relative pos
 			
 			cell_dict[cell.grid_pos] = cell
 			#print(cell.grid_pos)
@@ -54,7 +58,7 @@ func cell_entered(cell, body):
 		cell_to_units_dict[cell.grid_pos] = [body]
 	#for u in cell_to_units_dict[cell]:
 		#print(u)
-	print("Body %s entered cell %s" % [body.name, cell.grid_pos])
+	#print("Body %s entered cell %s" % [body.name, cell.grid_pos])
 	pass
 
 
@@ -62,9 +66,9 @@ func cell_exited(cell, body):
 	# could be slow since we shift everything after the item
 	if cell_to_units_dict[cell.grid_pos].has(body):
 		cell_to_units_dict[cell.grid_pos].erase(body)
-		print("Body %s exited cell %s" % [body.name, cell.grid_pos])
-	else:
-		print("Body %s is not in cell %s" % [body.name, cell.grid_pos])
+		#print("Body %s exited cell %s" % [body.name, cell.grid_pos])
+	#else:
+		#print("Body %s is not in cell %s" % [body.name, cell.grid_pos])
 
 
 # Thought Process to not have to iterate through entire grid 
@@ -76,68 +80,29 @@ func cell_exited(cell, body):
 # we'll have start cell = (5,3) and end cell = (2, 2)
 # so instead of starting at cell (0, 0), we will just start at (2, 2) 
 # because it is the lesser of the two points. And we can iterate
-# TODO: this function is too big
+# TODO: this function is too big, also why did i move this to selection_grid?
 func get_units_in_select_box(select_box):
-	var top_right = Vector2(select_box.end.x, select_box.position.y)
-	var bot_left = Vector2(select_box.position.x, select_box.end.y)
+	var corners = _get_select_box_corners(select_box)
+	assert (len(corners) == 4)
+	var top_left = corners["tl"]
+	var top_right = corners["tr"]
+	var bot_right = corners["br"]
+	var bot_left = corners["bl"]
 	
-	var start_coord: Vector2 = Vector2(floori(select_box.position.x / size.x), 
-			floori(select_box.position.y / size.x))
-	var end_coord: Vector2 = Vector2(floori(select_box.end.x / size.x), 
-			floori(select_box.end.y / size.x))
+	var top_left_coord: Vector2 = Vector2(floori(top_left.x / size.x), 
+			floori(top_left.y / size.x))
+	var bot_right_coord: Vector2 = Vector2(floori(bot_right.x / size.x), 
+			floori(bot_right.y / size.x))
 	var top_right_coord: Vector2 = Vector2(floori(top_right.x / size.x), 
 			floori(top_right.y / size.x))
 	var bot_left_coord: Vector2 = Vector2(floori(bot_left.x / size.x), 
 			floori(bot_left.y / size.x))
 	
-	if start_coord.y < end_coord.y:
-		print()
-		#print("s's y is less than e's")
-	elif start_coord.x < end_coord.x:
-		print()
-		#print("s's x is less than e's")
-	else:
-		#print("e's y/x is less than s's")
-		var temp = start_coord
-		start_coord = end_coord
-		end_coord = temp
-	
-	if(select_box.size.x < 0 and select_box.size.y < 0):
-		var temp = bot_left
-		bot_left = top_right
-		top_right = temp
-	elif select_box.size.x < 0: # only x is negative
-		# top right is start point
-		# bot left is end point
-		var temp = top_right_coord
-		top_right_coord = start_coord # i'm always assuming start point is top left usually
-		start_coord = temp
-		
-		temp = bot_left_coord
-		bot_left_coord = end_coord
-		end_coord = temp
-	elif select_box.size.y < 0:
-		# bot left is start point
-		# top right is end point
-		var temp = bot_left_coord
-		bot_left_coord = start_coord 
-		start_coord = temp
-		
-		temp = top_right_coord
-		top_right_coord = end_coord
-		end_coord = temp
-	
-	#print("Box Size %.v" % select_box.size)
-	#print("top_right %.v" % top_right_coord)
-	#print("bot_left %.v" % bot_left_coord)
-	
-	#DebugDraw2d.circle(top_right, 10, 16, Color(0, 1, 0), 1, 2)
-	#DebugDraw2d.circle(bot_left, 10, 16, Color(0, 0, 1), 1, 2)
-	
 	# TODO:make a function that will take a vector2 and flatten it into an array index
-	var start_index = start_coord.x + start_coord.y * grid_width
-	var end_index = end_coord.x + end_coord.y * grid_width
+	var start_index = top_left_coord.x + top_left_coord.y * grid_width
+	var end_index = bot_right_coord.x + bot_right_coord.y * grid_width
 	
+	# Get selected cells
 	var cells = cell_dict.values()
 	var selected_cells = []
 	for i in cells.size():
@@ -148,38 +113,50 @@ func get_units_in_select_box(select_box):
 			break
 		
 		var item = cells[start_index + i]
-		if item.grid_pos.x > end_coord.x:
+		if item.grid_pos.x > bot_right_coord.x:
 			continue
 			
-		if item.grid_pos.x < start_coord.x:
+		if item.grid_pos.x < top_left_coord.x:
 			continue
 		
-		DebugDraw2d.rect(item.position, size, Color(0, 1, 0), 1, 2)
+		if debug:
+			DebugDraw2d.rect(item.position, size, Color(0, 1, 0), 1, 2)
 		selected_cells.append(item)
 	
-	#var start = _select_box.position
-	#var top_right = Vector2(_select_box.end.x, start.y)
-	#var bot_left = Vector2(start.x, _select_box.end.y)
-	#var end = _select_box.end
+	# Storing everything in Plane2Ds	
+	var top_plane = Plane2D.new(top_left, top_right)
+	var right_plane = Plane2D.new(top_right, bot_right)
+	var bot_plane = Plane2D.new(bot_right, bot_left)
+	var left_plane = Plane2D.new(bot_left, top_left)
+
+	var planes = [top_plane, right_plane, bot_plane, left_plane]
 	
-	# Storing everything in Plane2Ds
-	var top_plane = Plane2D.new(select_box.position, top_right)
-	var right_plane = Plane2D.new(top_right, select_box.end)
-	var bot_plane = Plane2D.new(select_box.end, bot_left)
-	var left_plane = Plane2D.new(bot_left, select_box.position)
-	
+	# get units within selected cells
 	var unit_array = []
 	for i in selected_cells:
 		if (cell_to_units_dict.has(i.grid_pos)):
-			#print("Cell to units has grid_pos %.v" % i.grid_pos)
 			unit_array.append_array(cell_to_units_dict[i.grid_pos])
 			#print(cell_to_units_dict[i.grid_pos])
 		else:
 			#print("Cell to units does not have grid_pos %.v" % i.grid_pos)
 			pass
 	
-	var planes = [top_plane, right_plane, bot_plane, left_plane]
+	# debug plane placement
+	if debug:
+		var debug_i = 0
+		for p in planes:
+			match debug_i:
+				0:
+					DebugDraw2d.line(p.point_a, p.point_b, Color.BLUE, 1, 3)
+				1:
+					DebugDraw2d.line(p.point_a, p.point_b, Color.RED, 1, 3)
+				2:
+					DebugDraw2d.line(p.point_a, p.point_b, Color.GREEN, 1, 3)
+				3:
+					DebugDraw2d.line(p.point_a, p.point_b, Color.YELLOW, 1, 3)
+			debug_i += 1
 	
+	# check if units are in select box
 	var selected_units = []
 	for u in unit_array:
 		var inside = true
@@ -187,16 +164,49 @@ func get_units_in_select_box(select_box):
 		for p in planes:
 			var distance = p.normal.dot(u.position) - p.d
 			if (distance > 0):
+				print("Fail on Plane %s" % p_index)
 				inside = false
 				break
 			p_index += 1
 		if inside:
-			DebugDraw2d.circle(u.position, 10, 32, Color.GREEN, 1, 1)
+			#DebugDraw2d.circle(u.position, 10, 32, Color.GREEN, 1, 1)
+			print("Success for unit %s" % u.name)
 			selected_units.append(u)
-		else:
-			DebugDraw2d.circle(u.position, 10, 32, Color.RED, 1, 1)
+		#else:
+			#DebugDraw2d.circle(u.position, 10, 32, Color.RED, 1, 1)
 	return selected_units
 	
+
+func _get_select_box_corners(select_box):
+	var top_left
+	var top_right
+	var bot_right
+	var bot_left
+	
+	# started in bot right and ended in top left
+	if(select_box.size.x < 0 and select_box.size.y < 0): 
+		top_left = select_box.end
+		top_right = Vector2(select_box.position.x, select_box.end.y)
+		bot_right = select_box.position
+		bot_left = Vector2(select_box.end.x, select_box.position.y)
+	elif select_box.size.x < 0: # started in top left and ended bot left
+		top_left = Vector2(select_box.end.x, select_box.position.y)
+		top_right = select_box.position
+		bot_right = Vector2(select_box.position.x, select_box.end.y)
+		bot_left = select_box.end
+	elif select_box.size.y < 0: # started in bot left and ended top right
+		top_left = Vector2(select_box.position.x, select_box.end.y)
+		top_right = select_box.end
+		bot_right = Vector2(select_box.end.x, select_box.position.y)
+		bot_left = select_box.position
+	else: # started in top left and ended in bot right
+		top_left = select_box.position
+		top_right = Vector2(select_box.end.x, select_box.position.y)
+		bot_right = select_box.end
+		bot_left = Vector2(select_box.position.x, select_box.end.y)
+	
+	return {"tl": top_left, "tr": top_right, "br": bot_right, "bl": bot_left}
+
 
 class Plane2D:
 	#var right_edge = top_right.direction_to(end)

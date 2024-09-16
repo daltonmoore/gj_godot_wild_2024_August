@@ -3287,6 +3287,7 @@ player = NodePath("../../Player")
 metadata/_edit_use_anchors_ = true
 
 [node name="Enemies" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
 
 [node name="Enemy2" parent="Enemies" instance=ExtResource("5_gmj38")]
 position = Vector2(86, 39)
@@ -3304,7 +3305,17 @@ position = Vector2(145, 2)
 polygon = PackedVector2Array(110, 21, 105, 66, 154, 70, 243, 74, 262, 28, 189, 2)
 
 [node name="SelectionHandler" parent="." instance=ExtResource("5_vk4bl")]
+metadata/_edit_lock_ = true
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
+position = Vector2(-2, 0)
+metadata/_edit_lock_ = true
 
 [node name="SelectionGrid" parent="." instance=ExtResource("6_fev7a")]
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="."]
+offset_left = 86.0
+offset_top = 39.0
+offset_right = 126.0
+offset_bottom = 62.0

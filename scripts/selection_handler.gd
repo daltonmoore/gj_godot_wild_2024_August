@@ -3,7 +3,9 @@ extends Node2D
 
 signal _variable_set(v)
 
+var mouse_hovered_unit
 var unit_array = Array()
+
 var _stop_drawing_dude = true
 var _selection_box_start_pos
 var _select_box = Rect2()
@@ -11,35 +13,6 @@ var _selection_grid
 var _selected_units = []
 
 @export var _debug_selection = false
-
-class Plane2D:
-	#var right_edge = top_right.direction_to(end)
-	#var right_normal = Vector2(right_edge.y, -right_edge.x)
-	#var right_edge_mid_point = top_right / 2 + end / 2
-	#var right_D = right_normal.dot(right_edge_mid_point) # does the point matter? don't think so
-	#var right_plane = Plane2D.new(top_right, end, right_normal, right_D)
-	
-	var point_a = Vector2()
-	var point_b = Vector2()
-	var normal = Vector2()
-	var d = 0.0
-	
-	func _init(a, b):
-		# idk if i need to do the mid point
-		var mid_point = a / 2 + b / 2
-		var edge = a.direction_to(b)
-		
-		point_a = a
-		point_b = b
-		normal = Vector2(edge.y, -edge.x)
-		d = normal.dot(mid_point)
-		
-		assert(normal == self.normal)
-	
-	func _to_string():
-		var format_string = "Point A = %v \nPoint B = %v \nNormal = %v \nD = %d"
-		return format_string % [point_a, point_b, normal, d]
-
 
 func _ready() -> void:
 	for i in get_tree().get_nodes_in_group(Globals.unit_group):
@@ -67,7 +40,7 @@ func _input(event: InputEvent) -> void:
 		_stop_drawing_dude = false
 		_selection_box_start_pos = get_global_mouse_position()
 	elif event.is_action_released("Left Click"):
-		handle_click_release()
+		_handle_click_release()
 	elif event.is_action_pressed("Right Click"):
 		if _selected_units == null:
 			return
@@ -75,7 +48,7 @@ func _input(event: InputEvent) -> void:
 			u.order_move()
 
 
-func handle_click_release():
+func _handle_click_release():
 	_stop_drawing_dude = true
 		
 	var start = _select_box.position
@@ -116,39 +89,32 @@ func handle_click_release():
 		DebugDraw2d.line(top_right,end, Color.GREEN, .5, debug_box_lifetime)
 	#endregion
 	
-	# Storing everything in Plane2Ds
-	var top_plane = Plane2D.new(start, top_right)
-	var right_plane = Plane2D.new(top_right, end)
-	var bot_plane = Plane2D.new(end, bot_left)
-	var left_plane = Plane2D.new(bot_left, start)
-	
+	var newly_selected_units = []
 	if _select_box.size.length() == 0:
-		print("returning early because select box is size zero")
-		for u in _selected_units:
-			u.set_selection_circle_visible(false)
-		_selected_units = []
-		return
+		print("select box is size zero, no units selected")
+		print("we must select a single unit, check if we're hovered over a unit")
+		if mouse_hovered_unit != null:
+			newly_selected_units = [mouse_hovered_unit]
+		
+	else:
+		newly_selected_units = _selection_grid.get_units_in_select_box(_select_box)
 	
-	var units = _selection_grid.get_units_in_select_box(_select_box)
+	print("newly_selected_units length = %s" % newly_selected_units.size())
 	
-	# selected none
-	if units.size() == 0:
-		# gotta turn off selection circle for old selected units
-		# TODO: could probably optimize this to leave units 
-		#		in both old and new selection alone
-		for u in _selected_units:
-			u.set_selection_circle_visible(false)
+	# gotta turn off selection circle for old selected units
+	# TODO: could probably optimize this to leave units 
+	#		in both old and new selection alone
+	for u in _selected_units:
+		u.set_selection_circle_visible(false)
 
 	# finished with old units, store new selected units
-	_selected_units = units
+	_selected_units = newly_selected_units
 	
 	for u in _selected_units:	
 		u.set_selection_circle_visible(true)
 
-	
 
 func timer_timeout():
 	_selection_grid = get_node("/root/main/SelectionGrid")
 	if(_selection_grid == null):
 		get_tree().create_timer(.2).timeout.connect(timer_timeout)
-
