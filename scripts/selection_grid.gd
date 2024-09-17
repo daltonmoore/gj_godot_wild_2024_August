@@ -59,7 +59,6 @@ func cell_entered(cell, body):
 	#for u in cell_to_units_dict[cell]:
 		#print(u)
 	#print("Body %s entered cell %s" % [body.name, cell.grid_pos])
-	pass
 
 
 func cell_exited(cell, body):

@@ -1,16 +1,15 @@
-class_name SelectionHandler
 extends Node2D
 
 signal _variable_set(v)
 
 var mouse_hovered_unit
 var unit_array = Array()
+var selected_units = []
 
 var _stop_drawing_dude = true
 var _selection_box_start_pos
 var _select_box = Rect2()
 var _selection_grid
-var _selected_units = []
 
 @export var _debug_selection = false
 
@@ -41,11 +40,6 @@ func _input(event: InputEvent) -> void:
 		_selection_box_start_pos = get_global_mouse_position()
 	elif event.is_action_released("Left Click"):
 		_handle_click_release()
-	elif event.is_action_pressed("Right Click"):
-		if _selected_units == null:
-			return
-		for u in _selected_units:
-			u.order_move()
 
 
 func _handle_click_release():
@@ -104,13 +98,13 @@ func _handle_click_release():
 	# gotta turn off selection circle for old selected units
 	# TODO: could probably optimize this to leave units 
 	#		in both old and new selection alone
-	for u in _selected_units:
+	for u in selected_units:
 		u.set_selection_circle_visible(false)
 
 	# finished with old units, store new selected units
-	_selected_units = newly_selected_units
+	selected_units = newly_selected_units
 	
-	for u in _selected_units:	
+	for u in selected_units:	
 		u.set_selection_circle_visible(true)
 
 

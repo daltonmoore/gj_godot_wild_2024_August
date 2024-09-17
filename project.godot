@@ -20,6 +20,9 @@ config/icon="res://icon.svg"
 
 DebugDraw2d="*res://addons/debugdraw2d/DebugDraw2D.gd"
 Globals="*res://scripts/globals.gd"
+CursorManager="*res://scripts/CursorManager.gd"
+SelectionHandler="*res://scripts/selection_handler.gd"
+GlobalTileMap="*res://scenes/tile_map.tscn"
 
 [display]
 

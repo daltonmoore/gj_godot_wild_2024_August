@@ -29,7 +29,6 @@ var current_cell: SelectionGridCell:
 		current_cell = value
 @onready var navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 
-var _selection_handler
 var _current_cell_label
 
 func _ready() -> void:
@@ -50,8 +49,6 @@ func _ready() -> void:
 	
 	$Area2D.mouse_entered.connect(on_mouse_overlap)
 	$Area2D.mouse_exited.connect(on_mouse_exit)
-	
-	_selection_handler = get_node("/root/main/SelectionHandler")
 
 
 func set_movement_target(movement_target: Vector2):
@@ -100,8 +97,8 @@ func order_move():
 
 
 func on_mouse_overlap():
-	_selection_handler.mouse_hovered_unit = self
+	SelectionHandler.mouse_hovered_unit = self
 
 func on_mouse_exit():
-	if _selection_handler.mouse_hovered_unit == self:
-		_selection_handler.mouse_hovered_unit = null
+	if SelectionHandler.mouse_hovered_unit == self:
+		SelectionHandler.mouse_hovered_unit = null
