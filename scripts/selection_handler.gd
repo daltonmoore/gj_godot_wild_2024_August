@@ -19,6 +19,7 @@ func _ready() -> void:
 		unit_array.push_back(i)
 	 
 	get_tree().create_timer(.2).timeout.connect(timer_timeout)
+	z_index = Globals.top_z_index
 
 
 func _process(delta: float) -> void:
@@ -28,17 +29,19 @@ func _process(delta: float) -> void:
 func _draw():	
 	if(_stop_drawing_dude):
 		return
-	
+	print("drawing select box")
 	_select_box.position = _selection_box_start_pos
 	_select_box.end = get_global_mouse_position()
-	draw_rect(_select_box, Color.GREEN, false)
+	draw_rect(_select_box, Color.WEB_GREEN, false)
 
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Left Click"):
+		print("start drawing select box")
 		_stop_drawing_dude = false
 		_selection_box_start_pos = get_global_mouse_position()
 	elif event.is_action_released("Left Click"):
+		print("stop drawing select box")
 		_handle_click_release()
 
 

@@ -12,7 +12,7 @@ var cell_to_units_dict = {}
 var grid_width = 5
 var grid_height = 5
 
-var debug = true
+var debug = Globals.debug
 
 @export var size = Vector2(100,100)
 

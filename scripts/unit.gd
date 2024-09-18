@@ -36,12 +36,12 @@ func _ready() -> void:
 	var label = Label.new()
 	label.text = "%s" % name
 	add_child(label)
-	label.position = Vector2(0, -50) # is relative pos
+	label.position = Vector2(0, -100) # is relative pos
 	
 	# debug current cell text
 	_current_cell_label = Label.new()
 	add_child(_current_cell_label)
-	_current_cell_label.position = Vector2(0, 50) # is relative pos	
+	_current_cell_label.position = Vector2(0, 25) # is relative pos
 	
 	add_to_group(Globals.unit_group)
 	navigation_agent.velocity_computed.connect(
@@ -71,13 +71,20 @@ func _physics_process(delta: float) -> void:
 	# GODOT 4.3 Do not query whent he map has never synchronized and is empty.
 	#if NavigationServer2D.map_get_iteration_id(navigation_agent.get_navigation_map()) == 0:
 		#return
+	#TODO: determine animation based on state of unit
+	#TODO: face velocity
 	if navigation_agent.is_navigation_finished():
+		$AnimatedSprite2D.animation = "idle"
 		return
 		
 	var next_path_position: Vector2 = navigation_agent.get_next_path_position()
 	var new_velocity: Vector2 = global_position.direction_to(next_path_position) * movement_speed
 	
 	if navigation_agent.avoidance_enabled:
+		if new_velocity.dot(Vector2.RIGHT) < 0:
+			$AnimatedSprite2D.flip_h = true
+		else:
+			$AnimatedSprite2D.flip_h = false
 		navigation_agent.set_velocity(new_velocity)
 	else:
 		_on_velocity_computed(new_velocity)
@@ -94,6 +101,19 @@ func _spawn():
 
 func order_move():
 	set_movement_target(get_global_mouse_position())
+	$AnimatedSprite2D.animation = "walk"
+	
+
+func gather_resource(resource_tile_pos):
+	# layer 1 is the foreground so...
+	var resource_tile_data = GlobalTileMap.get_cell_tile_data(
+			Globals.tile_map_layer_foreground, resource_tile_pos)
+	resource_tile_data.get_custom_data(Globals.tile_map_custom_data_layer_type)
+	# play some gather animation
+	# start a collection timer
+	# slowly amass resource
+	# reach carrying capacity
+	# bring resource to town center
 
 
 func on_mouse_overlap():
