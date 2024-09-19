@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Game Jam - Godot Wild 2024 August"
-config/tags=PackedStringArray("2d", "dalton")
+config/tags=PackedStringArray("2d", "dalton", "rts", "topdown")
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"

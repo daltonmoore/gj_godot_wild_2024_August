@@ -50,6 +50,8 @@ func _ready() -> void:
 	
 	$Area2D.mouse_entered.connect(on_mouse_overlap)
 	$Area2D.mouse_exited.connect(on_mouse_exit)
+	
+	z_index = Globals.unit_z_index
 
 
 func set_movement_target(movement_target: Vector2):
@@ -108,14 +110,14 @@ func order_move(has_goal = false, goal = get_global_mouse_position()):
 	$AnimatedSprite2D.animation = "walk"
 
 
-func gather_resource(resource_tile_pos):
+func gather_resource(resource_pos):
 	#var resource_tile_data = GlobalTileMap.get_cell_tile_data(
 			#Globals.tile_map_layer_foreground, resource_tile_pos)
 	#var resource_type = resource_tile_data.get_custom_data(
 			#Globals.tile_map_custom_data_layer_type)
 	var resource = CursorManager.current_hovered_resource
 	_goal_type = resource.resource_type
-	order_move(true)
+	order_move(true, resource_pos)
 	
 	# play some gather animation once arrived at resource
 	# start a collection timer

@@ -11,7 +11,6 @@ script = ExtResource("2_ohfr4")
 resource_type = 1
 
 [node name="Sprite" type="Sprite2D" parent="."]
-z_index = 2
 position = Vector2(4, -64)
 texture = ExtResource("1_hcpj2")
 

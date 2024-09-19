@@ -25,7 +25,10 @@ func _input(event: InputEvent) -> void:
 				$ResourceSelectedFlashTimer.start()
 				
 				for u in SelectionHandler.selected_units:
-					u.gather_resource(CursorManager.current_hovered_resource.position)
+					#TODO: get gather point position and pass to gather resource
+					print(CursorManager.current_hovered_resource.get_node("GatherPos"))
+					print(CursorManager.current_hovered_resource.get_tree_string_pretty())
+					u.gather_resource(CursorManager.current_hovered_resource.get_node("GatherPos").global_position)
 			else:
 				for u in SelectionHandler.selected_units:
 					u.order_move()
