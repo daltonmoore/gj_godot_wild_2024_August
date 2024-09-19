@@ -1,3 +1,4 @@
+# Selection Handler
 extends Node2D
 
 signal _variable_set(v)
@@ -29,7 +30,6 @@ func _process(delta: float) -> void:
 func _draw():	
 	if(_stop_drawing_dude):
 		return
-	print("drawing select box")
 	_select_box.position = _selection_box_start_pos
 	_select_box.end = get_global_mouse_position()
 	draw_rect(_select_box, Color.WEB_GREEN, false)
@@ -37,11 +37,9 @@ func _draw():
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Left Click"):
-		print("start drawing select box")
 		_stop_drawing_dude = false
 		_selection_box_start_pos = get_global_mouse_position()
 	elif event.is_action_released("Left Click"):
-		print("stop drawing select box")
 		_handle_click_release()
 
 
@@ -87,16 +85,9 @@ func _handle_click_release():
 	#endregion
 	
 	var newly_selected_units = []
-	if _select_box.size.length() == 0:
-		print("select box is size zero, no units selected")
-		print("we must select a single unit, check if we're hovered over a unit")
-		if mouse_hovered_unit != null:
-			newly_selected_units = [mouse_hovered_unit]
-		
-	else:
-		newly_selected_units = _selection_grid.get_units_in_select_box(_select_box)
-	
-	print("newly_selected_units length = %s" % newly_selected_units.size())
+	newly_selected_units = _selection_grid.get_units_in_select_box(_select_box)
+	if mouse_hovered_unit != null:
+		newly_selected_units.push_back(mouse_hovered_unit)
 	
 	# gotta turn off selection circle for old selected units
 	# TODO: could probably optimize this to leave units 

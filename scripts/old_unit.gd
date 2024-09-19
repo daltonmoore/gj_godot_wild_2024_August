@@ -25,13 +25,11 @@ var move_to_pos
 #region Built In Methods
 
 func _ready() -> void:
-	print("Is this even run?")
 	move_to_pos = position
 
 
 func _physics_process(delta: float) -> void:
 	if current_anim != $AnimatedSprite2D.animation:
-		print("Changing anim from " + $AnimatedSprite2D.animation +" to " + current_anim)
 		$AnimatedSprite2D.play(current_anim)
 	
 	if is_chasing and false:
@@ -39,7 +37,6 @@ func _physics_process(delta: float) -> void:
 		# get dot to target to determine enemy facing
 		var enemy_to_target = position.direction_to(target.position)
 		var enemy_facing_dot = enemy_to_target.dot(Vector2.RIGHT)
-		print(enemy_facing_dot)
 		if enemy_facing_dot > 0:
 			# enemy's target is on the right
 			$AnimatedSprite2D.flip_h = true
@@ -78,13 +75,10 @@ func _draw() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	#print(event.as_text())
 	if event.is_action_pressed("Click"):
 		# idk if assuming this event can be cast to InputEventMouse is bad
-		print((event as InputEventMouse).position)
 		#move_to_pos = (event as InputEventMouse).position
 		move_to_pos = get_global_mouse_position()
-		print(move_to_pos)
 		
 
 #endregion
@@ -100,7 +94,6 @@ func _do_damage() -> void:
 func _on_wake_trigger_body_entered(body: Node2D) -> void:
 	if body is Player and !is_chasing:
 		# Wake up!!
-		print("Waking!")
 		current_anim = "ceiling_out"
 		target = body as Player
 
@@ -113,7 +106,6 @@ func _on_chase_radius_body_exited(body: Node2D) -> void:
 
 
 func _on_animated_sprite_2d_animation_finished() -> void:
-	print($AnimatedSprite2D.animation + " finished")
 	if current_anim == "ceiling_out":
 		current_anim = "flying"
 		# Start chasing the target
@@ -123,7 +115,6 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 
 
 func _on_animated_sprite_2d_animation_changed() -> void:
-	#print($AnimatedSprite2D.animation + " changed")
 	pass
 
 

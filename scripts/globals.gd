@@ -13,3 +13,4 @@ const tile_map_layer_foreground = 1
 
 const tile_map_custom_data_layer_selectable = "Selectable"
 const tile_map_custom_data_layer_type = "Type" # Type of tile such as: Wood, Gold etc.
+

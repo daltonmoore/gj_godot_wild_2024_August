@@ -9,6 +9,7 @@ enum cursor_type {
 }
 
 var current_hovered_tile : TileData
+var current_hovered_resource : Node2D
 
 var _cursor_select = load("res://art/cursors/mmorpg-cursorpack-Narehop/cursors/cursor1.png")
 var _cursor_default = load("res://art/cursors/mmorpg-cursorpack-Narehop/cursors/cursor8.png")
@@ -31,7 +32,14 @@ func _input(event: InputEvent) -> void:
 			Input.set_custom_mouse_cursor(_cursor_default)
 			_current_cursor_type = cursor_type.default
 		
-		if current_hovered_tile != null:
+		# pivoted to not use tile map for resources
+		if current_hovered_resource != null:
+			if (len(_currently_selected_units) and
+					current_hovered_resource.resource_type == enums.e_resource_type.wood):
+				Input.set_custom_mouse_cursor(_cursor_wood)
+				_current_cursor_type = cursor_type.wood
+		# for tiles
+		elif current_hovered_tile != null:
 			if (len(_currently_selected_units) and
 					current_hovered_tile.get_custom_data("Type") == "Wood"):
 				Input.set_custom_mouse_cursor(_cursor_wood)
@@ -44,10 +52,13 @@ func _input(event: InputEvent) -> void:
 
 func _hovered_tile_changed(old_tile, new_tile):
 	current_hovered_tile = new_tile
-	print(old_tile)
 	
 func cursor_over_resource () -> bool:
 	return _current_cursor_type == cursor_type.wood
 
 
-
+func set_current_hovered_resource(path):
+	if path == null:
+		current_hovered_resource = null
+		return
+	current_hovered_resource = get_tree().root.get_node(path)

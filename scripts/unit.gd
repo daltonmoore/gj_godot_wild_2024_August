@@ -73,7 +73,7 @@ func _physics_process(delta: float) -> void:
 	#TODO: determine animation based on state of unit
 	#TODO: face velocity
 	if navigation_agent.is_navigation_finished():
-		if _goal_type != null and _goal_type == "Wood":
+		if _goal_type == enums.e_resource_type.wood:
 			$AnimatedSprite2D.animation = "chop"
 		else:
 			$AnimatedSprite2D.animation = "idle"
@@ -109,11 +109,12 @@ func order_move(has_goal = false, goal = get_global_mouse_position()):
 
 
 func gather_resource(resource_tile_pos):
-	var resource_tile_data = GlobalTileMap.get_cell_tile_data(
-			Globals.tile_map_layer_foreground, resource_tile_pos)
-	var resource_type = resource_tile_data.get_custom_data(
-			Globals.tile_map_custom_data_layer_type)
-	_goal_type = resource_type
+	#var resource_tile_data = GlobalTileMap.get_cell_tile_data(
+			#Globals.tile_map_layer_foreground, resource_tile_pos)
+	#var resource_type = resource_tile_data.get_custom_data(
+			#Globals.tile_map_custom_data_layer_type)
+	var resource = CursorManager.current_hovered_resource
+	_goal_type = resource.resource_type
 	order_move(true)
 	
 	# play some gather animation once arrived at resource

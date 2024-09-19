@@ -35,7 +35,6 @@ func _physics_process(delta: float) -> void:
 		velocity.y = move_toward(velocity.x, 0, SPEED)
 		
 	if $Sprite2D.modulate != Color(1, 1, 1):
-		print("getting back to normal")
 		var hitColor = $Sprite2D.modulate
 		hitColor.r = move_toward(hitColor.r, 1, delta)
 		hitColor.b = move_toward(hitColor.b, 1, delta)

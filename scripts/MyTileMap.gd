@@ -8,7 +8,6 @@ var _cursor_select = load("res://art/cursors/mmorpg-cursorpack-Narehop/cursors/c
 var _cursor_default = load("res://art/cursors/mmorpg-cursorpack-Narehop/cursors/cursor8.png")
 
 func _ready() -> void:
-	print()
 	pass
 
 

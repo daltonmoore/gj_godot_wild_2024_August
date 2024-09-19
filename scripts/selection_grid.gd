@@ -41,7 +41,6 @@ func _ready() -> void:
 				label.position = Vector2(-size.x/2,-size.x/2) # is relative pos
 			
 			cell_dict[cell.grid_pos] = cell
-			#print(cell.grid_pos)
 			x+=size.x
 		x = 0
 		y+=size.x
@@ -56,18 +55,12 @@ func cell_entered(cell, body):
 		cell_to_units_dict[cell.grid_pos].append(body)
 	else:
 		cell_to_units_dict[cell.grid_pos] = [body]
-	#for u in cell_to_units_dict[cell]:
-		#print(u)
-	#print("Body %s entered cell %s" % [body.name, cell.grid_pos])
 
 
 func cell_exited(cell, body):
 	# could be slow since we shift everything after the item
 	if cell_to_units_dict[cell.grid_pos].has(body):
 		cell_to_units_dict[cell.grid_pos].erase(body)
-		#print("Body %s exited cell %s" % [body.name, cell.grid_pos])
-	#else:
-		#print("Body %s is not in cell %s" % [body.name, cell.grid_pos])
 
 
 # Thought Process to not have to iterate through entire grid 
@@ -135,10 +128,6 @@ func get_units_in_select_box(select_box):
 	for i in selected_cells:
 		if (cell_to_units_dict.has(i.grid_pos)):
 			unit_array.append_array(cell_to_units_dict[i.grid_pos])
-			#print(cell_to_units_dict[i.grid_pos])
-		else:
-			#print("Cell to units does not have grid_pos %.v" % i.grid_pos)
-			pass
 	
 	# debug plane placement
 	if debug:
@@ -163,13 +152,11 @@ func get_units_in_select_box(select_box):
 		for p in planes:
 			var distance = p.normal.dot(u.position) - p.d
 			if (distance > 0):
-				print("Fail on Plane %s" % p_index)
 				inside = false
 				break
 			p_index += 1
 		if inside:
 			#DebugDraw2d.circle(u.position, 10, 32, Color.GREEN, 1, 1)
-			print("Success for unit %s" % u.name)
 			selected_units.append(u)
 		#else:
 			#DebugDraw2d.circle(u.position, 10, 32, Color.RED, 1, 1)

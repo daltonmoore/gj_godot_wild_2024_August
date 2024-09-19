@@ -17,18 +17,15 @@ func _input(event: InputEvent) -> void:
 		if SelectionHandler.selected_units != null:
 			if CursorManager.cursor_over_resource():
 				# collect resource
-				var tile_pos = GlobalTileMap.local_to_map(get_global_mouse_position())
-				
 				_current_flash_count = 0
-				#TODO: Flash is good but need a way to only flash the base tile, 
-				#		so I need a way to group tiles
+				print(CursorManager.current_hovered_resource.position)
 				$ResourceSelectedFlashTimer.stop()
-				$ResourceSelectedSquare.position = GlobalTileMap.map_to_local(tile_pos)
+				$ResourceSelectedSquare.position = CursorManager.current_hovered_resource.position
 				$ResourceSelectedSquare.visible = true
 				$ResourceSelectedFlashTimer.start()
 				
 				for u in SelectionHandler.selected_units:
-					u.gather_resource(tile_pos)
+					u.gather_resource(CursorManager.current_hovered_resource.position)
 			else:
 				for u in SelectionHandler.selected_units:
 					u.order_move()
