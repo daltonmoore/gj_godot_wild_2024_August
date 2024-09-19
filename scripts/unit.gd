@@ -30,6 +30,7 @@ var current_cell: SelectionGridCell:
 @onready var navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 
 var _current_cell_label
+var _goal_type = null
 
 func _ready() -> void:
 	# Debug name text
@@ -59,8 +60,6 @@ func set_selection_circle_visible(visible):
 	$"Selection Circle".visible = visible
 
 
-
-
 func _process(delta: float) -> void:
 	# Debug name text
 	if current_cell != null:
@@ -74,7 +73,10 @@ func _physics_process(delta: float) -> void:
 	#TODO: determine animation based on state of unit
 	#TODO: face velocity
 	if navigation_agent.is_navigation_finished():
-		$AnimatedSprite2D.animation = "idle"
+		if _goal_type != null and _goal_type == "Wood":
+			$AnimatedSprite2D.animation = "chop"
+		else:
+			$AnimatedSprite2D.animation = "idle"
 		return
 		
 	var next_path_position: Vector2 = navigation_agent.get_next_path_position()
@@ -99,17 +101,22 @@ func _spawn():
 	pass
 
 
-func order_move():
-	set_movement_target(get_global_mouse_position())
+func order_move(has_goal = false, goal = get_global_mouse_position()):
+	set_movement_target(goal)
+	if !has_goal:
+		_goal_type = null
 	$AnimatedSprite2D.animation = "walk"
-	
+
 
 func gather_resource(resource_tile_pos):
-	# layer 1 is the foreground so...
 	var resource_tile_data = GlobalTileMap.get_cell_tile_data(
 			Globals.tile_map_layer_foreground, resource_tile_pos)
-	resource_tile_data.get_custom_data(Globals.tile_map_custom_data_layer_type)
-	# play some gather animation
+	var resource_type = resource_tile_data.get_custom_data(
+			Globals.tile_map_custom_data_layer_type)
+	_goal_type = resource_type
+	order_move(true)
+	
+	# play some gather animation once arrived at resource
 	# start a collection timer
 	# slowly amass resource
 	# reach carrying capacity
@@ -118,6 +125,7 @@ func gather_resource(resource_tile_pos):
 
 func on_mouse_overlap():
 	SelectionHandler.mouse_hovered_unit = self
+
 
 func on_mouse_exit():
 	if SelectionHandler.mouse_hovered_unit == self:
