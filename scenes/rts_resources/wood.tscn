@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dtu4ccuc86rc4"]
+
+[ext_resource type="Texture2D" uid="uid://dsdc4jo1v2bat" path="res://art/Tiny Swords (Update 010)/Resources/Resources/W_Bundle_Idle_(NoShadow).png" id="1_bnf4x"]
+
+[node name="Wood" type="Sprite2D"]
+texture = ExtResource("1_bnf4x")

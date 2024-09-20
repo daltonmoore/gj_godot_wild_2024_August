@@ -22,15 +22,26 @@ class_name Unit
 extends CharacterBody2D
 
 @export var movement_speed: float = 4.0
+@export var max_resource_holding := 5
+
+# Public Vars
 var current_cell: SelectionGridCell:
 	get:
 		return current_cell
 	set(value):
 		current_cell = value
+
+# Private Vars
+var _current_cell_label
+# just assuming any goal is a resource for now, could eventually be an enemy
+var _goal_type : enums.e_resource_type = enums.e_resource_type.none
+var _resource_goal : RTS_Resource
+var _current_resource_holding := 0
+var _holding_resource_bundle := false
+var _wood_bundle_sprite := preload("res://scenes/rts_resources/wood.tscn")
+
 @onready var navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 
-var _current_cell_label
-var _goal_type = null
 
 func _ready() -> void:
 	# Debug name text
@@ -45,11 +56,12 @@ func _ready() -> void:
 	_current_cell_label.position = Vector2(0, 25) # is relative pos
 	
 	add_to_group(Globals.unit_group)
-	navigation_agent.velocity_computed.connect(
-			Callable(_on_velocity_computed))
 	
+	navigation_agent.velocity_computed.connect(Callable(_on_velocity_computed))
 	$Area2D.mouse_entered.connect(on_mouse_overlap)
 	$Area2D.mouse_exited.connect(on_mouse_exit)
+	navigation_agent.navigation_finished.connect(_on_navigation_finished)
+	$ResourceGatherTick.timeout.connect(_on_resource_gather_tick_timeout)
 	
 	z_index = Globals.unit_z_index
 
@@ -69,18 +81,6 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	# GODOT 4.3 Do not query whent he map has never synchronized and is empty.
-	#if NavigationServer2D.map_get_iteration_id(navigation_agent.get_navigation_map()) == 0:
-		#return
-	#TODO: determine animation based on state of unit
-	#TODO: face velocity
-	if navigation_agent.is_navigation_finished():
-		if _goal_type == enums.e_resource_type.wood:
-			$AnimatedSprite2D.animation = "chop"
-		else:
-			$AnimatedSprite2D.animation = "idle"
-		return
-		
 	var next_path_position: Vector2 = navigation_agent.get_next_path_position()
 	var new_velocity: Vector2 = global_position.direction_to(next_path_position) * movement_speed
 	
@@ -99,25 +99,51 @@ func _on_velocity_computed(safe_velocity: Vector2):
 	move_and_slide()
 
 
-func _spawn():
-	pass
+func _on_navigation_finished():
+	if _goal_type == enums.e_resource_type.wood:
+		$AnimatedSprite2D.animation = "chop"
+		if _resource_goal != null:
+			_resource_goal.gather(self)
+	elif _holding_resource_bundle:
+		$AnimatedSprite2D.animation = "idle_holding"
+	else:
+		$AnimatedSprite2D.animation = "idle"
+	
+
+
+func _on_resource_gather_tick_timeout():
+	_current_resource_holding += 1
+	
+	assert (_current_resource_holding <= max_resource_holding)
+	if _current_resource_holding == max_resource_holding:
+		_finish_gathering()
+		
 
 
 func order_move(has_goal = false, goal = get_global_mouse_position()):
 	set_movement_target(goal)
 	if !has_goal:
-		_goal_type = null
-	$AnimatedSprite2D.animation = "walk"
+		_goal_type = enums.e_resource_type.none
+	
+	if _holding_resource_bundle:
+		$AnimatedSprite2D.animation = "walk_holding"
+	else:
+		$AnimatedSprite2D.animation = "walk"
 
 
-func gather_resource(resource_pos):
-	#var resource_tile_data = GlobalTileMap.get_cell_tile_data(
-			#Globals.tile_map_layer_foreground, resource_tile_pos)
-	#var resource_type = resource_tile_data.get_custom_data(
-			#Globals.tile_map_custom_data_layer_type)
-	var resource = CursorManager.current_hovered_resource
+func gather_resource(resource):
+	if _holding_resource_bundle:
+		print("Not gathering anymore because holding bundle already")
+		return 
+		
 	_goal_type = resource.resource_type
-	order_move(true, resource_pos)
+	_resource_goal = resource
+	order_move(true, resource.get_node("GatherPos").global_position)
+	
+	#TODO:when should the unit drop all they are holding?
+	#		AOE2 clears it out when they start collecting a different resource
+	$ResourceGatherTick.stop()
+	$ResourceGatherTick.start()
 	
 	# play some gather animation once arrived at resource
 	# start a collection timer
@@ -133,3 +159,17 @@ func on_mouse_overlap():
 func on_mouse_exit():
 	if SelectionHandler.mouse_hovered_unit == self:
 		SelectionHandler.mouse_hovered_unit = null
+
+
+func _finish_gathering():
+	_holding_resource_bundle = true
+	var _wood_bundle_instance = _wood_bundle_sprite.instantiate()
+	$ResourceHoldPos.add_child(_wood_bundle_instance)
+	$ResourceGatherTick.stop()
+	$AnimatedSprite2D.animation = "idle_holding"
+
+
+
+
+
+

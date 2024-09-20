@@ -1,3 +1,4 @@
+class_name RTS_Resource
 extends Node2D
 
 @export var resource_type : enums.e_resource_type
@@ -19,3 +20,15 @@ func _on_mouse_entered() -> void:
 func _on_mouse_exited() -> void:
 	if CursorManager.current_hovered_resource.get_path() == get_path():
 		CursorManager.current_hovered_resource = null
+
+
+#TODO: I think AOE2 does this by number of hits maybe? Could just stop the timer if gathering ceases
+func gather(unit : Unit) -> void:
+	ResourceManager.add_resource_gatherer(unit, self)
+	get_tree().create_timer(1).timeout.connect(
+		func():
+			if $Sprite.visible:
+				$Sprite.visible = false
+				$DamagedSprite.visible = true
+	)
+	

@@ -367,6 +367,13 @@ max_speed = 300.0
 position = Vector2(-0.25, -18)
 shape = SubResource("RectangleShape2D_4l5a1")
 
+[node name="ResourceGatherTick" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="ResourceHoldPos" type="Node2D" parent="."]
+z_index = 2
+position = Vector2(5.09, -62.11)
+
 [connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="body_exited" from="ChaseRadius" to="." method="_on_chase_radius_body_exited"]
