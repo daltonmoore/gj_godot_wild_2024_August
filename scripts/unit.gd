@@ -21,6 +21,8 @@
 class_name Unit
 extends CharacterBody2D
 
+signal stop_gathering(unit)
+
 @export var movement_speed: float = 4.0
 @export var max_resource_holding := 5
 
@@ -38,7 +40,9 @@ var _goal_type : enums.e_resource_type = enums.e_resource_type.none
 var _resource_goal : RTS_Resource
 var _current_resource_holding := 0
 var _holding_resource_bundle := false
-var _wood_bundle_sprite := preload("res://scenes/rts_resources/wood.tscn")
+var _is_gathering := false
+var _wood_bundle_sprite := load("res://scenes/rts_resources/wood.tscn")
+var _wood_bundle_instance: AnimatedSprite2D
 
 @onready var navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 
@@ -87,8 +91,12 @@ func _physics_process(delta: float) -> void:
 	if navigation_agent.avoidance_enabled:
 		if new_velocity.dot(Vector2.RIGHT) < 0:
 			$AnimatedSprite2D.flip_h = true
+			if $ResourceHoldPos.get_child_count() > 0:
+				$ResourceHoldPos.get_child(0).flip_h = true
 		else:
 			$AnimatedSprite2D.flip_h = false
+			if $ResourceHoldPos.get_child_count() > 0:
+				$ResourceHoldPos.get_child(0).flip_h = false
 		navigation_agent.set_velocity(new_velocity)
 	else:
 		_on_velocity_computed(new_velocity)
@@ -103,42 +111,38 @@ func _on_navigation_finished():
 	if _goal_type == enums.e_resource_type.wood:
 		$AnimatedSprite2D.animation = "chop"
 		if _resource_goal != null:
+			_is_gathering = true
 			_resource_goal.gather(self)
 	elif _holding_resource_bundle:
 		$AnimatedSprite2D.animation = "idle_holding"
+		_set_wood_bundle_anim("idle")
 	else:
 		$AnimatedSprite2D.animation = "idle"
 	
 
 
-func _on_resource_gather_tick_timeout():
-	_current_resource_holding += 1
-	
-	assert (_current_resource_holding <= max_resource_holding)
-	if _current_resource_holding == max_resource_holding:
-		_finish_gathering()
-		
-
-
-func order_move(has_goal = false, goal = get_global_mouse_position()):
+func order_move(goal = get_global_mouse_position(), goal_type = enums.e_resource_type.none):
 	set_movement_target(goal)
-	if !has_goal:
-		_goal_type = enums.e_resource_type.none
+	_goal_type = goal_type
+	
+	if (goal_type != enums.e_resource_type.wood and _is_gathering):
+		_stop_gathering()
 	
 	if _holding_resource_bundle:
 		$AnimatedSprite2D.animation = "walk_holding"
+		_set_wood_bundle_anim("walk")
 	else:
 		$AnimatedSprite2D.animation = "walk"
 
 
-func gather_resource(resource):
-	if _holding_resource_bundle:
-		print("Not gathering anymore because holding bundle already")
+func gather_resource(resource: RTS_Resource):
+	if _current_resource_holding >= max_resource_holding:
+		print("Not gathering anymore because holding max resources already")
 		return 
-		
-	_goal_type = resource.resource_type
+	
 	_resource_goal = resource
-	order_move(true, resource.get_node("GatherPos").global_position)
+	#TODO:take dot into account for gatherpos location
+	order_move(resource.get_node("GatherPos").global_position, resource.resource_type)
 	
 	#TODO:when should the unit drop all they are holding?
 	#		AOE2 clears it out when they start collecting a different resource
@@ -161,15 +165,54 @@ func on_mouse_exit():
 		SelectionHandler.mouse_hovered_unit = null
 
 
+func _on_resource_gather_tick_timeout():
+	_current_resource_holding += 1
+	assert (_current_resource_holding <= max_resource_holding)
+	if _current_resource_holding == max_resource_holding:
+		_finish_gathering()
+		
+
+#TODO:possibly do like one log in the bundle to two logs as we gather to show progress.
 func _finish_gathering():
-	_holding_resource_bundle = true
-	var _wood_bundle_instance = _wood_bundle_sprite.instantiate()
-	$ResourceHoldPos.add_child(_wood_bundle_instance)
+	_handle_resource_bundle()
 	$ResourceGatherTick.stop()
 	$AnimatedSprite2D.animation = "idle_holding"
+	
+
+# not finished but has ceased gathering
+func _stop_gathering():
+	_is_gathering = false
+	_handle_resource_bundle()
+	$ResourceGatherTick.stop()
+	stop_gathering.emit(self)
 
 
+func _handle_resource_bundle():
+	if _current_resource_holding <= 0:
+		return
+	
+	_holding_resource_bundle = true
+	if _wood_bundle_instance != null:
+		_wood_bundle_instance.queue_free()
+	_wood_bundle_instance = _wood_bundle_sprite.instantiate()
+	$ResourceHoldPos.add_child(_wood_bundle_instance)
+	_set_wood_bundle_anim("idle")
 
+
+func _set_wood_bundle_anim(type: String):
+	match float(_current_resource_holding) / max_resource_holding:
+		0:
+			return
+		0.1, 0.2, 0.3, 0.4:
+			if type == "idle":
+				#$ResourceHoldPos.get_child(0).animation = "idle_one_bob"
+				_wood_bundle_instance.animation = "idle_one_bob"
+			elif type == "walk":
+				_wood_bundle_instance.animation = "walking_one_bob"
+		0.5, 0.6, 0.7, 0.8:
+			_wood_bundle_instance.animation = "idle_two_bob"
+		0.9, 1.0:
+			_wood_bundle_instance.animation = "idle_three_bob"
 
 
 

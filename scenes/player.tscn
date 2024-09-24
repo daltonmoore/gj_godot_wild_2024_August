@@ -5,7 +5,6 @@
 [node name="Player" type="Node2D"]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
 script = ExtResource("1_oxoyr")
-camera_speed = 450.0
+camera_speed = 650.0
 camera_bounds = Rect2(0, 0, 1000, 1000)

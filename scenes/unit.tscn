@@ -308,6 +308,12 @@ y_sort_enabled = true
 script = ExtResource("1_1ttjy")
 movement_speed = 100.0
 
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_desired_distance = 10.0
+avoidance_enabled = true
+radius = 15.0
+max_speed = 300.0
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -8)
 shape = SubResource("CircleShape2D_78wmw")
@@ -324,6 +330,8 @@ position = Vector2(0, -27)
 sprite_frames = SubResource("SpriteFrames_5imfe")
 animation = &"idle"
 autoplay = "idle"
+frame = 1
+frame_progress = 0.554615
 metadata/_edit_lock_ = true
 
 [node name="ChaseRadius" type="Area2D" parent="."]
@@ -354,13 +362,6 @@ metadata/_edit_group_ = true
 shape = SubResource("CircleShape2D_ko4iw")
 debug_color = Color(0.830114, 0.393404, 3.85046e-07, 0.42)
 
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-path_desired_distance = 10.0
-avoidance_enabled = true
-radius = 15.0
-max_neighbors = 5
-max_speed = 300.0
-
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
@@ -372,7 +373,7 @@ wait_time = 0.5
 
 [node name="ResourceHoldPos" type="Node2D" parent="."]
 z_index = 2
-position = Vector2(5.09, -62.11)
+position = Vector2(5.09, -29.12)
 
 [connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

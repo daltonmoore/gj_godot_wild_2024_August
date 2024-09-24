@@ -20,6 +20,24 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	var horz_direction := Input.get_axis("Left", "Right")
 	var vert_direction := Input.get_axis("Up", "Down")
+	
+	# is mouse at viewport edge?
+	var viewport_rect = get_viewport().get_visible_rect()
+	if (get_local_mouse_position().x > (viewport_rect.size.x / 2) - 20): # right boundary
+		DebugDraw2d.circle(get_global_mouse_position(), 10, 16, Color.GREEN)
+		horz_direction = 1
+	elif (get_local_mouse_position().x < -(viewport_rect.size.x / 2) + 20): # left boundary
+		DebugDraw2d.circle(get_global_mouse_position(), 10, 16, Color.GREEN)
+		horz_direction = -1
+	
+	if (get_local_mouse_position().y > (viewport_rect.size.y / 2) - 20): # bottom boundary
+		DebugDraw2d.circle(get_global_mouse_position(), 10, 16, Color.GREEN)
+		vert_direction = 1
+	elif (get_local_mouse_position().y < -(viewport_rect.size.y / 2) + 20): # top boundary
+		DebugDraw2d.circle(get_global_mouse_position(), 10, 16, Color.GREEN)
+		vert_direction = -1
+		
+		
 	position += Vector2(horz_direction * camera_speed * delta, 
 			vert_direction * camera_speed * delta)
 	position = position.clamp(Vector2.ZERO, camera_bounds.size)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cmw2100mkgw3c"]
+[gd_scene load_steps=15 format=3 uid="uid://cmw2100mkgw3c"]
 
 [ext_resource type="Script" path="res://scripts/resource_manager.gd" id="1_2c12v"]
 [ext_resource type="PackedScene" uid="uid://cjh4kr7do3ddx" path="res://scenes/player.tscn" id="1_skd3a"]
@@ -12,10 +12,11 @@
 [ext_resource type="Script" path="res://scripts/hud.gd" id="7_8qk5k"]
 [ext_resource type="Texture2D" uid="uid://b7ekypag5exbu" path="res://art/icons/RPG Graphics Pack - Icons/Pack 1A/material/material_14.png" id="8_85a2b"]
 [ext_resource type="PackedScene" uid="uid://50tod2hsjvde" path="res://scenes/rts_resource.tscn" id="9_705p6"]
+[ext_resource type="PackedScene" uid="uid://gn6tlvfvi30a" path="res://scenes/castle.tscn" id="13_snk8x"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_60m1h"]
-vertices = PackedVector2Array(2743, 32, 2740, 2378, 16, 2375, 2, 22)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+vertices = PackedVector2Array(2743, 32, 2740, 2378, 572, 545, 570, 343, 16, 2375, 282, 543, 2, 22, 283, 340)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(2, 1, 4, 5), PackedInt32Array(5, 4, 6, 7), PackedInt32Array(7, 6, 0, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-3, 17, 12, 2380, 2745, 2384, 2749, 28)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 agent_radius = 5.0
@@ -23,18 +24,27 @@ agent_radius = 5.0
 [node name="main" type="Node2D"]
 metadata/_edit_lock_ = true
 
-[node name="ResourceManager" type="Node2D" parent="."]
+[node name="Managers" type="Node2D" parent="."]
+
+[node name="ResourceManager" type="Node2D" parent="Managers"]
 script = ExtResource("1_2c12v")
 
-[node name="CommandManager" parent="." instance=ExtResource("1_vy3wn")]
+[node name="CommandManager" parent="Managers" instance=ExtResource("1_vy3wn")]
 
-[node name="CursorManager" parent="." instance=ExtResource("2_bienb")]
+[node name="CursorManager" parent="Managers" instance=ExtResource("2_bienb")]
 
-[node name="SelectionHandler" parent="." instance=ExtResource("5_vk4bl")]
+[node name="SelectionHandler" parent="Managers" instance=ExtResource("5_vk4bl")]
 z_index = 10
 metadata/_edit_lock_ = true
 
+[node name="Player" parent="." instance=ExtResource("1_skd3a")]
+position = Vector2(250, 150)
+
 [node name="SelectionGrid" parent="." instance=ExtResource("6_fev7a")]
+metadata/_edit_lock_ = true
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
+position = Vector2(-2, 0)
 metadata/_edit_lock_ = true
 
 [node name="TileMap" parent="." instance=ExtResource("5_mbqj8")]
@@ -43,13 +53,15 @@ metadata/_edit_lock_ = true
 navigation_polygon = SubResource("NavigationPolygon_60m1h")
 metadata/_edit_lock_ = true
 
+[node name="Polygon2D" type="Polygon2D" parent="NavigationRegion2D"]
+position = Vector2(0, -6)
+polygon = PackedVector2Array(288, 351, 287, 544, 567, 546, 565, 354)
+metadata/_edit_lock_ = true
+
 [node name="Ambient" type="CanvasModulate" parent="."]
 position = Vector2(562, 320)
 scale = Vector2(120.81, -678.099)
 color = Color(0.485703, 0.485704, 0.485703, 1)
-
-[node name="Player" parent="." instance=ExtResource("1_skd3a")]
-position = Vector2(250, 150)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 script = ExtResource("7_8qk5k")
@@ -94,15 +106,19 @@ position = Vector2(232, 182)
 [node name="Unit2" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(181, 199)
 
-[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
-position = Vector2(-2, 0)
-metadata/_edit_lock_ = true
+[node name="Resources" type="Node2D" parent="."]
 
-[node name="Resource" parent="." instance=ExtResource("9_705p6")]
+[node name="Resource" parent="Resources" instance=ExtResource("9_705p6")]
 position = Vector2(90, 231)
 
-[node name="Resource2" parent="." instance=ExtResource("9_705p6")]
+[node name="Resource2" parent="Resources" instance=ExtResource("9_705p6")]
 position = Vector2(369, 232)
 
-[node name="Resource3" parent="." instance=ExtResource("9_705p6")]
+[node name="Resource3" parent="Resources" instance=ExtResource("9_705p6")]
 position = Vector2(289, 108)
+
+[node name="Buildings" type="Node2D" parent="."]
+
+[node name="CastleBlue" parent="Buildings" instance=ExtResource("13_snk8x")]
+position = Vector2(429, 416)
+metadata/_edit_lock_ = true
