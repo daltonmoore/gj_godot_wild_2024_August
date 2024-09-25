@@ -12,10 +12,10 @@
 [ext_resource type="Script" path="res://scripts/hud.gd" id="7_8qk5k"]
 [ext_resource type="Texture2D" uid="uid://b7ekypag5exbu" path="res://art/icons/RPG Graphics Pack - Icons/Pack 1A/material/material_14.png" id="8_85a2b"]
 [ext_resource type="PackedScene" uid="uid://50tod2hsjvde" path="res://scenes/rts_resource.tscn" id="9_705p6"]
-[ext_resource type="PackedScene" uid="uid://gn6tlvfvi30a" path="res://scenes/castle.tscn" id="13_snk8x"]
+[ext_resource type="PackedScene" uid="uid://gn6tlvfvi30a" path="res://scenes/building.tscn" id="13_snk8x"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_60m1h"]
-vertices = PackedVector2Array(2743, 32, 2740, 2378, 572, 545, 570, 343, 16, 2375, 282, 543, 2, 22, 283, 340)
+vertices = PackedVector2Array(2743, 32, 2740, 2378, 707, 647, 705, 445, 16, 2375, 417, 645, 2, 22, 418, 442)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(2, 1, 4, 5), PackedInt32Array(5, 4, 6, 7), PackedInt32Array(7, 6, 0, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-3, 17, 12, 2380, 2745, 2384, 2749, 28)])
 source_geometry_group_name = &"navigation_polygon_source_group"
@@ -54,9 +54,8 @@ navigation_polygon = SubResource("NavigationPolygon_60m1h")
 metadata/_edit_lock_ = true
 
 [node name="Polygon2D" type="Polygon2D" parent="NavigationRegion2D"]
-position = Vector2(0, -6)
+position = Vector2(135, 96)
 polygon = PackedVector2Array(288, 351, 287, 544, 567, 546, 565, 354)
-metadata/_edit_lock_ = true
 
 [node name="Ambient" type="CanvasModulate" parent="."]
 position = Vector2(562, 320)
@@ -120,5 +119,4 @@ position = Vector2(289, 108)
 [node name="Buildings" type="Node2D" parent="."]
 
 [node name="CastleBlue" parent="Buildings" instance=ExtResource("13_snk8x")]
-position = Vector2(429, 416)
-metadata/_edit_lock_ = true
+position = Vector2(420, 446)

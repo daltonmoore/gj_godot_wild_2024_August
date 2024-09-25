@@ -13,15 +13,6 @@ func _ready() -> void:
 	$DamagedTimer.timeout.connect(_on_damaged_timer_timeout)
 
 
-func _on_mouse_entered() -> void:
-	CursorManager.set_current_hovered_resource(get_path())
-
-
-func _on_mouse_exited() -> void:
-	if CursorManager.current_hovered_resource.get_path() == get_path():
-		CursorManager.current_hovered_resource = null
-
-
 #TODO: I think AOE2 does this by number of hits maybe? Could just stop the timer if gathering ceases
 func gather(unit : Unit) -> void:
 	ResourceManager.add_resource_gatherer(unit, self)
