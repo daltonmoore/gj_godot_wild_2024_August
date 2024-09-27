@@ -23,17 +23,17 @@ func _physics_process(delta: float) -> void:
 	
 	# is mouse at viewport edge?
 	var viewport_rect = get_viewport().get_visible_rect()
-	if (get_local_mouse_position().x > (viewport_rect.size.x / 2) - 20): # right boundary
+	if (get_local_mouse_position().x > (viewport_rect.size.x / zoom.x / 2) - 20): # right boundary
 		DebugDraw2d.circle(get_global_mouse_position(), 10, 16, Color.GREEN)
 		horz_direction = 1
-	elif (get_local_mouse_position().x < -(viewport_rect.size.x / 2) + 20): # left boundary
+	elif (get_local_mouse_position().x < -(viewport_rect.size.x / zoom.x / 2) + 20): # left boundary
 		DebugDraw2d.circle(get_global_mouse_position(), 10, 16, Color.GREEN)
 		horz_direction = -1
 	
-	if (get_local_mouse_position().y > (viewport_rect.size.y / 2) - 20): # bottom boundary
+	if (get_local_mouse_position().y > (viewport_rect.size.y / zoom.y / 2) - 20): # bottom boundary
 		DebugDraw2d.circle(get_global_mouse_position(), 10, 16, Color.GREEN)
 		vert_direction = 1
-	elif (get_local_mouse_position().y < -(viewport_rect.size.y / 2) + 20): # top boundary
+	elif (get_local_mouse_position().y < -(viewport_rect.size.y / zoom.y / 2) + 20): # top boundary
 		DebugDraw2d.circle(get_global_mouse_position(), 10, 16, Color.GREEN)
 		vert_direction = -1
 		

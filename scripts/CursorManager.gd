@@ -10,9 +10,7 @@ enum cursor_type {
 }
 
 var current_hovered_tile : TileData
-var current_hovered_object : Selectable
-var current_hovered_resource : RTS_Resource
-var current_hovered_building : Building
+var current_hovered_object
 
 var _cursor_select = load("res://art/cursors/mmorpg-cursorpack-Narehop/cursors/cursor1.png")
 var _cursor_default = load("res://art/cursors/mmorpg-cursorpack-Narehop/cursors/cursor8.png")
@@ -22,8 +20,8 @@ var _cursor_building = load("res://art/cursors/mmorpg-cursorpack-Narehop/gold-po
 var _current_cursor_type = cursor_type.default
 
 func _ready() -> void:
-	#Input.mouse_mode = Input.MOUSE_MODE_CONFINED
-	pass
+	Input.mouse_mode = Input.MOUSE_MODE_CONFINED
+	#pass
 
 
 func _input(event: InputEvent) -> void:
@@ -38,35 +36,25 @@ func _input(event: InputEvent) -> void:
 			Input.set_custom_mouse_cursor(_cursor_default)
 			_current_cursor_type = cursor_type.default
 		
-		if (current_hovered_resource != null and
-				len(_currently_selected_units) and
-				current_hovered_resource.resource_type == enums.e_resource_type.wood):
+		if (current_hovered_object != null and
+				len(_currently_selected_units) and 
+				current_hovered_object is RTS_Resource and
+				current_hovered_object.resource_type == enums.e_resource_type.wood):
 			Input.set_custom_mouse_cursor(_cursor_wood)
 			_current_cursor_type = cursor_type.wood
-		elif (current_hovered_building != null):
+		elif (current_hovered_object != null and current_hovered_object is Building):
 			Input.set_custom_mouse_cursor(_cursor_building)
 			_current_cursor_type = cursor_type.building
 
 
-func cursor_over_selectable () -> bool:
+func cursor_over_selectable() -> bool:
 	return current_hovered_object != null
-
-
-func set_current_hovered_object(object, type):
-	if object == null:
-		match type:
-			enums.e_object_type.resource:
-				current_hovered_resource = null
-			enums.e_object_type.building:
-				current_hovered_building = null
-		return
 	
-	current_hovered_object = object
-	if object as RTS_Resource != null:
-		current_hovered_resource = object as RTS_Resource
-	elif object as Building != null:
-		current_hovered_building = object as Building
+func cursor_over_resource() -> bool:
+	return current_hovered_object is RTS_Resource
 
+func set_current_hovered_object(object):
+	current_hovered_object = object
 
 
 

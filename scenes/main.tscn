@@ -1,12 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://cmw2100mkgw3c"]
+[gd_scene load_steps=11 format=3 uid="uid://cmw2100mkgw3c"]
 
-[ext_resource type="Script" path="res://scripts/resource_manager.gd" id="1_2c12v"]
 [ext_resource type="PackedScene" uid="uid://cjh4kr7do3ddx" path="res://scenes/player.tscn" id="1_skd3a"]
 [ext_resource type="PackedScene" uid="uid://y481t143guwj" path="res://scenes/command_manager.tscn" id="1_vy3wn"]
-[ext_resource type="PackedScene" uid="uid://dk5f8ly1aaw2r" path="res://scenes/cursor_manager.tscn" id="2_bienb"]
 [ext_resource type="PackedScene" uid="uid://bbqvgiqtvvj75" path="res://scenes/unit.tscn" id="5_gmj38"]
-[ext_resource type="PackedScene" uid="uid://csbcxdt2lm4u1" path="res://scenes/tile_map.tscn" id="5_mbqj8"]
-[ext_resource type="PackedScene" uid="uid://drwxme0yhjdc2" path="res://scenes/selection_handler.tscn" id="5_vk4bl"]
 [ext_resource type="Script" path="res://scripts/health_bar.gd" id="6_3nhu0"]
 [ext_resource type="PackedScene" uid="uid://bg5jrjwfpc88n" path="res://scenes/selection_grid.tscn" id="6_fev7a"]
 [ext_resource type="Script" path="res://scripts/hud.gd" id="7_8qk5k"]
@@ -26,16 +22,7 @@ metadata/_edit_lock_ = true
 
 [node name="Managers" type="Node2D" parent="."]
 
-[node name="ResourceManager" type="Node2D" parent="Managers"]
-script = ExtResource("1_2c12v")
-
 [node name="CommandManager" parent="Managers" instance=ExtResource("1_vy3wn")]
-
-[node name="CursorManager" parent="Managers" instance=ExtResource("2_bienb")]
-
-[node name="SelectionHandler" parent="Managers" instance=ExtResource("5_vk4bl")]
-z_index = 10
-metadata/_edit_lock_ = true
 
 [node name="Player" parent="." instance=ExtResource("1_skd3a")]
 position = Vector2(250, 150)
@@ -45,11 +32,11 @@ metadata/_edit_lock_ = true
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
 position = Vector2(-2, 0)
+energy = 0.53
 metadata/_edit_lock_ = true
 
-[node name="TileMap" parent="." instance=ExtResource("5_mbqj8")]
-
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+visible = false
 navigation_polygon = SubResource("NavigationPolygon_60m1h")
 metadata/_edit_lock_ = true
 
@@ -73,6 +60,13 @@ offset_bottom = 43.0
 script = ExtResource("6_3nhu0")
 player = NodePath("../../Player")
 metadata/_edit_use_anchors_ = true
+
+[node name="SelectedObjectName" type="Label" parent="CanvasLayer"]
+offset_left = 84.0
+offset_top = 579.0
+offset_right = 142.0
+offset_bottom = 602.0
+text = "None"
 
 [node name="WoodBg" type="ColorRect" parent="CanvasLayer"]
 offset_left = 82.0

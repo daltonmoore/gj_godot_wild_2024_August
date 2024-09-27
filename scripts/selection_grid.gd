@@ -1,3 +1,4 @@
+class_name SelectionGrid
 extends Node
 
 var selection_grid_cell = preload("res://scenes/selection_grid_cell.tscn")

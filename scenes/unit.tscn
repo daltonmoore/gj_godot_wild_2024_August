@@ -301,12 +301,14 @@ radius = 51.0882
 [sub_resource type="CircleShape2D" id="CircleShape2D_ko4iw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4l5a1"]
-size = Vector2(21.5, 34)
+size = Vector2(35, 34)
 
 [node name="Unit" type="CharacterBody2D"]
 y_sort_enabled = true
 script = ExtResource("1_1ttjy")
 movement_speed = 100.0
+max_resource_holding = 10
+collection_rate = 1.235
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_desired_distance = 10.0
@@ -365,11 +367,10 @@ debug_color = Color(0.830114, 0.393404, 3.85046e-07, 0.42)
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(-0.25, -18)
+position = Vector2(-0.5, -17)
 shape = SubResource("RectangleShape2D_4l5a1")
 
 [node name="ResourceGatherTick" type="Timer" parent="."]
-wait_time = 0.5
 
 [node name="ResourceHoldPos" type="Node2D" parent="."]
 z_index = 2

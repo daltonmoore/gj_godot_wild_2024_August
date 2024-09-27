@@ -25,6 +25,7 @@ signal stop_gathering(unit)
 
 @export var movement_speed: float = 4.0
 @export var max_resource_holding := 5
+@export_range(0.1, 2.0) var collection_rate := 1.1
 
 # Public Vars
 var current_cell: SelectionGridCell:
@@ -46,6 +47,8 @@ var _wood_bundle_instance: AnimatedSprite2D
 
 @onready var navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 
+# for debug resource holding
+var woodlabel = Label.new()
 
 func _ready() -> void:
 	# Debug name text
@@ -53,6 +56,9 @@ func _ready() -> void:
 	label.text = "%s" % name
 	add_child(label)
 	label.position = Vector2(0, -100) # is relative pos
+	
+	add_child(woodlabel)
+	woodlabel.position = Vector2(0, -20) # is relative pos
 	
 	# debug current cell text
 	_current_cell_label = Label.new()
@@ -66,6 +72,7 @@ func _ready() -> void:
 	$Area2D.mouse_exited.connect(on_mouse_exit)
 	navigation_agent.navigation_finished.connect(_on_navigation_finished)
 	$ResourceGatherTick.timeout.connect(_on_resource_gather_tick_timeout)
+	$ResourceGatherTick.wait_time = collection_rate
 	
 	z_index = Globals.unit_z_index
 
@@ -79,6 +86,7 @@ func set_selection_circle_visible(visible):
 
 
 func _process(delta: float) -> void:
+	woodlabel.text = "wood: %s" % _current_resource_holding
 	# Debug name text
 	if current_cell != null:
 		_current_cell_label.text = "%s" % current_cell.grid_pos
@@ -111,6 +119,9 @@ func _on_navigation_finished():
 	if _goal_type == enums.e_resource_type.wood:
 		$AnimatedSprite2D.animation = "chop"
 		if _resource_goal != null:
+			#$ResourceGatherTick.stop()
+			assert ($ResourceGatherTick.is_stopped())
+			$ResourceGatherTick.start()
 			_is_gathering = true
 			_resource_goal.gather(self)
 	elif _holding_resource_bundle:
@@ -125,7 +136,8 @@ func order_move(goal = get_global_mouse_position(), goal_type = enums.e_resource
 	set_movement_target(goal)
 	_goal_type = goal_type
 	
-	if (goal_type != enums.e_resource_type.wood and _is_gathering):
+	print(goal.distance_to(position) )
+	if (goal.distance_to(position) > 5 and _is_gathering):
 		_stop_gathering()
 	
 	if _holding_resource_bundle:
@@ -139,15 +151,17 @@ func gather_resource(resource: RTS_Resource):
 	if _current_resource_holding >= max_resource_holding:
 		print("Not gathering anymore because holding max resources already")
 		return 
-	
+	if resource != _resource_goal: # we stop gathering if this is a new resource node
+		_stop_gathering()
+	else: # if they are the same then we don't care
+		return 
+		
 	_resource_goal = resource
 	#TODO:take dot into account for gatherpos location
 	order_move(resource.get_node("GatherPos").global_position, resource.resource_type)
 	
 	#TODO:when should the unit drop all they are holding?
 	#		AOE2 clears it out when they start collecting a different resource
-	$ResourceGatherTick.stop()
-	$ResourceGatherTick.start()
 	
 	# play some gather animation once arrived at resource
 	# start a collection timer
@@ -181,9 +195,10 @@ func _finish_gathering():
 
 # not finished but has ceased gathering
 func _stop_gathering():
-	_is_gathering = false
-	_handle_resource_bundle()
 	$ResourceGatherTick.stop()
+	_is_gathering = false
+	_resource_goal = null
+	_handle_resource_bundle()
 	stop_gathering.emit(self)
 
 

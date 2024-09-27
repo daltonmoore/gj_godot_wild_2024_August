@@ -1,30 +1,43 @@
 # Selection Handler
 extends Node2D
 
-signal _variable_set(v)
+signal selection_changed(selection)
+
 
 var mouse_hovered_unit
-var unit_array = Array()
 var selected_units = []
 
 var _stop_drawing_dude = true
 var _selection_box_start_pos
 var _select_box = Rect2()
-var _selection_grid
+var _selection_grid : SelectionGrid
 
 @export var _debug_selection = false
 
+
+# debug vars
+var mouse_hovered_unit_label = Label.new()
+
+
 func _ready() -> void:
-	for i in get_tree().get_nodes_in_group(Globals.unit_group):
-		print(i.get_path())
-		unit_array.push_back(i)
-	 
 	get_tree().create_timer(.2).timeout.connect(timer_timeout)
 	z_index = Globals.top_z_index
+	
+	# Debug mouse_hovered_unit text
+	add_child(mouse_hovered_unit_label)
+	mouse_hovered_unit_label.position = Vector2(200, 300) # is relative pos
 
 
 func _process(delta: float) -> void:
 	queue_redraw()
+	if mouse_hovered_unit != null:
+		mouse_hovered_unit_label.text = "%s" % mouse_hovered_unit.name
+	
+	#if Input.is_action_just_pressed("Left Click"):
+		#_stop_drawing_dude = false
+		#_selection_box_start_pos = get_global_mouse_position()
+	#elif Input.is_action_just_released("Left Click"):
+		#_handle_click_release()
 
 
 func _draw():	
@@ -34,13 +47,16 @@ func _draw():
 	_select_box.end = get_global_mouse_position()
 	draw_rect(_select_box, Color.WEB_GREEN, false)
 
-
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("Left Click"):
-		_stop_drawing_dude = false
-		_selection_box_start_pos = get_global_mouse_position()
-	elif event.is_action_released("Left Click"):
-		_handle_click_release()
+# Doesn't work because it fires the event twice. One call for graphics frame and one for physics frame
+# more info here: https://stackoverflow.com/questions/69981662/godot-input-is-action-just-pressed-runs-twice
+# DOES work I just had two Selection Handlers in the scene because autoload and I had one I put there
+func _input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+			_stop_drawing_dude = false
+			_selection_box_start_pos = get_global_mouse_position()
+		elif event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
+			_handle_click_release()
 
 
 func _handle_click_release():
@@ -85,9 +101,16 @@ func _handle_click_release():
 	#endregion
 	
 	var newly_selected_units = []
-	newly_selected_units = _selection_grid.get_units_in_select_box(_select_box)
+	if _select_box.size != Vector2.ZERO:
+		newly_selected_units = _selection_grid.get_units_in_select_box(_select_box)
+		
 	if mouse_hovered_unit != null:
-		newly_selected_units.push_back(mouse_hovered_unit)
+		if _select_box.size == Vector2.ZERO:
+			newly_selected_units = [mouse_hovered_unit]
+		else:
+			newly_selected_units.push_back(mouse_hovered_unit)
+		
+	selection_changed.emit(newly_selected_units)
 	
 	# gotta turn off selection circle for old selected units
 	# TODO: could probably optimize this to leave units 
@@ -98,10 +121,11 @@ func _handle_click_release():
 	# finished with old units, store new selected units
 	selected_units = newly_selected_units
 	
-	for u in selected_units:	
+	for u in selected_units:
 		u.set_selection_circle_visible(true)
 
-
+#TODO: make this wait on a signal instead
+# weird hack to wait for setting selection grid
 func timer_timeout():
 	_selection_grid = get_node("/root/main/SelectionGrid")
 	if(_selection_grid == null):

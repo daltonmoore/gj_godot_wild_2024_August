@@ -1,7 +1,6 @@
 class_name Building
-extends Node2D
+extends Selectable
 
 func _ready() -> void:
-	await get_parent().ready
-	get_parent().visual_size = $Visual/Area2D/CollisionShape2D.shape.size
-
+	object_type = enums.e_object_type.building
+	visual_size = $Visual/Area2D/CollisionShape2D.shape.size

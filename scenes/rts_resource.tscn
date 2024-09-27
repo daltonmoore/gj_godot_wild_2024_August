@@ -15,33 +15,29 @@ script = ExtResource("2_ohfr4")
 resource_type = 1
 
 [node name="Sprite" type="Sprite2D" parent="."]
-position = Vector2(4, -64)
+position = Vector2(32, -49)
 texture = ExtResource("1_hcpj2")
-metadata/_edit_lock_ = true
 
 [node name="DamagedSprite" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(3, -9)
+position = Vector2(30, 4)
 texture = ExtResource("3_v81b4")
-metadata/_edit_lock_ = true
 
 [node name="GatherPos" type="Node2D" parent="."]
-position = Vector2(34, 0)
+position = Vector2(57, 13)
 metadata/_edit_lock_ = true
 
 [node name="Area2D" type="Area2D" parent="."]
-position = Vector2(0, -59)
+position = Vector2(30, -45)
+metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
 [node name="DefaultCollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_8o2w2")
-metadata/_edit_lock_ = true
 
 [node name="DamagedCollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, 50.25)
 shape = SubResource("RectangleShape2D_h42q0")
 disabled = true
-metadata/_edit_lock_ = true
 
 [node name="DamagedTimer" type="Timer" parent="."]
 

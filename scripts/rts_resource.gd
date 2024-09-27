@@ -1,5 +1,5 @@
 class_name RTS_Resource
-extends Node2D
+extends Selectable
 
 @export var resource_type : enums.e_resource_type
 
@@ -11,6 +11,9 @@ func _ready() -> void:
 	#		need to split sprite to have different z-index for top and bottom
 	z_index = Globals.foreground_z_index
 	$DamagedTimer.timeout.connect(_on_damaged_timer_timeout)
+	
+	object_type = enums.e_object_type.resource
+	visual_size = Vector2(50,50)
 
 
 #TODO: I think AOE2 does this by number of hits maybe? Could just stop the timer if gathering ceases
