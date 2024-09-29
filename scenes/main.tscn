@@ -1,12 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://cmw2100mkgw3c"]
+[gd_scene load_steps=8 format=3 uid="uid://cmw2100mkgw3c"]
 
 [ext_resource type="PackedScene" uid="uid://cjh4kr7do3ddx" path="res://scenes/player.tscn" id="1_skd3a"]
 [ext_resource type="PackedScene" uid="uid://y481t143guwj" path="res://scenes/command_manager.tscn" id="1_vy3wn"]
 [ext_resource type="PackedScene" uid="uid://bbqvgiqtvvj75" path="res://scenes/unit.tscn" id="5_gmj38"]
-[ext_resource type="Script" path="res://scripts/health_bar.gd" id="6_3nhu0"]
 [ext_resource type="PackedScene" uid="uid://bg5jrjwfpc88n" path="res://scenes/selection_grid.tscn" id="6_fev7a"]
-[ext_resource type="Script" path="res://scripts/hud.gd" id="7_8qk5k"]
-[ext_resource type="Texture2D" uid="uid://b7ekypag5exbu" path="res://art/icons/RPG Graphics Pack - Icons/Pack 1A/material/material_14.png" id="8_85a2b"]
 [ext_resource type="PackedScene" uid="uid://50tod2hsjvde" path="res://scenes/rts_resource.tscn" id="9_705p6"]
 [ext_resource type="PackedScene" uid="uid://gn6tlvfvi30a" path="res://scenes/building.tscn" id="13_snk8x"]
 
@@ -38,46 +35,6 @@ polygon = PackedVector2Array(288, 351, 287, 544, 567, 546, 565, 354)
 position = Vector2(562, 320)
 scale = Vector2(120.81, -678.099)
 color = Color(0.485703, 0.485704, 0.485703, 1)
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-script = ExtResource("7_8qk5k")
-
-[node name="HealthBar" type="ProgressBar" parent="CanvasLayer" node_paths=PackedStringArray("player")]
-offset_left = 20.0
-offset_top = 16.0
-offset_right = 59.0
-offset_bottom = 43.0
-script = ExtResource("6_3nhu0")
-player = NodePath("../../Player")
-metadata/_edit_use_anchors_ = true
-
-[node name="SelectedObjectName" type="Label" parent="CanvasLayer"]
-offset_left = 84.0
-offset_top = 579.0
-offset_right = 142.0
-offset_bottom = 602.0
-text = "None"
-
-[node name="WoodBg" type="ColorRect" parent="CanvasLayer"]
-offset_left = 82.0
-offset_right = 182.0
-offset_bottom = 30.0
-color = Color(0.0142752, 0.0142752, 0.0142752, 1)
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
-offset_left = 91.0
-offset_right = 131.0
-offset_bottom = 30.0
-metadata/_edit_group_ = true
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/HBoxContainer"]
-layout_mode = 2
-texture = ExtResource("8_85a2b")
-stretch_mode = 3
-
-[node name="WoodAmount" type="Label" parent="CanvasLayer/HBoxContainer"]
-layout_mode = 2
-text = "0"
 
 [node name="SelectionGrid" parent="." instance=ExtResource("6_fev7a")]
 metadata/_edit_lock_ = true

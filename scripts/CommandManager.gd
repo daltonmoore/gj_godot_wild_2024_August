@@ -33,16 +33,17 @@ func _input(event: InputEvent) -> void:
 				# collect resource
 				_current_flash_count = 0
 				$SelectedFlashTimer.stop()
+				$SelectedFlashTimer.start()
 				_flash_on = true
 				_flashing_hovered_object = CursorManager.current_hovered_object
-				$SelectedFlashTimer.start()
 				var resource = CursorManager.current_hovered_object as RTS_Resource
+				var building = CursorManager.current_hovered_object as Building
 				if resource != null:
 					for u in SelectionHandler.selected_units:
 						u.gather_resource(resource)
-				else:
+				elif building != null:
 					for u in SelectionHandler.selected_units:
-						u.order_move()
+						u.order_deposit_resources(building)
 			else:
 				for u in SelectionHandler.selected_units:
 					u.order_move()

@@ -1,0 +1,44 @@
+[gd_scene load_steps=4 format=3 uid="uid://bhbncccdbkrqp"]
+
+[ext_resource type="Script" path="res://scripts/hud.gd" id="1_8pmqa"]
+[ext_resource type="Script" path="res://scripts/health_bar.gd" id="2_5cj1q"]
+[ext_resource type="Texture2D" uid="uid://b7ekypag5exbu" path="res://art/icons/RPG Graphics Pack - Icons/Pack 1A/material/material_14.png" id="3_3ko4v"]
+
+[node name="Hud" type="CanvasLayer"]
+script = ExtResource("1_8pmqa")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = 20.0
+offset_top = 16.0
+offset_right = 59.0
+offset_bottom = 43.0
+script = ExtResource("2_5cj1q")
+metadata/_edit_use_anchors_ = true
+
+[node name="SelectedObjectName" type="Label" parent="."]
+offset_left = 84.0
+offset_top = 579.0
+offset_right = 142.0
+offset_bottom = 602.0
+text = "None"
+
+[node name="WoodBg" type="ColorRect" parent="."]
+offset_left = 82.0
+offset_right = 182.0
+offset_bottom = 30.0
+color = Color(0.0142752, 0.0142752, 0.0142752, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+offset_left = 91.0
+offset_right = 131.0
+offset_bottom = 30.0
+metadata/_edit_group_ = true
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("3_3ko4v")
+stretch_mode = 3
+
+[node name="WoodAmount" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "0"

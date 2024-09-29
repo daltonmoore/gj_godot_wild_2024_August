@@ -24,6 +24,7 @@ CursorManager="*res://scripts/CursorManager.gd"
 SelectionHandler="*res://scripts/selection_handler.gd"
 GlobalTileMap="*res://scenes/tile_map.tscn"
 ResourceManager="*res://scripts/resource_manager.gd"
+Hud="*res://scenes/hud.tscn"
 
 [input]
 

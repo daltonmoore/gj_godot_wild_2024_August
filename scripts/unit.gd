@@ -34,21 +34,24 @@ var current_cell: SelectionGridCell:
 	set(value):
 		current_cell = value
 
+
 # Private Vars
 var _current_cell_label
+var _current_order := "none"
 # just assuming any goal is a resource for now, could eventually be an enemy
-var _goal_type : enums.e_resource_type = enums.e_resource_type.none
+var _resource_goal_type : enums.e_resource_type = enums.e_resource_type.none
 var _resource_goal : RTS_Resource
 var _current_resource_holding := 0
 var _holding_resource_bundle := false
 var _is_gathering := false
 var _wood_bundle_sprite := load("res://scenes/rts_resources/wood.tscn")
 var _wood_bundle_instance: AnimatedSprite2D
+var _is_turning_in_resources := false
+# for debug resource holding
+var woodlabel = Label.new()
 
 @onready var navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 
-# for debug resource holding
-var woodlabel = Label.new()
 
 func _ready() -> void:
 	# Debug name text
@@ -68,10 +71,11 @@ func _ready() -> void:
 	add_to_group(Globals.unit_group)
 	
 	navigation_agent.velocity_computed.connect(Callable(_on_velocity_computed))
+	navigation_agent.navigation_finished.connect(_on_navigation_finished)
 	$Area2D.mouse_entered.connect(on_mouse_overlap)
 	$Area2D.mouse_exited.connect(on_mouse_exit)
-	navigation_agent.navigation_finished.connect(_on_navigation_finished)
 	$ResourceGatherTick.timeout.connect(_on_resource_gather_tick_timeout)
+	
 	$ResourceGatherTick.wait_time = collection_rate
 	
 	z_index = Globals.unit_z_index
@@ -116,7 +120,7 @@ func _on_velocity_computed(safe_velocity: Vector2):
 
 
 func _on_navigation_finished():
-	if _goal_type == enums.e_resource_type.wood:
+	if _resource_goal_type == enums.e_resource_type.wood:
 		$AnimatedSprite2D.animation = "chop"
 		if _resource_goal != null:
 			#$ResourceGatherTick.stop()
@@ -129,14 +133,17 @@ func _on_navigation_finished():
 		_set_wood_bundle_anim("idle")
 	else:
 		$AnimatedSprite2D.animation = "idle"
-	
 
 
-func order_move(goal = get_global_mouse_position(), goal_type = enums.e_resource_type.none):
+func order_move(object_goal_type := enums.e_object_type.none,
+			goal := get_global_mouse_position(), 
+			resource_goal_type := enums.e_resource_type.none):
 	set_movement_target(goal)
-	_goal_type = goal_type
+	_resource_goal_type = resource_goal_type
 	
-	print(goal.distance_to(position) )
+	if object_goal_type == enums.e_object_type.none:
+		navigation_agent.navigation_finished.disconnect(_deposit_resources)
+	
 	if (goal.distance_to(position) > 5 and _is_gathering):
 		_stop_gathering()
 	
@@ -145,6 +152,13 @@ func order_move(goal = get_global_mouse_position(), goal_type = enums.e_resource
 		_set_wood_bundle_anim("walk")
 	else:
 		$AnimatedSprite2D.animation = "walk"
+
+
+	# play some gather animation once arrived at resource
+	# start a collection timer
+	# slowly amass resource
+	# reach carrying capacity
+	# bring resource to town center
 
 
 func gather_resource(resource: RTS_Resource):
@@ -157,17 +171,19 @@ func gather_resource(resource: RTS_Resource):
 		return 
 		
 	_resource_goal = resource
+	_current_order = "gather_resource"
 	#TODO:take dot into account for gatherpos location
-	order_move(resource.get_node("GatherPos").global_position, resource.resource_type)
+	order_move(enums.e_object_type.resource, resource.get_node("GatherPos").global_position, resource.resource_type)
 	
 	#TODO:when should the unit drop all they are holding?
 	#		AOE2 clears it out when they start collecting a different resource
-	
-	# play some gather animation once arrived at resource
-	# start a collection timer
-	# slowly amass resource
-	# reach carrying capacity
-	# bring resource to town center
+
+
+func order_deposit_resources(building: Building):
+	_is_turning_in_resources = true
+	navigation_agent.navigation_finished.connect(_deposit_resources)
+	_current_order = "deposit_resource"
+	order_move(enums.e_object_type.building)
 
 
 func on_mouse_overlap():
@@ -184,14 +200,13 @@ func _on_resource_gather_tick_timeout():
 	assert (_current_resource_holding <= max_resource_holding)
 	if _current_resource_holding == max_resource_holding:
 		_finish_gathering()
-		
 
-#TODO:possibly do like one log in the bundle to two logs as we gather to show progress.
+
 func _finish_gathering():
 	_handle_resource_bundle()
 	$ResourceGatherTick.stop()
 	$AnimatedSprite2D.animation = "idle_holding"
-	
+
 
 # not finished but has ceased gathering
 func _stop_gathering():
@@ -212,6 +227,15 @@ func _handle_resource_bundle():
 	_wood_bundle_instance = _wood_bundle_sprite.instantiate()
 	$ResourceHoldPos.add_child(_wood_bundle_instance)
 	_set_wood_bundle_anim("idle")
+
+
+func _deposit_resources():
+	Hud.update_wood(_current_resource_holding)
+	_current_resource_holding = 0
+	_holding_resource_bundle = false
+	$AnimatedSprite2D.animation = "idle"
+	if _wood_bundle_instance != null:
+		_wood_bundle_instance.queue_free()
 
 
 func _set_wood_bundle_anim(type: String):

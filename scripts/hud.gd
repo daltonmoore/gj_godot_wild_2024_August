@@ -5,7 +5,7 @@ func _ready() -> void:
 
 func update_wood(amount):
 	assert (amount is float or amount is int)
-	$HBoxContainer/WoodAmount.text = floori(amount)
+	$HBoxContainer/WoodAmount.text = str(floori(amount))
 
 
 func update_selection(new_selection):
