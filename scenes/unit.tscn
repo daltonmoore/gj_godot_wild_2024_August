@@ -301,7 +301,7 @@ radius = 51.0882
 [sub_resource type="CircleShape2D" id="CircleShape2D_ko4iw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4l5a1"]
-size = Vector2(35, 34)
+size = Vector2(35, 49)
 
 [node name="Unit" type="CharacterBody2D"]
 y_sort_enabled = true
@@ -367,7 +367,7 @@ debug_color = Color(0.830114, 0.393404, 3.85046e-07, 0.42)
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(-0.5, -17)
+position = Vector2(-0.5, -24.5)
 shape = SubResource("RectangleShape2D_4l5a1")
 
 [node name="ResourceGatherTick" type="Timer" parent="."]

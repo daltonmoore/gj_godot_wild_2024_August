@@ -11,8 +11,8 @@ var _flashing_hovered_object
 
 func _ready() -> void:
 	z_index = Globals.background_z_index
-	$ResourceSelectedFlashTimer.timeout.connect(_on_resource_selected_flash_timer_timeout)
-	$ResourceSelectedFlashTimer.wait_time = _flash_rate
+	$SelectedFlashTimer.timeout.connect(_on_resource_selected_flash_timer_timeout)
+	$SelectedFlashTimer.wait_time = _flash_rate
 
 func _process(delta: float) -> void:
 	queue_redraw()
@@ -32,14 +32,17 @@ func _input(event: InputEvent) -> void:
 			if CursorManager.cursor_over_selectable():
 				# collect resource
 				_current_flash_count = 0
-				$ResourceSelectedFlashTimer.stop()
+				$SelectedFlashTimer.stop()
 				_flash_on = true
 				_flashing_hovered_object = CursorManager.current_hovered_object
-				$ResourceSelectedFlashTimer.start()
+				$SelectedFlashTimer.start()
 				var resource = CursorManager.current_hovered_object as RTS_Resource
 				if resource != null:
 					for u in SelectionHandler.selected_units:
 						u.gather_resource(resource)
+				else:
+					for u in SelectionHandler.selected_units:
+						u.order_move()
 			else:
 				for u in SelectionHandler.selected_units:
 					u.order_move()
@@ -51,4 +54,4 @@ func _on_resource_selected_flash_timer_timeout():
 	
 	if _current_flash_count >= _flashes:
 		_flash_on = false
-		$ResourceSelectedFlashTimer.stop()
+		$SelectedFlashTimer.stop()

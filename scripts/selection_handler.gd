@@ -31,7 +31,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	queue_redraw()
 	if mouse_hovered_unit != null:
-		mouse_hovered_unit_label.text = "%s" % mouse_hovered_unit.name
+		mouse_hovered_unit_label.text = "Hovered Unit: %s" % mouse_hovered_unit.name
+	else:
+		mouse_hovered_unit_label.text = "Hovered Unit: None"
 	
 	#if Input.is_action_just_pressed("Left Click"):
 		#_stop_drawing_dude = false

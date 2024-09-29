@@ -5,17 +5,14 @@ var selection_grid_cell = preload("res://scenes/selection_grid_cell.tscn")
 # Key: Vector2
 # Value: SelectionGridCell
 var cell_dict = {}
-
 # Key: Vector2
 # Value: Unit Array
 var cell_to_units_dict = {}
-
-var grid_width = 5
-var grid_height = 5
-
 var debug = Globals.debug
 
 @export var size = Vector2(100,100)
+@export_range(1, 100) var grid_width := 5
+@export_range(1, 100) var grid_height := 5
 
 func _ready() -> void:	
 	var x = 0 

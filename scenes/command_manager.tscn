@@ -6,10 +6,10 @@
 [node name="CommandManager" type="Node2D"]
 script = ExtResource("1_mrf6c")
 
-[node name="ResourceSelectedFlashTimer" type="Timer" parent="."]
+[node name="SelectedFlashTimer" type="Timer" parent="."]
 wait_time = 0.5
 
-[node name="ResourceSelectedSquare" type="Sprite2D" parent="."]
+[node name="SelectedSquare" type="Sprite2D" parent="."]
 visible = false
 self_modulate = Color(0, 1, 0, 1)
 scale = Vector2(0.3, 0.3)

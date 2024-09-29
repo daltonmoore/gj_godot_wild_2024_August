@@ -20,16 +20,6 @@ agent_radius = 5.0
 [node name="main" type="Node2D"]
 metadata/_edit_lock_ = true
 
-[node name="Managers" type="Node2D" parent="."]
-
-[node name="CommandManager" parent="Managers" instance=ExtResource("1_vy3wn")]
-
-[node name="Player" parent="." instance=ExtResource("1_skd3a")]
-position = Vector2(250, 150)
-
-[node name="SelectionGrid" parent="." instance=ExtResource("6_fev7a")]
-metadata/_edit_lock_ = true
-
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
 position = Vector2(-2, 0)
 energy = 0.53
@@ -88,6 +78,16 @@ stretch_mode = 3
 [node name="WoodAmount" type="Label" parent="CanvasLayer/HBoxContainer"]
 layout_mode = 2
 text = "0"
+
+[node name="SelectionGrid" parent="." instance=ExtResource("6_fev7a")]
+metadata/_edit_lock_ = true
+
+[node name="Managers" type="Node2D" parent="."]
+
+[node name="CommandManager" parent="Managers" instance=ExtResource("1_vy3wn")]
+
+[node name="Player" parent="." instance=ExtResource("1_skd3a")]
+position = Vector2(250, 150)
 
 [node name="Units" type="Node2D" parent="."]
 y_sort_enabled = true
