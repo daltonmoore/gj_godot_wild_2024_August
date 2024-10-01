@@ -127,21 +127,24 @@ func _on_navigation_finished():
 		var b_can_gather = _resource_goal.gather(self)
 		
 		if !b_can_gather:
-			var signalled_unit = null
-			while signalled_unit != self and !b_can_gather:
-				print("Awaiting signal")
-				$AnimatedSprite2D.animation = "idle"
-				signalled_unit = await _resource_goal.sig_can_gather
-				b_can_gather = _resource_goal.gather(self)
-			
-		
-		print("Begin gathering")
-		_begin_gathering()
+			$AnimatedSprite2D.animation = "idle"
+			assert(_resource_goal.sig_can_gather.is_connected(_wait_for_can_gather) == false)
+			_resource_goal.sig_can_gather.connect(_wait_for_can_gather)
+		else:
+			print("Begin gathering")
+			_begin_gathering()
 	elif _holding_resource_bundle:
 		$AnimatedSprite2D.animation = "idle_holding"
 		_set_wood_bundle_anim("idle")
 	else:
 		$AnimatedSprite2D.animation = "idle"
+
+
+func _wait_for_can_gather(unit):
+	if _resource_goal.gather(self):
+		print("Begin gathering")
+		_resource_goal.sig_can_gather.disconnect(_wait_for_can_gather)
+		_begin_gathering()
 
 
 func order_move(object_goal_type := enums.e_object_type.none,
@@ -150,8 +153,8 @@ func order_move(object_goal_type := enums.e_object_type.none,
 	set_movement_target(goal)
 	_resource_goal_type = resource_goal_type
 	
-	#if object_goal_type == enums.e_object_type.none:
-		#navigation_agent.navigation_finished.disconnect(_deposit_resources)
+	if object_goal_type == enums.e_object_type.none and _resource_goal != null:
+		_resource_goal.sig_can_gather.disconnect(_wait_for_can_gather)
 	
 	if (goal.distance_to(position) > 5 and _is_gathering):
 		_stop_gathering()
@@ -161,13 +164,6 @@ func order_move(object_goal_type := enums.e_object_type.none,
 		_set_wood_bundle_anim("walk")
 	else:
 		$AnimatedSprite2D.animation = "walk"
-
-
-	# play some gather animation once arrived at resource
-	# start a collection timer
-	# slowly amass resource
-	# reach carrying capacity
-	# bring resource to town center
 
 
 func gather_resource(resource: RTS_Resource_Base):
