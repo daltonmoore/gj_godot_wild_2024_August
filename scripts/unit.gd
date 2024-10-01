@@ -44,7 +44,8 @@ var _current_resource_holding := 0
 var _holding_resource_bundle := false
 var _is_gathering := false
 var _wood_bundle_sprite := load("res://scenes/RTS_Resources/wood.tscn")
-var _wood_bundle_instance: AnimatedSprite2D
+var _gold_bundle_sprite := load("res://scenes/RTS_Resources/gold.tscn")
+var _bundle_instance: AnimatedSprite2D
 var _is_turning_in_resources := false
 # for debug resource holding
 var woodlabel = Label.new()
@@ -150,14 +151,16 @@ func _wait_for_can_gather(unit):
 func order_move(object_goal_type := enums.e_object_type.none,
 			goal := get_global_mouse_position(), 
 			resource_goal_type := enums.e_resource_type.none):
+	
+	#TODO: make this a variable instead of magic 5
+	if (goal.distance_to(position) > 5 and _is_gathering):
+		_stop_gathering()
+		
 	set_movement_target(goal)
 	_resource_goal_type = resource_goal_type
 	
 	if object_goal_type == enums.e_object_type.none and _resource_goal != null:
 		_resource_goal.sig_can_gather.disconnect(_wait_for_can_gather)
-	
-	if (goal.distance_to(position) > 5 and _is_gathering):
-		_stop_gathering()
 	
 	if _holding_resource_bundle:
 		$AnimatedSprite2D.animation = "walk_holding"
@@ -223,10 +226,15 @@ func _handle_resource_bundle():
 		return
 	
 	_holding_resource_bundle = true
-	if _wood_bundle_instance != null:
-		_wood_bundle_instance.queue_free()
-	_wood_bundle_instance = _wood_bundle_sprite.instantiate()
-	$ResourceHoldPos.add_child(_wood_bundle_instance)
+	if _bundle_instance != null:
+		_bundle_instance.queue_free()
+		
+	match _resource_goal_type:
+		enums.e_resource_type.wood:
+			_bundle_instance = _wood_bundle_sprite.instantiate()
+		enums.e_resource_type.gold:
+			_bundle_instance = _gold_bundle_sprite.instantiate()
+	$ResourceHoldPos.add_child(_bundle_instance)
 	_set_wood_bundle_anim("idle")
 
 
@@ -235,8 +243,8 @@ func _deposit_resources():
 	_current_resource_holding = 0
 	_holding_resource_bundle = false
 	$AnimatedSprite2D.animation = "idle"
-	if _wood_bundle_instance != null:
-		_wood_bundle_instance.queue_free()
+	if _bundle_instance != null:
+		_bundle_instance.queue_free()
 
 
 func _set_wood_bundle_anim(type: String):
@@ -253,10 +261,10 @@ func _set_wood_bundle_anim(type: String):
 	
 	if type == "idle":
 		$AnimatedSprite2D.animation = "idle_holding"
-		_wood_bundle_instance.animation = "idle_"+amt+"_bob"
+		_bundle_instance.animation = "idle_"+amt+"_bob"
 	elif type == "walk":
 		$AnimatedSprite2D.animation = "walk_holding"
-		_wood_bundle_instance.animation = "walking_"+amt+"_bob"
+		_bundle_instance.animation = "walking_"+amt+"_bob"
 
 
 func _begin_gathering():
