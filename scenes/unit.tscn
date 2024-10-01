@@ -308,7 +308,7 @@ y_sort_enabled = true
 script = ExtResource("1_1ttjy")
 movement_speed = 100.0
 max_resource_holding = 10
-collection_rate = 1.235
+collection_rate = 0.475
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_desired_distance = 10.0

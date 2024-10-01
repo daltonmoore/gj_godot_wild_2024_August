@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://cmw2100mkgw3c"]
+[gd_scene load_steps=9 format=3 uid="uid://cmw2100mkgw3c"]
 
 [ext_resource type="PackedScene" uid="uid://cjh4kr7do3ddx" path="res://scenes/player.tscn" id="1_skd3a"]
 [ext_resource type="PackedScene" uid="uid://y481t143guwj" path="res://scenes/command_manager.tscn" id="1_vy3wn"]
 [ext_resource type="PackedScene" uid="uid://bbqvgiqtvvj75" path="res://scenes/unit.tscn" id="5_gmj38"]
 [ext_resource type="PackedScene" uid="uid://bg5jrjwfpc88n" path="res://scenes/selection_grid.tscn" id="6_fev7a"]
-[ext_resource type="PackedScene" uid="uid://50tod2hsjvde" path="res://scenes/rts_resource.tscn" id="9_705p6"]
+[ext_resource type="PackedScene" uid="uid://b7k5d3rclx1jf" path="res://scenes/rts_resource_gold.tscn" id="6_q8dsa"]
+[ext_resource type="PackedScene" uid="uid://50tod2hsjvde" path="res://scenes/rts_resource_wood.tscn" id="9_705p6"]
 [ext_resource type="PackedScene" uid="uid://gn6tlvfvi30a" path="res://scenes/building.tscn" id="13_snk8x"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_60m1h"]
@@ -66,6 +67,9 @@ position = Vector2(369, 232)
 
 [node name="Resource3" parent="Resources" instance=ExtResource("9_705p6")]
 position = Vector2(289, 108)
+
+[node name="RTS_Resource_Gold" parent="Resources" instance=ExtResource("6_q8dsa")]
+position = Vector2(512, 38)
 
 [node name="Buildings" type="Node2D" parent="."]
 

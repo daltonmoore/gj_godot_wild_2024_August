@@ -1,26 +1,28 @@
-class_name RTS_Resource
-extends Selectable
-
-@export var resource_type : enums.e_resource_type
-
-var _damaged_timer
-var _wood_count := 0
+class_name RTS_Resource_Base_Wood
+extends RTS_Resource_Base
 
 func _ready() -> void:
+	super()
 	#TODO: 	units walk in front of upper part of tree. 
 	#		need to split sprite to have different z-index for top and bottom
-	z_index = Globals.foreground_z_index
 	$DamagedTimer.timeout.connect(_on_damaged_timer_timeout)
 	
-	object_type = enums.e_object_type.resource
+	cursor_texture = load("res://art/cursors/mmorpg-cursorpack-Narehop/gold-pointer/pointer_36.png")
+	resource_type = enums.e_resource_type.wood
 	visual_size = Vector2(50,50)
 
 
 #TODO: I think AOE2 does this by number of hits maybe? Could just stop the timer if gathering ceases
-func gather(unit : Unit) -> void:
-	ResourceManager.add_resource_gatherer(unit, self)
-	unit.stop_gathering.connect(_on_unit_stop_gathering)
+func gather(unit : Unit) -> bool:
+	super(unit)
 	$DamagedTimer.start()
+	sig_can_gather.emit(unit)
+	
+	return true
+
+func _on_unit_stop_gathering(unit: Unit) -> void:
+	super(unit)
+	$DamagedTimer.stop()
 
 
 func _on_damaged_timer_timeout():
@@ -30,7 +32,3 @@ func _on_damaged_timer_timeout():
 		$Area2D/DefaultCollisionShape2D.set_deferred("disabled", true)
 		$Area2D/DamagedCollisionShape2D.set_deferred("disabled", false)
 
-#TODO: make sure this works for multiple workers
-func _on_unit_stop_gathering(unit: Unit) -> void:
-	$DamagedTimer.stop()
-	unit.stop_gathering.disconnect(_on_unit_stop_gathering)

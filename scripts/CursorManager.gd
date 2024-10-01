@@ -10,12 +10,10 @@ enum cursor_type {
 }
 
 var current_hovered_tile : TileData
-var current_hovered_object
+var current_hovered_object : Selectable
 
 var _cursor_select = load("res://art/cursors/mmorpg-cursorpack-Narehop/cursors/cursor1.png")
 var _cursor_default = load("res://art/cursors/mmorpg-cursorpack-Narehop/cursors/cursor8.png")
-var _cursor_wood = load("res://art/cursors/mmorpg-cursorpack-Narehop/gold-pointer/pointer_36.png")
-var _cursor_building = load("res://art/cursors/mmorpg-cursorpack-Narehop/gold-pointer/pointer_17.png")
 
 var _current_cursor_type = cursor_type.default
 
@@ -36,22 +34,21 @@ func _input(event: InputEvent) -> void:
 			Input.set_custom_mouse_cursor(_cursor_default)
 			_current_cursor_type = cursor_type.default
 		
-		if (current_hovered_object != null and
-				len(_currently_selected_units) and 
-				current_hovered_object is RTS_Resource and
-				current_hovered_object.resource_type == enums.e_resource_type.wood):
-			Input.set_custom_mouse_cursor(_cursor_wood)
-			_current_cursor_type = cursor_type.wood
-		elif (current_hovered_object != null and current_hovered_object is Building):
-			Input.set_custom_mouse_cursor(_cursor_building)
-			_current_cursor_type = cursor_type.building
+		if (current_hovered_object != null):
+			match current_hovered_object.object_type:
+				enums.e_object_type.resource:
+					if (len(SelectionHandler.selected_units) > 0):
+						Input.set_custom_mouse_cursor(current_hovered_object.cursor_texture)
+				_:
+					Input.set_custom_mouse_cursor(current_hovered_object.cursor_texture)
+			
 
 
 func cursor_over_selectable() -> bool:
 	return current_hovered_object != null
 	
 func cursor_over_resource() -> bool:
-	return current_hovered_object is RTS_Resource
+	return current_hovered_object is RTS_Resource_Base
 
 func set_current_hovered_object(object):
 	current_hovered_object = object

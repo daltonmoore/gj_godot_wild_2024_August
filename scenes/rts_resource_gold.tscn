@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=3 uid="uid://b7k5d3rclx1jf"]
+
+[ext_resource type="Script" path="res://scripts/rts_resource_gold.gd" id="1_ucfhq"]
+[ext_resource type="Texture2D" uid="uid://dtmh3jcjf5cyn" path="res://art/Tiny Swords (Update 010)/Resources/Gold Mine/GoldMine_Active.png" id="2_l4odg"]
+[ext_resource type="Texture2D" uid="uid://bc7pev0d38ssf" path="res://art/Tiny Swords (Update 010)/Resources/Gold Mine/GoldMine_Inactive.png" id="3_ap5pr"]
+[ext_resource type="Texture2D" uid="uid://wpj2bebbt2cy" path="res://art/Tiny Swords (Update 010)/Resources/Gold Mine/GoldMine_Destroyed.png" id="4_b1ky4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8o2w2"]
+size = Vector2(153, 96)
+
+[node name="RTS_Resource_Gold" type="Node2D"]
+script = ExtResource("1_ucfhq")
+
+[node name="OccupiedSprite" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(97, 65)
+texture = ExtResource("2_l4odg")
+
+[node name="VacantSprite" type="Sprite2D" parent="."]
+position = Vector2(97, 65)
+texture = ExtResource("3_ap5pr")
+
+[node name="DestroyedSprite" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(97, 65)
+texture = ExtResource("4_b1ky4")
+
+[node name="GatherPos" type="Node2D" parent="."]
+position = Vector2(96, 121)
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(99, 36)
+metadata/_edit_group_ = true
+
+[node name="DefaultCollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-0.5, 18)
+shape = SubResource("RectangleShape2D_8o2w2")
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_mouse_exited"]

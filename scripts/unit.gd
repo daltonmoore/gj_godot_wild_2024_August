@@ -37,14 +37,13 @@ var current_cell: SelectionGridCell:
 
 # Private Vars
 var _current_cell_label
-var _current_order := "none"
 # just assuming any goal is a resource for now, could eventually be an enemy
 var _resource_goal_type : enums.e_resource_type = enums.e_resource_type.none
-var _resource_goal : RTS_Resource
+var _resource_goal : RTS_Resource_Base
 var _current_resource_holding := 0
 var _holding_resource_bundle := false
 var _is_gathering := false
-var _wood_bundle_sprite := load("res://scenes/rts_resources/wood.tscn")
+var _wood_bundle_sprite := load("res://scenes/RTS_Resources/wood.tscn")
 var _wood_bundle_instance: AnimatedSprite2D
 var _is_turning_in_resources := false
 # for debug resource holding
@@ -120,14 +119,24 @@ func _on_velocity_computed(safe_velocity: Vector2):
 
 
 func _on_navigation_finished():
-	if _resource_goal_type == enums.e_resource_type.wood:
-		$AnimatedSprite2D.animation = "chop"
-		if _resource_goal != null:
-			#$ResourceGatherTick.stop()
-			assert ($ResourceGatherTick.is_stopped())
-			$ResourceGatherTick.start()
-			_is_gathering = true
-			_resource_goal.gather(self)
+	if (_resource_goal_type != enums.e_resource_type.none
+			and _resource_goal != null):
+		if _resource_goal_type == enums.e_resource_type.wood:
+			$AnimatedSprite2D.animation = "chop"
+		assert ($ResourceGatherTick.is_stopped())
+		var b_can_gather = _resource_goal.gather(self)
+		
+		if !b_can_gather:
+			var signalled_unit = null
+			while signalled_unit != self and !b_can_gather:
+				print("Awaiting signal")
+				$AnimatedSprite2D.animation = "idle"
+				signalled_unit = await _resource_goal.sig_can_gather
+				b_can_gather = _resource_goal.gather(self)
+			
+		
+		print("Begin gathering")
+		_begin_gathering()
 	elif _holding_resource_bundle:
 		$AnimatedSprite2D.animation = "idle_holding"
 		_set_wood_bundle_anim("idle")
@@ -141,8 +150,8 @@ func order_move(object_goal_type := enums.e_object_type.none,
 	set_movement_target(goal)
 	_resource_goal_type = resource_goal_type
 	
-	if object_goal_type == enums.e_object_type.none:
-		navigation_agent.navigation_finished.disconnect(_deposit_resources)
+	#if object_goal_type == enums.e_object_type.none:
+		#navigation_agent.navigation_finished.disconnect(_deposit_resources)
 	
 	if (goal.distance_to(position) > 5 and _is_gathering):
 		_stop_gathering()
@@ -161,19 +170,23 @@ func order_move(object_goal_type := enums.e_object_type.none,
 	# bring resource to town center
 
 
-func gather_resource(resource: RTS_Resource):
+func gather_resource(resource: RTS_Resource_Base):
 	if _current_resource_holding >= max_resource_holding:
 		print("Not gathering anymore because holding max resources already")
-		return 
-	if resource != _resource_goal: # we stop gathering if this is a new resource node
+		return
+	
+	# we stop gathering if this is a new resource node
+	if resource != _resource_goal:
 		_stop_gathering()
 	else: # if they are the same then we don't care
 		return 
 		
 	_resource_goal = resource
-	_current_order = "gather_resource"
 	#TODO:take dot into account for gatherpos location
-	order_move(enums.e_object_type.resource, resource.get_node("GatherPos").global_position, resource.resource_type)
+	order_move(enums.e_object_type.resource,
+				resource.get_node("GatherPos").global_position,
+				resource.resource_type)
+	
 	
 	#TODO:when should the unit drop all they are holding?
 	#		AOE2 clears it out when they start collecting a different resource
@@ -181,8 +194,7 @@ func gather_resource(resource: RTS_Resource):
 
 func order_deposit_resources(building: Building):
 	_is_turning_in_resources = true
-	navigation_agent.navigation_finished.connect(_deposit_resources)
-	_current_order = "deposit_resource"
+	#navigation_agent.navigation_finished.connect(_deposit_resources)
 	order_move(enums.e_object_type.building)
 
 
@@ -199,16 +211,9 @@ func _on_resource_gather_tick_timeout():
 	_current_resource_holding += 1
 	assert (_current_resource_holding <= max_resource_holding)
 	if _current_resource_holding == max_resource_holding:
-		_finish_gathering()
+		_stop_gathering()
 
 
-func _finish_gathering():
-	_handle_resource_bundle()
-	$ResourceGatherTick.stop()
-	$AnimatedSprite2D.animation = "idle_holding"
-
-
-# not finished but has ceased gathering
 func _stop_gathering():
 	$ResourceGatherTick.stop()
 	_is_gathering = false
@@ -239,19 +244,26 @@ func _deposit_resources():
 
 
 func _set_wood_bundle_anim(type: String):
+	var amt
 	match float(_current_resource_holding) / max_resource_holding:
 		0:
 			return
 		0.1, 0.2, 0.3, 0.4:
-			if type == "idle":
-				#$ResourceHoldPos.get_child(0).animation = "idle_one_bob"
-				_wood_bundle_instance.animation = "idle_one_bob"
-			elif type == "walk":
-				_wood_bundle_instance.animation = "walking_one_bob"
+			amt = "one"
 		0.5, 0.6, 0.7, 0.8:
-			_wood_bundle_instance.animation = "idle_two_bob"
+			amt = "two"
 		0.9, 1.0:
-			_wood_bundle_instance.animation = "idle_three_bob"
+			amt = "three"
+	
+	if type == "idle":
+		$AnimatedSprite2D.animation = "idle_holding"
+		_wood_bundle_instance.animation = "idle_"+amt+"_bob"
+	elif type == "walk":
+		$AnimatedSprite2D.animation = "walk_holding"
+		_wood_bundle_instance.animation = "walking_"+amt+"_bob"
 
 
+func _begin_gathering():
+	$ResourceGatherTick.start()
+	_is_gathering = true
 

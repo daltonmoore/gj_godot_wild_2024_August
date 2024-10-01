@@ -36,7 +36,7 @@ func _input(event: InputEvent) -> void:
 				$SelectedFlashTimer.start()
 				_flash_on = true
 				_flashing_hovered_object = CursorManager.current_hovered_object
-				var resource = CursorManager.current_hovered_object as RTS_Resource
+				var resource = CursorManager.current_hovered_object as RTS_Resource_Base
 				var building = CursorManager.current_hovered_object as Building
 				if resource != null:
 					for u in SelectionHandler.selected_units:
