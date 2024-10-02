@@ -40,6 +40,7 @@ var _current_cell_label
 # just assuming any goal is a resource for now, could eventually be an enemy
 var _resource_goal_type : enums.e_resource_type = enums.e_resource_type.none
 var _resource_goal : RTS_Resource_Base
+var _current_resource_holding_type := enums.e_resource_type.none
 var _current_resource_holding := 0
 var _holding_resource_bundle := false
 var _is_gathering := false
@@ -101,17 +102,17 @@ func _physics_process(delta: float) -> void:
 	var new_velocity: Vector2 = global_position.direction_to(next_path_position) * movement_speed
 	
 	if navigation_agent.avoidance_enabled:
-		if new_velocity.dot(Vector2.RIGHT) < 0:
-			$AnimatedSprite2D.flip_h = true
-			if $ResourceHoldPos.get_child_count() > 0:
-				$ResourceHoldPos.get_child(0).flip_h = true
-		else:
-			$AnimatedSprite2D.flip_h = false
-			if $ResourceHoldPos.get_child_count() > 0:
-				$ResourceHoldPos.get_child(0).flip_h = false
 		navigation_agent.set_velocity(new_velocity)
 	else:
 		_on_velocity_computed(new_velocity)
+	
+	if new_velocity.dot(Vector2.RIGHT) < 0:
+		$AnimatedSprite2D.flip_h = true
+	else:
+		$AnimatedSprite2D.flip_h = false
+		
+	if _bundle_instance != null and !_bundle_instance.is_queued_for_deletion():
+		_bundle_instance.flip_h = $AnimatedSprite2D.flip_h
 
 
 func _on_velocity_computed(safe_velocity: Vector2):
@@ -136,7 +137,7 @@ func _on_navigation_finished():
 			_begin_gathering()
 	elif _holding_resource_bundle:
 		$AnimatedSprite2D.animation = "idle_holding"
-		_set_wood_bundle_anim("idle")
+		_set_bundle_anim("idle")
 	else:
 		$AnimatedSprite2D.animation = "idle"
 
@@ -147,24 +148,35 @@ func _wait_for_can_gather(unit):
 		_resource_goal.sig_can_gather.disconnect(_wait_for_can_gather)
 		_begin_gathering()
 
-
-func order_move(object_goal_type := enums.e_object_type.none,
-			goal := get_global_mouse_position(), 
-			resource_goal_type := enums.e_resource_type.none):
+#TODO:Probably can refactor this to not use these two enums as params
+func order_move(in_object_goal_type := enums.e_object_type.none,
+			in_goal := get_global_mouse_position(), 
+			in_resource_goal_type := enums.e_resource_type.none):
 	
 	#TODO: make this a variable instead of magic 5
-	if (goal.distance_to(position) > 5 and _is_gathering):
+	if (in_goal.distance_to(position) > 5 and _is_gathering):
 		_stop_gathering()
-		
-	set_movement_target(goal)
-	_resource_goal_type = resource_goal_type
 	
-	if object_goal_type == enums.e_object_type.none and _resource_goal != null:
-		_resource_goal.sig_can_gather.disconnect(_wait_for_can_gather)
+	# clear resource goal if we issue new move order while on the way to gather
+	if (in_resource_goal_type == enums.e_resource_type.none and 
+			_resource_goal_type != in_resource_goal_type and 
+			_resource_goal != null):
+		print("Incoming resource goal type is %s while current resource goal type is %s" % [in_resource_goal_type, _resource_goal_type])
+		_resource_goal = null
+		if _resource_goal.sig_can_gather.is_connected(_wait_for_can_gather):
+			_resource_goal.sig_can_gather.disconnect(_wait_for_can_gather)
+	
+	if (in_object_goal_type == enums.e_object_type.none and
+			_is_turning_in_resources and
+			navigation_agent.navigation_finished.is_connected(_deposit_resources)):
+		navigation_agent.navigation_finished.disconnect(_deposit_resources)
+	
+	set_movement_target(in_goal)
+	_resource_goal_type = in_resource_goal_type
 	
 	if _holding_resource_bundle:
 		$AnimatedSprite2D.animation = "walk_holding"
-		_set_wood_bundle_anim("walk")
+		_set_bundle_anim("walk")
 	else:
 		$AnimatedSprite2D.animation = "walk"
 
@@ -175,9 +187,9 @@ func gather_resource(resource: RTS_Resource_Base):
 		return
 	
 	# we stop gathering if this is a new resource node
-	if resource != _resource_goal:
+	if resource != _resource_goal and _is_gathering:
 		_stop_gathering()
-	else: # if they are the same then we don't care
+	elif resource == _resource_goal: # if they are the same then we don't care
 		return 
 		
 	_resource_goal = resource
@@ -193,8 +205,17 @@ func gather_resource(resource: RTS_Resource_Base):
 
 func order_deposit_resources(building: Building):
 	_is_turning_in_resources = true
-	#navigation_agent.navigation_finished.connect(_deposit_resources)
+	navigation_agent.navigation_finished.connect(_deposit_resources)
 	order_move(enums.e_object_type.building)
+
+
+func _deposit_resources():
+	Hud.update_resource(_current_resource_holding_type, _current_resource_holding)
+	_current_resource_holding = 0
+	_holding_resource_bundle = false
+	$AnimatedSprite2D.animation = "idle"
+	if _bundle_instance != null:
+		_bundle_instance.queue_free()
 
 
 func on_mouse_overlap():
@@ -234,20 +255,19 @@ func _handle_resource_bundle():
 			_bundle_instance = _wood_bundle_sprite.instantiate()
 		enums.e_resource_type.gold:
 			_bundle_instance = _gold_bundle_sprite.instantiate()
+	
+	_current_resource_holding_type = _resource_goal_type
 	$ResourceHoldPos.add_child(_bundle_instance)
-	_set_wood_bundle_anim("idle")
+	print("created new bundle")
+	_set_bundle_anim("idle")
 
 
-func _deposit_resources():
-	Hud.update_wood(_current_resource_holding)
-	_current_resource_holding = 0
-	_holding_resource_bundle = false
-	$AnimatedSprite2D.animation = "idle"
-	if _bundle_instance != null:
-		_bundle_instance.queue_free()
-
-
-func _set_wood_bundle_anim(type: String):
+func _set_bundle_anim(type: String):
+	
+	if !is_instance_valid(_bundle_instance):
+		print("bundle is not valid, returning early")
+		return
+	
 	var amt
 	match float(_current_resource_holding) / max_resource_holding:
 		0:
