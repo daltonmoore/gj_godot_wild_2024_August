@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://cg40r6rowq8u4"]
+
+[ext_resource type="Texture2D" uid="uid://dgbhc7ncxrn5o" path="res://art/ui/Square.png" id="1_0fbx1"]
+
+[node name="ReferenceRect" type="ReferenceRect"]
+offset_right = 72.0
+offset_bottom = 72.0
+pivot_offset = Vector2(36, 36)
+
+[node name="SimpleBuildings" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 68.0
+offset_bottom = 68.0
+pivot_offset = Vector2(32, 32)
+texture_normal = ExtResource("1_0fbx1")
+texture_pressed = ExtResource("1_0fbx1")

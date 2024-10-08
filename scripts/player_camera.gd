@@ -5,6 +5,7 @@ extends Camera2D
 @export var camera_bounds: Rect2
 
 var _zoom_pos
+var _current_ghost
 
 func _ready() -> void:
 	DebugDraw2d.rect(
@@ -14,6 +15,8 @@ func _ready() -> void:
 			3,
 			INF)
 	
+	position = Vector2.ZERO
+	get_parent().position = Vector2.ZERO
 	
 
 
@@ -21,7 +24,6 @@ func _physics_process(delta: float) -> void:
 	var horz_direction := Input.get_axis("Left", "Right")
 	var vert_direction := Input.get_axis("Up", "Down")
 	
-	# is mouse at viewport edge?
 	var viewport_rect = get_viewport().get_visible_rect()
 	if (get_local_mouse_position().x > (viewport_rect.size.x / zoom.x / 2) - 20): # right boundary
 		DebugDraw2d.circle(get_global_mouse_position(), 10, 16, Color.GREEN)
@@ -36,13 +38,16 @@ func _physics_process(delta: float) -> void:
 	elif (get_local_mouse_position().y < -(viewport_rect.size.y / zoom.y / 2) + 20): # top boundary
 		DebugDraw2d.circle(get_global_mouse_position(), 10, 16, Color.GREEN)
 		vert_direction = -1
-		
-		
+	
+	
 	position += Vector2(horz_direction * camera_speed * delta, 
 			vert_direction * camera_speed * delta)
 	position = position.clamp(Vector2.ZERO, camera_bounds.size)
 	DebugDraw2d.circle(position)
-
+	
+	if _current_ghost != null:
+		_current_ghost.position = position + get_local_mouse_position()
+	
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -59,4 +64,6 @@ func _input(event: InputEvent) -> void:
 				zoom /= 1.05
 
 
+func set_ghost_placement(ghost) -> void:
+	_current_ghost = ghost
 

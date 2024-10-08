@@ -45,7 +45,6 @@ metadata/_edit_lock_ = true
 [node name="CommandManager" parent="Managers" instance=ExtResource("1_vy3wn")]
 
 [node name="Player" parent="." instance=ExtResource("1_skd3a")]
-position = Vector2(250, 150)
 
 [node name="Units" type="Node2D" parent="."]
 y_sort_enabled = true

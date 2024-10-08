@@ -14,12 +14,11 @@ var current_hovered_object : Selectable
 
 var _cursor_select = load("res://art/cursors/mmorpg-cursorpack-Narehop/cursors/cursor1.png")
 var _cursor_default = load("res://art/cursors/mmorpg-cursorpack-Narehop/cursors/cursor8.png")
-
 var _current_cursor_type = cursor_type.default
+
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED
-	#pass
 
 
 func _input(event: InputEvent) -> void:
@@ -52,6 +51,8 @@ func cursor_over_resource() -> bool:
 
 func set_current_hovered_object(object):
 	current_hovered_object = object
+
+
 
 
 
