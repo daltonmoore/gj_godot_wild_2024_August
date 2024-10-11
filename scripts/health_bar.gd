@@ -1,6 +1,6 @@
 extends ProgressBar
 
-@export var player: Player
+#@export var player: Player
 
 func _ready():
 	#player.health_changed.connect(update)

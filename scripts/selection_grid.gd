@@ -14,7 +14,7 @@ var debug = Globals.debug
 @export_range(1, 100) var grid_width := 5
 @export_range(1, 100) var grid_height := 5
 
-func _ready() -> void:	
+func _ready() -> void:
 	var x = 0 
 	var y = 0
 	var grid_start_offset = Vector2(50,50)
@@ -191,6 +191,12 @@ func _get_select_box_corners(select_box):
 	
 	return {"tl": top_left, "tr": top_right, "br": bot_right, "bl": bot_left}
 
+
+#func get_cell_position(pos) -> Vector2:
+	#var x = int(pos.x / 100)
+	#var y = int(pos.y / 100)
+	#var temp = Vector2(x,y)
+	#return cell_dict[temp]
 
 class Plane2D:
 	#var right_edge = top_right.direction_to(end)

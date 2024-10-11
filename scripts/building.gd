@@ -3,7 +3,7 @@ extends Selectable
 
 # you know, when you are attempting to place a building and it is slightly
 # transparent.
-var is_ghost := false
+var _is_ghost := false
 
 func _ready() -> void:
 	cursor_texture = load("res://art/cursors/mmorpg-cursorpack-Narehop/gold-pointer/pointer_8.png")
@@ -12,15 +12,16 @@ func _ready() -> void:
 
 
 func set_is_ghost(in_is_ghost : bool) -> void:
-	is_ghost = in_is_ghost
+	_is_ghost = in_is_ghost
+	$Visual.self_modulate = Color(1, 1, 1, .7)
 
 
 func _on_mouse_entered() -> void:
-	if (!is_ghost):
+	if (!_is_ghost):
 		super()
 
 
 func _on_mouse_exited() -> void:
-	if (!is_ghost):
+	if (!_is_ghost):
 		super()
 

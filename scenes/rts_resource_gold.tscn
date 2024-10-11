@@ -8,7 +8,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8o2w2"]
 size = Vector2(153, 96)
 
-[node name="RTS_Resource_Gold" type="Node2D"]
+[node name="RTS_Resource_Gold" type="Node2D" groups=["BlockConstruction"]]
 script = ExtResource("1_ucfhq")
 
 [node name="OccupiedSprite" type="Sprite2D" parent="."]
@@ -28,7 +28,7 @@ texture = ExtResource("4_b1ky4")
 [node name="GatherPos" type="Node2D" parent="."]
 position = Vector2(96, 121)
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." groups=["BlockConstruction"]]
 position = Vector2(99, 36)
 metadata/_edit_group_ = true
 

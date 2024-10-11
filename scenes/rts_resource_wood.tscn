@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://50tod2hsjvde"]
+[gd_scene load_steps=7 format=3 uid="uid://50tod2hsjvde"]
 
 [ext_resource type="Script" path="res://scripts/rts_resource_wood.gd" id="1_ca76u"]
 [ext_resource type="Texture2D" uid="uid://i31scrgufbm7" path="res://art/craftland/48x48/tree.png" id="1_hcpj2"]
@@ -10,15 +10,18 @@ size = Vector2(64, 160)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h42q0"]
 size = Vector2(40.5, 64.5)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vpyt5"]
+size = Vector2(50, 50)
+
 [node name="RTS_Resource_Wood" type="Node2D"]
 script = ExtResource("1_ca76u")
 
 [node name="Sprite" type="Sprite2D" parent="."]
-position = Vector2(32, -49)
+position = Vector2(0, -69)
 texture = ExtResource("1_hcpj2")
 
 [node name="DamagedSprite" type="Sprite2D" parent="."]
-position = Vector2(30, 4)
+position = Vector2(0, -14)
 texture = ExtResource("3_v81b4")
 
 [node name="GatherPos" type="Node2D" parent="."]
@@ -26,9 +29,8 @@ position = Vector2(57, 13)
 metadata/_edit_lock_ = true
 
 [node name="Area2D" type="Area2D" parent="."]
-position = Vector2(30, -45)
+position = Vector2(0, -51)
 metadata/_edit_group_ = true
-metadata/_edit_lock_ = true
 
 [node name="DefaultCollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_8o2w2")
@@ -39,6 +41,12 @@ shape = SubResource("RectangleShape2D_h42q0")
 disabled = true
 
 [node name="DamagedTimer" type="Timer" parent="."]
+
+[node name="Area2D_ContrustionBlocker" type="Area2D" parent="." groups=["BlockConstruction"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D_ContrustionBlocker"]
+shape = SubResource("RectangleShape2D_vpyt5")
+debug_color = Color(0.981781, 0, 0.368042, 0.42)
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_mouse_exited"]

@@ -26,6 +26,9 @@ func _ready() -> void:
 	# Debug mouse_hovered_unit text
 	add_child(mouse_hovered_unit_label)
 	mouse_hovered_unit_label.position = Vector2(200, 300) # is relative pos
+	
+	InputManager.left_click_pressed.connect(_select)
+	InputManager.left_click_released.connect(_select)
 
 
 func _process(delta: float) -> void:
@@ -34,12 +37,6 @@ func _process(delta: float) -> void:
 		mouse_hovered_unit_label.text = "Hovered Unit: %s" % mouse_hovered_unit.name
 	else:
 		mouse_hovered_unit_label.text = "Hovered Unit: None"
-	
-	#if Input.is_action_just_pressed("Left Click"):
-		#_stop_drawing_dude = false
-		#_selection_box_start_pos = get_global_mouse_position()
-	#elif Input.is_action_just_released("Left Click"):
-		#_handle_click_release()
 
 
 func _draw():	
@@ -52,13 +49,15 @@ func _draw():
 # Doesn't work because it fires the event twice. One call for graphics frame and one for physics frame
 # more info here: https://stackoverflow.com/questions/69981662/godot-input-is-action-just-pressed-runs-twice
 # DOES work I just had two Selection Handlers in the scene because autoload and I had one I put there
-func _input(event):
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
-			_stop_drawing_dude = false
-			_selection_box_start_pos = get_global_mouse_position()
-		elif event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
-			_handle_click_release()
+func _select(event):
+	if BuildManager.get_ghost() != null:
+		return
+	
+	if event.is_pressed():
+		_stop_drawing_dude = false
+		_selection_box_start_pos = get_global_mouse_position()
+	elif event.is_released():
+		_handle_click_release()
 
 
 func _handle_click_release():

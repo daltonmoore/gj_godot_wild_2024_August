@@ -18,29 +18,29 @@ var _current_cursor_type = cursor_type.default
 
 
 func _ready() -> void:
-	Input.mouse_mode = Input.MOUSE_MODE_CONFINED
+	#Input.mouse_mode = Input.MOUSE_MODE_CONFINED
+	InputManager.mouse_move.connect(_mouse_move)
 
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
-		var _currently_selected_units = SelectionHandler.selected_units
-		
-		# Updating cursor
-		if SelectionHandler.mouse_hovered_unit != null:
-			Input.set_custom_mouse_cursor(_cursor_select)
-			_current_cursor_type = cursor_type.select
-		else:
-			Input.set_custom_mouse_cursor(_cursor_default)
-			_current_cursor_type = cursor_type.default
-		
-		if (current_hovered_object != null):
-			match current_hovered_object.object_type:
-				enums.e_object_type.resource:
-					if (len(SelectionHandler.selected_units) > 0):
-						Input.set_custom_mouse_cursor(current_hovered_object.cursor_texture)
-				_:
-					Input.set_custom_mouse_cursor(current_hovered_object.cursor_texture)
-			
+func _mouse_move(event) -> void:
+	# Updating cursor
+	if SelectionHandler.mouse_hovered_unit != null:
+		Input.set_custom_mouse_cursor(_cursor_select)
+		_current_cursor_type = cursor_type.select
+	else:
+		Input.set_custom_mouse_cursor(_cursor_default)
+		_current_cursor_type = cursor_type.default
+	
+	if (current_hovered_object == null):
+		return
+	
+	match current_hovered_object.object_type:
+		enums.e_object_type.resource:
+			if (len(SelectionHandler.selected_units) > 0):
+				Input.set_custom_mouse_cursor(current_hovered_object.cursor_texture)
+		_:
+			Input.set_custom_mouse_cursor(current_hovered_object.cursor_texture)
+	
 
 
 func cursor_over_selectable() -> bool:

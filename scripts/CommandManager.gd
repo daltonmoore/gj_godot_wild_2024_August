@@ -13,6 +13,8 @@ func _ready() -> void:
 	z_index = Globals.background_z_index
 	$SelectedFlashTimer.timeout.connect(_on_resource_selected_flash_timer_timeout)
 	$SelectedFlashTimer.wait_time = _flash_rate
+	InputManager.right_click_pressed.connect(_order)
+
 
 func _process(delta: float) -> void:
 	queue_redraw()
@@ -26,27 +28,9 @@ func _draw() -> void:
 			false,
 			2)
 
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("Right Click"):
-		if SelectionHandler.selected_units != null:
-			if CursorManager.cursor_over_selectable():
-				# collect resource
-				_current_flash_count = 0
-				$SelectedFlashTimer.stop()
-				$SelectedFlashTimer.start()
-				_flash_on = true
-				_flashing_hovered_object = CursorManager.current_hovered_object
-				var resource = CursorManager.current_hovered_object as RTS_Resource_Base
-				var building = CursorManager.current_hovered_object as Building
-				if resource != null:
-					for u in SelectionHandler.selected_units:
-						u.gather_resource(resource)
-				elif building != null:
-					for u in SelectionHandler.selected_units:
-						u.order_deposit_resources(building)
-			else:
-				for u in SelectionHandler.selected_units:
-					u.order_move()
+func _order(event) -> void:
+	if SelectionHandler.selected_units != null:
+		_order_units()
 
 
 func _on_resource_selected_flash_timer_timeout():
@@ -56,3 +40,33 @@ func _on_resource_selected_flash_timer_timeout():
 	if _current_flash_count >= _flashes:
 		_flash_on = false
 		$SelectedFlashTimer.stop()
+
+
+func _order_units() -> void:
+	if CursorManager.cursor_over_selectable():
+		# collect resource
+		_current_flash_count = 0
+		$SelectedFlashTimer.stop()
+		$SelectedFlashTimer.start()
+		_flash_on = true
+		_flashing_hovered_object = CursorManager.current_hovered_object
+		var resource = CursorManager.current_hovered_object as RTS_Resource_Base
+		var building = CursorManager.current_hovered_object as Building
+		if resource != null:
+			for u in SelectionHandler.selected_units:
+				u.gather_resource(resource)
+		elif building != null:
+			for u in SelectionHandler.selected_units:
+				u.order_deposit_resources(building)
+	else:
+		for u in SelectionHandler.selected_units:
+			u.order_move()
+
+
+func free() -> void:
+	InputManager.right_click.disconnect(_order)
+	super()
+
+
+
+

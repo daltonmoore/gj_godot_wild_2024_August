@@ -1,3 +1,4 @@
+class_name MyTileMap
 extends TileMap
 
 signal current_hovered_tile_changed(old_value, new_value)
@@ -16,7 +17,9 @@ func _physics_process(_delta):
 	var tile_pos = local_to_map(mouse_pos)
 	
 	# layer 1 is the foreground
-	var new_tile_data = get_cell_tile_data(1, tile_pos)
+	# var new_tile_data = get_cell_tile_data(1, tile_pos)
+	# layer 0 is the background
+	var new_tile_data = get_cell_tile_data(0, tile_pos)
 	if tile_data != new_tile_data:
 		current_hovered_tile_changed.emit(tile_data, new_tile_data)
 		tile_data = new_tile_data

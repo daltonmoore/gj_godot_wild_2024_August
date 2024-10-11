@@ -5,7 +5,6 @@ extends Camera2D
 @export var camera_bounds: Rect2
 
 var _zoom_pos
-var _current_ghost
 
 func _ready() -> void:
 	DebugDraw2d.rect(
@@ -45,9 +44,6 @@ func _physics_process(delta: float) -> void:
 	position = position.clamp(Vector2.ZERO, camera_bounds.size)
 	DebugDraw2d.circle(position)
 	
-	if _current_ghost != null:
-		_current_ghost.position = position + get_local_mouse_position()
-	
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -63,7 +59,4 @@ func _input(event: InputEvent) -> void:
 				# call the zoom function
 				zoom /= 1.05
 
-
-func set_ghost_placement(ghost) -> void:
-	_current_ghost = ghost
 

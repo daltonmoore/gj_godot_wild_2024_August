@@ -11,7 +11,7 @@ func _ready() -> void:
 func _on_body_entered(body: Node2D) -> void:
 	var u = body as Unit
 	if u != null:
-		_selection_grid.cell_entered(self, body)		
+		_selection_grid.cell_entered(self, body)
 		if u.current_cell != null:
 			_selection_grid.cell_exited(u.current_cell, body)
 		u.current_cell = self

@@ -44,8 +44,6 @@ metadata/_edit_lock_ = true
 
 [node name="CommandManager" parent="Managers" instance=ExtResource("1_vy3wn")]
 
-[node name="Player" parent="." instance=ExtResource("1_skd3a")]
-
 [node name="Units" type="Node2D" parent="."]
 y_sort_enabled = true
 metadata/_edit_lock_ = true
@@ -59,13 +57,13 @@ position = Vector2(181, 199)
 [node name="Resources" type="Node2D" parent="."]
 
 [node name="Resource" parent="Resources" instance=ExtResource("9_705p6")]
-position = Vector2(90, 231)
+position = Vector2(49, 245)
 
 [node name="Resource2" parent="Resources" instance=ExtResource("9_705p6")]
-position = Vector2(369, 232)
+position = Vector2(352, 245)
 
 [node name="Resource3" parent="Resources" instance=ExtResource("9_705p6")]
-position = Vector2(289, 108)
+position = Vector2(250, 51)
 
 [node name="RTS_Resource_Gold" parent="Resources" instance=ExtResource("6_q8dsa")]
 position = Vector2(512, 38)
@@ -74,3 +72,5 @@ position = Vector2(512, 38)
 
 [node name="CastleBlue" parent="Buildings" instance=ExtResource("13_snk8x")]
 position = Vector2(420, 446)
+
+[node name="Player" parent="." instance=ExtResource("1_skd3a")]
