@@ -56,12 +56,19 @@ func _order_units() -> void:
 			for u in SelectionHandler.selected_units:
 				u.gather_resource(resource)
 		elif building != null:
-			for u in SelectionHandler.selected_units:
-				u.order_deposit_resources(building)
+			if !building._built:
+				for u in SelectionHandler.selected_units:
+					u.build(building)
+			else:
+				for u in SelectionHandler.selected_units:
+					u.order_deposit_resources(building)
 	else:
 		for u in SelectionHandler.selected_units:
-			u.order_move()
+			u.order_move(get_global_mouse_position(), enums.e_order_type.move)
 
+func build(building) -> void:
+	for u in SelectionHandler.selected_units:
+		u.build(building)
 
 func free() -> void:
 	InputManager.right_click.disconnect(_order)

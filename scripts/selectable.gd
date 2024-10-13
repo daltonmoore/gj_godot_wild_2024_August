@@ -13,3 +13,6 @@ func _on_mouse_exited() -> void:
 	if CursorManager.current_hovered_object == self:
 		CursorManager.set_current_hovered_object(null)
 		
+
+func set_selection_circle_visible(value) -> void:
+	$"Selection Circle".visible = value

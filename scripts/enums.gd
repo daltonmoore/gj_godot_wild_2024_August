@@ -12,3 +12,13 @@ enum e_object_type {
 	building,
 	resource
 }
+
+
+
+enum e_order_type {
+	none,
+	build,
+	deposit,
+	gather,
+	move
+}

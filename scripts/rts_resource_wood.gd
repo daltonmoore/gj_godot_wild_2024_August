@@ -3,7 +3,7 @@ extends RTS_Resource_Base
 
 func _ready() -> void:
 	super()
-	#TODO: 	units walk in front of upper part of tree. 
+	#TODO: 	workers walk in front of upper part of tree. 
 	#		need to split sprite to have different z-index for top and bottom
 	$DamagedTimer.timeout.connect(_on_damaged_timer_timeout)
 	
@@ -13,15 +13,15 @@ func _ready() -> void:
 
 
 #TODO: I think AOE2 does this by number of hits maybe? Could just stop the timer if gathering ceases
-func gather(unit : Unit) -> bool:
-	super(unit)
+func gather(worker : Worker) -> bool:
+	super(worker)
 	$DamagedTimer.start()
-	sig_can_gather.emit(unit)
+	sig_can_gather.emit(worker)
 	
 	return true
 
-func _on_unit_stop_gathering(unit: Unit) -> void:
-	super(unit)
+func _on_worker_stop_gathering(worker: Worker) -> void:
+	super(worker)
 	$DamagedTimer.stop()
 
 

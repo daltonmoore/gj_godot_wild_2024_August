@@ -26,6 +26,8 @@ SelectionHandler="*res://scripts/selection_handler.gd"
 GlobalTileMap="*res://scenes/tile_map.tscn"
 Hud="*res://scenes/hud.tscn"
 BuildManager="*res://scripts/BuildManager.gd"
+CommandManager="*res://scenes/command_manager.tscn"
+ResourceManager="*res://scripts/resource_manager.gd"
 
 [input]
 

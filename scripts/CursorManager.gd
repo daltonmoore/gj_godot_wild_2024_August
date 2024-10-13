@@ -23,6 +23,9 @@ func _ready() -> void:
 
 
 func _mouse_move(event) -> void:
+	if BuildManager._current_ghost != null:
+		return
+	
 	# Updating cursor
 	if SelectionHandler.mouse_hovered_unit != null:
 		Input.set_custom_mouse_cursor(_cursor_select)

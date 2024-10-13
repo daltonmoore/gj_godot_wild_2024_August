@@ -11,14 +11,10 @@ func _ready() -> void:
 
 
 func _on_button_down() -> void:
-	print("Up scale")
-	print(self)
 	self.get_parent().scale *= 1.1
 
 
 func _on_button_up() -> void:
-	print("Down scale")
-	print(self)
 	self.get_parent().scale /= 1.1
 	tab_group.current_tab = target_tab
 	

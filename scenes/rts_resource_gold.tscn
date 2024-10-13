@@ -8,7 +8,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8o2w2"]
 size = Vector2(153, 96)
 
-[node name="RTS_Resource_Gold" type="Node2D" groups=["BlockConstruction"]]
+[node name="RTS_Resource_Gold" type="Node2D"]
 script = ExtResource("1_ucfhq")
 
 [node name="OccupiedSprite" type="Sprite2D" parent="."]

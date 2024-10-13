@@ -1,8 +1,9 @@
-[gd_scene load_steps=46 format=3 uid="uid://bbqvgiqtvvj75"]
+[gd_scene load_steps=54 format=3 uid="uid://bbqvgiqtvvj75"]
 
-[ext_resource type="Script" path="res://scripts/unit.gd" id="1_1ttjy"]
+[ext_resource type="Script" path="res://scripts/worker.gd" id="1_ybqxx"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_smnw2"]
 [ext_resource type="Texture2D" uid="uid://bqph6mpriwflb" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Pawn/Blue/Pawn_Blue.png" id="3_puwsk"]
+[ext_resource type="Texture2D" uid="uid://dfgscgffwj1uk" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Pawn/Blue/Pawn_Blue-hammer-sheet.png" id="4_htvr8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]
 radius = 7.0
@@ -30,6 +31,30 @@ region = Rect2(768, 606, 192, 128)
 [sub_resource type="AtlasTexture" id="AtlasTexture_a8s4e"]
 atlas = ExtResource("3_puwsk")
 region = Rect2(960, 606, 192, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_83te2"]
+atlas = ExtResource("4_htvr8")
+region = Rect2(0, 0, 144, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e2pcm"]
+atlas = ExtResource("4_htvr8")
+region = Rect2(144, 0, 144, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vcyiy"]
+atlas = ExtResource("4_htvr8")
+region = Rect2(288, 0, 144, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5mo3d"]
+atlas = ExtResource("4_htvr8")
+region = Rect2(432, 0, 144, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qwl6e"]
+atlas = ExtResource("4_htvr8")
+region = Rect2(576, 0, 144, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gvlw6"]
+atlas = ExtResource("4_htvr8")
+region = Rect2(720, 0, 144, 96)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3jfpk"]
 atlas = ExtResource("3_puwsk")
@@ -178,6 +203,29 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_83te2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e2pcm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vcyiy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5mo3d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qwl6e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gvlw6")
+}],
+"loop": true,
+"name": &"hammer",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_3jfpk")
 }, {
 "duration": 1.0,
@@ -303,12 +351,13 @@ radius = 51.0882
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4l5a1"]
 size = Vector2(35, 49)
 
-[node name="Unit" type="CharacterBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_ynejq"]
+radius = 326.337
+
+[node name="Worker" type="CharacterBody2D"]
 y_sort_enabled = true
-script = ExtResource("1_1ttjy")
+script = ExtResource("1_ybqxx")
 movement_speed = 100.0
-max_resource_holding = 10
-collection_rate = 0.475
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_desired_distance = 10.0
@@ -330,10 +379,8 @@ texture = ExtResource("2_smnw2")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -27)
 sprite_frames = SubResource("SpriteFrames_5imfe")
-animation = &"idle"
+animation = &"hammer"
 autoplay = "idle"
-frame = 1
-frame_progress = 0.554615
 metadata/_edit_lock_ = true
 
 [node name="ChaseRadius" type="Area2D" parent="."]
@@ -375,6 +422,11 @@ shape = SubResource("RectangleShape2D_4l5a1")
 [node name="ResourceHoldPos" type="Node2D" parent="."]
 z_index = 2
 position = Vector2(5.09, -29.12)
+
+[node name="SearchArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SearchArea"]
+shape = SubResource("CircleShape2D_ynejq")
 
 [connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

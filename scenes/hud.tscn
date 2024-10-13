@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bhbncccdbkrqp"]
+[gd_scene load_steps=16 format=3 uid="uid://bhbncccdbkrqp"]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_8pmqa"]
 [ext_resource type="Script" path="res://scripts/health_bar.gd" id="2_5cj1q"]
@@ -10,7 +10,14 @@
 [ext_resource type="Script" path="res://scripts/tab_button.gd" id="8_6sc8r"]
 [ext_resource type="Texture2D" uid="uid://ymjtgpwyg4uf" path="res://art/ui/Square_yellow.png" id="8_bpbla"]
 [ext_resource type="Script" path="res://scripts/build_button.gd" id="10_td4a1"]
-[ext_resource type="PackedScene" uid="uid://tdjgsy7bjdn2" path="res://scenes/building_ghost.tscn" id="11_5l6dk"]
+[ext_resource type="PackedScene" uid="uid://tdjgsy7bjdn2" path="res://scenes/buildings/building_ghost.tscn" id="11_0d0vr"]
+[ext_resource type="PackedScene" uid="uid://gn6tlvfvi30a" path="res://scenes/buildings/building_house.tscn" id="12_acpg0"]
+[ext_resource type="PackedScene" uid="uid://bgdk7aq3pnvep" path="res://scenes/buildings/building_ghost_barracks.tscn" id="13_at4en"]
+[ext_resource type="PackedScene" uid="uid://s7vspcp2kfa4" path="res://scenes/buildings/building_barracks.tscn" id="13_gkj3m"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_tkgln"]
+font_size = 12
+font_color = Color(0, 0, 0, 1)
 
 [node name="Hud" type="CanvasLayer"]
 script = ExtResource("1_8pmqa")
@@ -165,7 +172,8 @@ mouse_filter = 2
 script = ExtResource("2_5cj1q")
 metadata/_edit_use_anchors_ = true
 
-[node name="TabContainer" type="TabContainer" parent="Root"]
+[node name="BuilderMenu" type="TabContainer" parent="Root"]
+visible = false
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -179,10 +187,10 @@ grow_vertical = 0
 mouse_filter = 0
 tabs_visible = false
 
-[node name="TabBar" type="TabBar" parent="Root/TabContainer"]
+[node name="TabBar" type="TabBar" parent="Root/BuilderMenu"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="Root/TabContainer/TabBar"]
+[node name="MarginContainer" type="MarginContainer" parent="Root/BuilderMenu/TabBar"]
 layout_mode = 2
 offset_left = 32.0
 offset_top = 25.0
@@ -195,20 +203,39 @@ theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
 
-[node name="SimpleBuildingsTabButton" type="TextureButton" parent="Root/TabContainer/TabBar/MarginContainer" node_paths=PackedStringArray("tab_group") groups=["UI_button"]]
+[node name="SimpleBuildingsTabButton" type="TextureButton" parent="Root/BuilderMenu/TabBar/MarginContainer" node_paths=PackedStringArray("tab_group") groups=["UI_button"]]
 layout_mode = 2
 texture_normal = ExtResource("5_4mwhn")
 texture_pressed = ExtResource("8_bpbla")
 script = ExtResource("8_6sc8r")
 target_tab = 1
 tab_group = NodePath("../../..")
+metadata/_edit_lock_ = true
 
-[node name="TabBar2" type="TabBar" parent="Root/TabContainer"]
+[node name="Label" type="Label" parent="Root/BuilderMenu/TabBar/MarginContainer/SimpleBuildingsTabButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -24.5
+offset_top = -11.5
+offset_right = 24.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Simple Buildings"
+label_settings = SubResource("LabelSettings_tkgln")
+autowrap_mode = 2
+
+[node name="TabBar2" type="TabBar" parent="Root/BuilderMenu"]
 visible = false
 layout_mode = 2
 
-[node name="MarginContainer2" type="MarginContainer" parent="Root/TabContainer/TabBar2"]
+[node name="MarginContainer2" type="MarginContainer" parent="Root/BuilderMenu/TabBar2"]
 layout_mode = 2
 offset_left = 32.0
 offset_top = 25.0
@@ -222,15 +249,71 @@ theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 metadata/_edit_group_ = true
 
-[node name="BarracksButton" type="TextureButton" parent="Root/TabContainer/TabBar2/MarginContainer2" groups=["UI_button"]]
-self_modulate = Color(0, 1, 1, 1)
+[node name="HouseButton" type="TextureButton" parent="Root/BuilderMenu/TabBar2/MarginContainer2" groups=["UI_button"]]
 layout_mode = 2
 texture_normal = ExtResource("5_4mwhn")
 texture_pressed = ExtResource("8_bpbla")
 script = ExtResource("10_td4a1")
-packed_scene_building = ExtResource("11_5l6dk")
+scene_building_ghost = ExtResource("11_0d0vr")
+scene_building_real = ExtResource("12_acpg0")
 
-[node name="TabBar3" type="TabBar" parent="Root/TabContainer"]
+[node name="Label" type="Label" parent="Root/BuilderMenu/TabBar2/MarginContainer2/HouseButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -24.5
+offset_top = -11.5
+offset_right = 24.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "House"
+label_settings = SubResource("LabelSettings_tkgln")
+autowrap_mode = 2
+
+[node name="MarginContainer3" type="MarginContainer" parent="Root/BuilderMenu/TabBar2"]
+layout_mode = 2
+offset_left = 112.0
+offset_top = 25.0
+offset_right = 184.0
+offset_bottom = 97.0
+pivot_offset = Vector2(36, 36)
+mouse_filter = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+metadata/_edit_group_ = true
+
+[node name="BarracksButton" type="TextureButton" parent="Root/BuilderMenu/TabBar2/MarginContainer3" groups=["UI_button"]]
+layout_mode = 2
+texture_normal = ExtResource("5_4mwhn")
+texture_pressed = ExtResource("8_bpbla")
+script = ExtResource("10_td4a1")
+scene_building_ghost = ExtResource("13_at4en")
+scene_building_real = ExtResource("13_gkj3m")
+
+[node name="Label" type="Label" parent="Root/BuilderMenu/TabBar2/MarginContainer3/BarracksButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -24.5
+offset_top = -11.5
+offset_right = 24.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Barracks"
+label_settings = SubResource("LabelSettings_tkgln")
+autowrap_mode = 2
+
+[node name="TabBar3" type="TabBar" parent="Root/BuilderMenu"]
 visible = false
 layout_mode = 2
 

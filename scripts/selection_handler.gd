@@ -7,6 +7,7 @@ signal selection_changed(selection)
 var mouse_hovered_unit
 var selected_units = []
 
+var _current_selected_object
 var _stop_drawing_dude = true
 var _selection_box_start_pos
 var _select_box = Rect2()
@@ -24,8 +25,8 @@ func _ready() -> void:
 	z_index = Globals.top_z_index
 	
 	# Debug mouse_hovered_unit text
-	add_child(mouse_hovered_unit_label)
-	mouse_hovered_unit_label.position = Vector2(200, 300) # is relative pos
+	#add_child(mouse_hovered_unit_label)
+	#mouse_hovered_unit_label.position = Vector2(200, 300) # is relative pos
 	
 	InputManager.left_click_pressed.connect(_select)
 	InputManager.left_click_released.connect(_select)
@@ -33,10 +34,10 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	queue_redraw()
-	if mouse_hovered_unit != null:
-		mouse_hovered_unit_label.text = "Hovered Unit: %s" % mouse_hovered_unit.name
-	else:
-		mouse_hovered_unit_label.text = "Hovered Unit: None"
+	#if mouse_hovered_unit != null:
+		#mouse_hovered_unit_label.text = "Hovered Unit: %s" % mouse_hovered_unit.name
+	#else:
+		#mouse_hovered_unit_label.text = "Hovered Unit: None"
 
 
 func _draw():	
@@ -101,6 +102,11 @@ func _handle_click_release():
 		DebugDraw2d.line(top_right,end, Color.GREEN, .5, debug_box_lifetime)
 	#endregion
 	
+	_select_units()
+	_select_selectable_objects()
+
+
+func _select_units():
 	var newly_selected_units = []
 	if _select_box.size != Vector2.ZERO:
 		newly_selected_units = _selection_grid.get_units_in_select_box(_select_box)
@@ -124,6 +130,18 @@ func _handle_click_release():
 	
 	for u in selected_units:
 		u.set_selection_circle_visible(true)
+
+func _select_selectable_objects():
+	if _current_selected_object != CursorManager.current_hovered_object:
+		if _current_selected_object != null:
+			_current_selected_object.set_selection_circle_visible(false)
+		_current_selected_object = CursorManager.current_hovered_object
+	
+	if _current_selected_object == null:
+		return
+	
+	_current_selected_object.set_selection_circle_visible(true)
+	Hud.update_selection([_current_selected_object])
 
 #TODO: make this wait on a signal instead
 # weird hack to wait for setting selection grid

@@ -1,0 +1,55 @@
+[gd_scene load_steps=7 format=3 uid="uid://gn6tlvfvi30a"]
+
+[ext_resource type="Script" path="res://scripts/building.gd" id="1_mnky4"]
+[ext_resource type="Texture2D" uid="uid://ctt2gjpgeyf0u" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/House/House_Construction.png" id="2_q2feu"]
+[ext_resource type="Texture2D" uid="uid://b8xpaxjy05opr" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/House/House_Destroyed.png" id="3_ynhbv"]
+[ext_resource type="Texture2D" uid="uid://cc57cfc6lmv8r" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/House/House_Blue.png" id="4_tj5j3"]
+[ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="5_ajot0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tafjs"]
+size = Vector2(100, 100)
+
+[node name="Building" type="Node2D"]
+script = ExtResource("1_mnky4")
+construction_sprite = ExtResource("2_q2feu")
+destroyed_sprite = ExtResource("3_ynhbv")
+built_sprite = ExtResource("4_tj5j3")
+total_build_time = 2.0
+building_corners = PackedVector2Array(50, -50, 50, 50, -50, 50, -50, -50)
+cost = {
+"Gold": 50.0,
+"Meat": 0.0,
+"Wood": 50.0
+}
+
+[node name="Selection Circle" type="Sprite2D" parent="."]
+visible = false
+self_modulate = Color(0, 1, 0, 1)
+position = Vector2(0.500001, -3.5)
+scale = Vector2(1.95313, 1.89063)
+texture = ExtResource("5_ajot0")
+
+[node name="Visual" type="Sprite2D" parent="."]
+position = Vector2(0, -33)
+texture = ExtResource("4_tj5j3")
+
+[node name="Area2D" type="Area2D" parent="Visual" groups=["BlockConstruction"]]
+position = Vector2(0, -20)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visual/Area2D"]
+position = Vector2(0.5, 40.5)
+shape = SubResource("RectangleShape2D_tafjs")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = -63.0
+offset_top = -133.0
+offset_right = 61.0
+offset_bottom = -106.0
+max_value = 1.0
+
+[node name="BuildTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="mouse_entered" from="Visual/Area2D" to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Visual/Area2D" to="." method="_on_mouse_exited"]

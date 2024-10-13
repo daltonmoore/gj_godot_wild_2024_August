@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://s7vspcp2kfa4"]
+
+[ext_resource type="Script" path="res://scripts/building.gd" id="1_hioce"]
+[ext_resource type="Texture2D" uid="uid://b8uqks3hooa23" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/Castle/Castle_Construction.png" id="2_nec2u"]
+[ext_resource type="Texture2D" uid="uid://bix5k51bgrr7b" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/Castle/Castle_Destroyed.png" id="3_ono4h"]
+[ext_resource type="Texture2D" uid="uid://3u1h8pvneacc" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/Castle/Castle_Blue-export.png" id="5_63hov"]
+[ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="5_ljgri"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tafjs"]
+size = Vector2(285, 181)
+
+[node name="Building" type="Node2D"]
+script = ExtResource("1_hioce")
+construction_sprite = ExtResource("2_nec2u")
+destroyed_sprite = ExtResource("3_ono4h")
+built_sprite = ExtResource("5_63hov")
+total_build_time = 5.0
+building_corners = PackedVector2Array(-140, -80, -140, 80, 140, 80, 140, -80)
+cost = {
+"Gold": 100.0,
+"Meat": 0.0,
+"Wood": 100.0
+}
+
+[node name="Selection Circle" type="Sprite2D" parent="."]
+visible = false
+self_modulate = Color(0, 1, 0, 1)
+position = Vector2(-3.5, -16.5)
+scale = Vector2(5.10938, 3.29688)
+texture = ExtResource("5_ljgri")
+
+[node name="Visual" type="Sprite2D" parent="."]
+texture = ExtResource("5_63hov")
+
+[node name="Area2D" type="Area2D" parent="Visual" groups=["BlockConstruction", "TurnInPoint"]]
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visual/Area2D"]
+shape = SubResource("RectangleShape2D_tafjs")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = -63.0
+offset_top = -162.0
+offset_right = 61.0
+offset_bottom = -135.0
+max_value = 1.0
+
+[node name="BuildTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="mouse_entered" from="Visual/Area2D" to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Visual/Area2D" to="." method="_on_mouse_exited"]

@@ -1,18 +1,21 @@
 [gd_scene load_steps=4 format=3 uid="uid://tdjgsy7bjdn2"]
 
 [ext_resource type="Script" path="res://scripts/building_ghost.gd" id="1_cm8wt"]
-[ext_resource type="Texture2D" uid="uid://dgbhc7ncxrn5o" path="res://art/ui/Square.png" id="2_68n6x"]
+[ext_resource type="Texture2D" uid="uid://cc57cfc6lmv8r" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/House/House_Blue.png" id="2_kb5xk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kbjjq"]
+size = Vector2(82, 84)
 
 [node name="BuildingGhost" type="Area2D"]
 script = ExtResource("1_cm8wt")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 7)
 shape = SubResource("RectangleShape2D_kbjjq")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_68n6x")
+position = Vector2(0, -20)
+texture = ExtResource("2_kb5xk")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]

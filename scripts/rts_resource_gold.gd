@@ -13,26 +13,26 @@ func _process(delta: float) -> void:
 	pass
 
 
-#TODO: When a unit goes into the mine, they probably should be removed from selection list
-func gather(unit : Unit) -> bool:
-	super(unit)
+#TODO: When a worker goes into the mine, they probably should be removed from selection list
+func gather(worker : Worker) -> bool:
+	super(worker)
 	if _b_occupied:
-		_queue.push_back(unit)
-		unit.stop_gathering.disconnect(_on_unit_stop_gathering)
+		_queue.push_back(worker)
+		worker.stop_gathering.disconnect(_on_worker_stop_gathering)
 		return false
 	
-	unit.visible = false
+	worker.visible = false
 	_set_occupied(true)
-	#sig_can_gather.emit(unit)
+	#sig_can_gather.emit(worker)
 	return true
 
 
-func _on_unit_stop_gathering(unit: Unit) -> void:
-	super(unit)
-	unit.visible = true
+func _on_worker_stop_gathering(worker: Worker) -> void:
+	super(worker)
+	worker.visible = true
 	var u = _queue.pop_front()
 	_set_occupied(false)
-	#TODO: May be an issue when two units are waiting for this signal maybe	
+	#TODO: May be an issue when two workers are waiting for this signal maybe	
 	sig_can_gather.emit(u)
 
 
