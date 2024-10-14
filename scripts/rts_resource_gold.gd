@@ -8,13 +8,12 @@ func _ready() -> void:
 	cursor_texture = load("res://art/cursors/mmorpg-cursorpack-Narehop/gold-pointer/pointer_62.png")
 	resource_type = enums.e_resource_type.gold
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 
 #TODO: When a worker goes into the mine, they probably should be removed from selection list
 func gather(worker : Worker) -> bool:
+	if resource_amount == 0:
+		return false
+	
 	super(worker)
 	if _b_occupied:
 		_queue.push_back(worker)
@@ -26,6 +25,13 @@ func gather(worker : Worker) -> bool:
 	#sig_can_gather.emit(worker)
 	return true
 
+
+func _destroy() -> void:
+	for conn in self.get_incoming_connections():
+		conn.signal.disconnect(conn.callable)
+	$VacantSprite.visible = false
+	$OccupiedSprite.visible = false
+	$DestroyedSprite.visible = true
 
 func _on_worker_stop_gathering(worker: Worker) -> void:
 	super(worker)

@@ -2,6 +2,7 @@ class_name Worker
 extends Unit
 
 signal stop_gathering(unit)
+signal path_changed(path)
 
 @export var max_resource_holding := 5
 @export_range(0.1, 2.0) var collection_rate := 1.1
@@ -11,19 +12,32 @@ var _resource_goal : RTS_Resource_Base
 var _current_building
 var _current_resource_holding_type := enums.e_resource_type.none
 var _current_resource_holding := 0
+var _current_resource_type := enums.e_resource_type.none
 var _holding_resource_bundle := false
 var _is_gathering := false
 var _wood_bundle_sprite := load("res://scenes/RTS_Resources/wood.tscn")
 var _gold_bundle_sprite := load("res://scenes/RTS_Resources/gold.tscn")
 var _bundle_instance: AnimatedSprite2D
 var _is_turning_in_resources := false
+# is the worker automatically turning after gathering?
+# used to discern when the player orders the turn in or it happens automatically
+var _auto_gather := false
 
 # for debug resource holding
-var woodlabel = Label.new()
+var wood_label = Label.new()
+var deposit_label = Label.new()
+var auto_label = Label.new()
+var going_to_new_resource_label = Label.new()
 
 func _ready() -> void:
-	add_child(woodlabel)
-	woodlabel.position = Vector2(0, -20) # is relative pos
+	add_child(wood_label)
+	# add_child(deposit_label)
+	# add_child(auto_label)
+	# add_child(going_to_new_resource_label)
+	wood_label.position = Vector2(0, -20) # is relative pos
+	deposit_label.position = Vector2(20, -40)
+	auto_label.position = Vector2(20, -60)
+	going_to_new_resource_label.position = Vector2(20, -80)
 	
 	navigation_agent.navigation_finished.connect(_on_navigation_finished)
 	$ResourceGatherTick.timeout.connect(_on_resource_gather_tick_timeout)
@@ -31,10 +45,17 @@ func _ready() -> void:
 	super()
 
 func _process(delta: float) -> void:
-	woodlabel.text = "wood: %s" % _current_resource_holding
+	#auto_label.text = "auto_gather?: %s" % _auto_gather
+	wood_label.text = "wood: %s" % _current_resource_holding
 	# Debug name text
 	if current_cell != null:
 		_current_cell_label.text = "%s" % current_cell.grid_pos
+	
+	if $AnimatedSprite2D.animation == "chop":
+		if !$WoodChop.playing:
+			$WoodChop.play()
+	elif $WoodChop.playing:
+		$WoodChop.stop()
 
 func _physics_process(delta: float) -> void:
 	super(delta)
@@ -42,6 +63,7 @@ func _physics_process(delta: float) -> void:
 		_bundle_instance.flip_h = $AnimatedSprite2D.flip_h
 
 func _on_navigation_finished():
+	emit_signal("path_changed", [])
 	if (_current_order_type == enums.e_order_type.gather
 			and _resource_goal != null):
 		if _resource_goal.resource_type == enums.e_resource_type.wood:
@@ -54,7 +76,6 @@ func _on_navigation_finished():
 			assert(_resource_goal.sig_can_gather.is_connected(_wait_for_can_gather) == false)
 			_resource_goal.sig_can_gather.connect(_wait_for_can_gather)
 		else:
-			print("Begin gathering")
 			_begin_gathering()
 	elif _holding_resource_bundle:
 		$AnimatedSprite2D.animation = "idle_holding"
@@ -64,31 +85,15 @@ func _on_navigation_finished():
 
 func _wait_for_can_gather(unit):
 	if _resource_goal.gather(self):
-		print("Begin gathering")
 		_resource_goal.sig_can_gather.disconnect(_wait_for_can_gather)
 		_begin_gathering()
 
-func gather_resource(resource: RTS_Resource_Base):
-	if _current_resource_holding >= max_resource_holding:
-		print("Not gathering anymore because holding max resources already")
-		return
-	
-	# we stop gathering if this is a new resource node
-	if resource != _resource_goal and _is_gathering:
-		_stop_gathering()
-	elif resource == _resource_goal: # if they are the same then we don't care
-		return 
-		
-	_resource_goal = resource
-	#TODO:take dot into account for gatherpos location
-	order_move(resource.get_node("GatherPos").global_position, enums.e_order_type.gather)
-	
-	
-	#TODO:when should the unit drop all they are holding?
-	#		AOE2 clears it out when they start collecting a different resource
-
 func order_move(in_goal, in_order_type : enums.e_order_type):
 	_current_order_type = in_order_type
+	
+	if in_order_type == enums.e_order_type.move:
+		_auto_gather = false
+	
 	#TODO: make this a variable instead of magic 5
 	if (in_goal.distance_to(position) > 5 and _is_gathering):
 		_stop_gathering()
@@ -103,10 +108,11 @@ func order_move(in_goal, in_order_type : enums.e_order_type):
 		navigation_agent.navigation_finished.disconnect(_begin_construction)
 	
 	# clear resource goal if we issue new move order while on the way to gather
-	if (in_order_type != enums.e_order_type.gather and _resource_goal != null):
-		_resource_goal = null
+	if (in_order_type != enums.e_order_type.gather and _resource_goal != null and !_auto_gather):
 		if _resource_goal.sig_can_gather.is_connected(_wait_for_can_gather):
 			_resource_goal.sig_can_gather.disconnect(_wait_for_can_gather)
+		_resource_goal = null
+		
 	
 	if (in_order_type != enums.e_order_type.deposit and
 			_is_turning_in_resources and
@@ -123,17 +129,16 @@ func order_move(in_goal, in_order_type : enums.e_order_type):
 
 func order_deposit_resources(building: Building):
 	_is_turning_in_resources = true
-	navigation_agent.navigation_finished.connect(_deposit_resources)
-	order_move(building.position, enums.e_order_type.deposit)
-
+	if !navigation_agent.navigation_finished.is_connected(_deposit_resources):
+		navigation_agent.navigation_finished.connect(_deposit_resources)
+	order_move(building.get_random_point_along_perimeter(position), enums.e_order_type.deposit)
 
 func build(building) -> void:
 	print(building)
 	_current_building = building
 	
 	navigation_agent.navigation_finished.connect(_begin_construction)
-	order_move(building.get_random_point_along_perimeter(), enums.e_order_type.build)
-
+	order_move(building.get_random_point_along_perimeter(position), enums.e_order_type.build)
 
 func _begin_construction() -> void:
 	navigation_agent.navigation_finished.disconnect(_begin_construction)
@@ -141,12 +146,18 @@ func _begin_construction() -> void:
 	_current_building.start_building()
 	_current_building.finish_building.connect(_on_finish_construction)
 
-
 func _on_finish_construction() -> void:
 	_current_building.finish_building.disconnect(_on_finish_construction)
 	_current_building = null
 	$AnimatedSprite2D.animation = "idle"
 
+func _on_resource_exhausted() -> void:
+	_stop_gathering(false, true)
+	var closest_resource = _find_next_closest_resource()
+	if closest_resource != null:
+		gather_resource(closest_resource)
+	else:
+		$AnimatedSprite2D.animation = "idle"
 
 func _deposit_resources():
 	Hud.update_resource(_current_resource_holding_type, _current_resource_holding)
@@ -156,22 +167,70 @@ func _deposit_resources():
 	$AnimatedSprite2D.animation = "idle"
 	if _bundle_instance != null:
 		_bundle_instance.queue_free()
+	
+	if _auto_gather:
+		if _resource_goal != null:
+			gather_resource(_resource_goal)
+		else:
+			var closest_resource = _find_next_closest_resource()
+			print("Resource Goal is Null! finding closest resource")
+			if closest_resource != null:
+				gather_resource(closest_resource)
 
 func _on_resource_gather_tick_timeout():
-	_current_resource_holding += 1
+	if _resource_goal == null:
+		_stop_gathering(true, true)
+		var closest_resource = _find_next_closest_resource()
+		if closest_resource != null:
+			gather_resource(closest_resource)
+		return
+	_current_resource_holding += _resource_goal.take(1)
 	assert (_current_resource_holding <= max_resource_holding)
 	if _current_resource_holding == max_resource_holding:
-		_stop_gathering()
+		_stop_gathering(false, true, true)
 
+func gather_resource(resource: RTS_Resource_Base):
+	if _current_resource_holding >= max_resource_holding:
+		print("Not gathering anymore because holding max resources already")
+		return
+	
+	# we stop gathering if this is a new resource node
+	if resource != _resource_goal and _is_gathering:
+		_stop_gathering(true)
+	elif !_auto_gather and resource == _resource_goal: # if they are the same then we don't care
+		return 
+		
+	_resource_goal = resource
+	if !resource.exhausted.is_connected(_on_resource_exhausted):
+		resource.exhausted.connect(_on_resource_exhausted)
+	_current_resource_type = resource.resource_type
+	#TODO:take dot into account for gatherpos location
+	order_move(resource.get_random_gather_point(), enums.e_order_type.gather)
+	
+	
+	#TODO:when should the unit drop all they are holding?
+	#		AOE2 clears it out when they start collecting a different resource
 
-func _stop_gathering():
+func _begin_gathering():
+	$ResourceGatherTick.start()
+	_is_gathering = true
+
+func _stop_gathering(going_to_new_resource:= false, auto_gather:= false, deposit := false):
+	deposit_label.text = "deposit?: %s" % deposit
+	going_to_new_resource_label.text = "going_to_new_resource?: %s" % going_to_new_resource
+	
 	$ResourceGatherTick.stop()
+	_auto_gather = auto_gather
 	_is_gathering = false
 	_handle_resource_bundle()
-	_resource_goal = null
 	stop_gathering.emit(self)
-	order_deposit_resources(_find_closest_townhall())
-
+	
+	if deposit:
+		_resource_goal.exhausted.disconnect(_on_resource_exhausted)
+		order_deposit_resources(_find_closest_townhall())
+	# only clear resource_goal if we are going to a new one, want to keep for auto gather
+	if going_to_new_resource:
+		_resource_goal = null
 
 func _handle_resource_bundle():
 	if _current_resource_holding <= 0:
@@ -180,17 +239,17 @@ func _handle_resource_bundle():
 	_holding_resource_bundle = true
 	if _bundle_instance != null:
 		_bundle_instance.queue_free()
-		
-	match _resource_goal.resource_type:
+	
+	_current_resource_holding_type = _current_resource_type
+	
+	match _current_resource_type:
 		enums.e_resource_type.wood:
 			_bundle_instance = _wood_bundle_sprite.instantiate() 
 		enums.e_resource_type.gold:
 			_bundle_instance = _gold_bundle_sprite.instantiate()
 	
 	$ResourceHoldPos.add_child(_bundle_instance)
-	print("created new bundle")
 	_set_bundle_anim("idle")
-
 
 func _set_bundle_anim(type: String):
 	
@@ -216,16 +275,45 @@ func _set_bundle_anim(type: String):
 		$AnimatedSprite2D.animation = "walk_holding"
 		_bundle_instance.animation = "walking_"+amt+"_bob"
 
-
-func _begin_gathering():
-	$ResourceGatherTick.start()
-	_is_gathering = true
-
 func _find_closest_townhall() -> Building:
-	var closest_townhall
-	for a in  $SearchArea.get_overlapping_areas():
-		if a.is_in_group("TurnInPoint"):
-			closest_townhall = a.owner
-			break
+	var cloest_townhall = _find_closest_thing("TurnInPoint")
+	return cloest_townhall as Building
+
+func _find_next_closest_resource() -> RTS_Resource_Base:
+	#assert (_resource_goal.resource_amount == 0)
+	var closest_resource = _find_closest_thing("Resource", _resource_goal, _current_resource_type)
+	return closest_resource as RTS_Resource_Base
+
+func _find_closest_thing(thing : String, ignore = null, filter = null) -> Node2D:
+	var closest_thing
+	var closest_pos = Vector2(10000, 10000)
+	for a in $SearchAreaSmall.get_overlapping_areas():
+		if ignore != null and ignore == a.owner:
+			continue
+		if a.is_in_group(thing):
+			if filter != null:
+				var res = a.owner as RTS_Resource_Base
+				if res != null:
+					if res.resource_type != filter:
+						continue
+			print(a.owner.name)
+			if position.distance_to(a.owner.position) < position.distance_to(closest_pos):
+				closest_thing = a.owner
+				closest_pos = a.owner.position
 	
-	return closest_townhall
+	if closest_thing == null:
+		for a in $SearchAreaLarge.get_overlapping_areas():
+			if ignore != null and ignore == a.owner:
+				continue
+			if (a.is_in_group(thing) and 
+					(filter == null or (filter != null and is_instance_of(a.owner, filter)))
+				):
+				print(a.owner.name)
+				if position.distance_to(a.owner.position) < position.distance_to(closest_pos):
+					closest_thing = a.owner
+					closest_pos = a.owner.position
+	
+	return closest_thing
+
+func _on_navigation_agent_2d_path_changed() -> void:
+	emit_signal("path_changed", navigation_agent.get_current_navigation_path())

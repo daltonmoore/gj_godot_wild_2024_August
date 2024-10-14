@@ -65,4 +65,4 @@ func place_building(event) -> void:
 	real_instance.building_nav_mesh_blocker = block
 	get_tree().get_root().get_node("/root/main/NavigationRegion2D").add_child(block)
 	(get_tree().get_root().get_node("/root/main/NavigationRegion2D") as NavigationRegion2D).bake_navigation_polygon()
-	
+

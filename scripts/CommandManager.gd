@@ -20,7 +20,7 @@ func _process(delta: float) -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	if _flash_on:
+	if _flash_on and _flashing_hovered_object != null:
 		var pos = _flashing_hovered_object.position
 		draw_rect(
 			Rect2(pos, _flashing_hovered_object.visual_size),

@@ -1,12 +1,12 @@
 extends Node2D
 
-const debug = true
+const debug = false
 
 const unit_group = "units"
 
 const top_z_index = 10
-const unit_z_index = 3
-const foreground_z_index = 2
+const foreground_z_index = 3
+const unit_z_index = 2
 const background_z_index = 1
 
 const tile_map_layer_background = 0

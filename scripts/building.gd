@@ -62,12 +62,19 @@ func can_afford_to_build() -> bool:
 	
 	return can_afford
 
-func get_random_point_along_perimeter() -> Vector2:
+# given a point, get a random point on the perimeter of the rectangle on either the top
+# side or bottom side whichever is closer to given point
+func get_random_point_along_perimeter(pos) -> Vector2:
 	var half_y = $Visual/Area2D/CollisionShape2D.shape.size.y / 2
 	var half_x = $Visual/Area2D/CollisionShape2D.shape.size.x / 2
 	var rand_x = randi_range(-half_x, half_x)
-	DebugDraw2d.circle(Vector2(rand_x, half_y) + position, 10,  16, Color(1, 0, 1), 1, 4)
-	return Vector2(rand_x, half_y) + position
+	var bot_edge_point = Vector2(rand_x, half_y)
+	var top_edge_point = Vector2(rand_x, -half_y)
+	if pos.distance_to(top_edge_point) < pos.distance_to(bot_edge_point):
+		DebugDraw2d.circle(top_edge_point + position, 10,  16, Color(1, 0, 1), 1, 4)
+		return to_global(top_edge_point)
+	DebugDraw2d.circle(bot_edge_point + position, 10,  16, Color(1, 0, 1), 1, 4)
+	return to_global(bot_edge_point) 
 
 func start_building() -> void:
 	if $BuildTimer.is_stopped():

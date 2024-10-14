@@ -48,5 +48,9 @@ max_value = 1.0
 [node name="BuildTimer" type="Timer" parent="."]
 one_shot = true
 
+[node name="Polygon2D" type="Polygon2D" parent="."]
+position = Vector2(20, -96)
+polygon = PackedVector2Array(-11, -10, -11, 12, 19, 15, 21, -11)
+
 [connection signal="mouse_entered" from="Visual/Area2D" to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Visual/Area2D" to="." method="_on_mouse_exited"]

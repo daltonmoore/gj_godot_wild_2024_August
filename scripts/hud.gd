@@ -9,7 +9,7 @@ func update_resource(resource_type : enums.e_resource_type, amount : int):
 		enums.e_resource_type.wood:
 			$Root/ResourceContainer/WoodAmount.text = str(floori(($Root/ResourceContainer/WoodAmount.text as int) + amount))
 		enums.e_resource_type.gold:
-			$Root/ResourceContainer/WoodAmount.text = str(floori(($Root/ResourceContainer/WoodAmount.text as int) + amount))
+			$Root/ResourceContainer/GoldAmount.text = str(floori(($Root/ResourceContainer/GoldAmount.text as int) + amount))
 
 
 func update_selection(new_selection : Array):

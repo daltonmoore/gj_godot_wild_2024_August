@@ -1,9 +1,10 @@
-[gd_scene load_steps=54 format=3 uid="uid://bbqvgiqtvvj75"]
+[gd_scene load_steps=56 format=3 uid="uid://bbqvgiqtvvj75"]
 
 [ext_resource type="Script" path="res://scripts/worker.gd" id="1_ybqxx"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_smnw2"]
 [ext_resource type="Texture2D" uid="uid://bqph6mpriwflb" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Pawn/Blue/Pawn_Blue.png" id="3_puwsk"]
 [ext_resource type="Texture2D" uid="uid://dfgscgffwj1uk" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Pawn/Blue/Pawn_Blue-hammer-sheet.png" id="4_htvr8"]
+[ext_resource type="AudioStream" uid="uid://e237u06bp3sc" path="res://sound/536736__egomassive__chop.ogg" id="5_vhbtc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]
 radius = 7.0
@@ -354,19 +355,22 @@ size = Vector2(35, 49)
 [sub_resource type="CircleShape2D" id="CircleShape2D_ynejq"]
 radius = 326.337
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_4kigh"]
+radius = 924.15
+
 [node name="Worker" type="CharacterBody2D"]
 y_sort_enabled = true
 script = ExtResource("1_ybqxx")
 movement_speed = 100.0
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-path_desired_distance = 10.0
+target_desired_distance = 21.2
 avoidance_enabled = true
-radius = 15.0
-max_speed = 300.0
+radius = 20.0
+max_speed = 500.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -8)
+position = Vector2(0, -3)
 shape = SubResource("CircleShape2D_78wmw")
 
 [node name="Selection Circle" type="Sprite2D" parent="."]
@@ -412,9 +416,11 @@ shape = SubResource("CircleShape2D_ko4iw")
 debug_color = Color(0.830114, 0.393404, 3.85046e-07, 0.42)
 
 [node name="Area2D" type="Area2D" parent="."]
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(-0.5, -24.5)
+position = Vector2(0, -25)
 shape = SubResource("RectangleShape2D_4l5a1")
 
 [node name="ResourceGatherTick" type="Timer" parent="."]
@@ -423,11 +429,27 @@ shape = SubResource("RectangleShape2D_4l5a1")
 z_index = 2
 position = Vector2(5.09, -29.12)
 
-[node name="SearchArea" type="Area2D" parent="."]
+[node name="SearchAreaSmall" type="Area2D" parent="."]
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SearchArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SearchAreaSmall"]
 shape = SubResource("CircleShape2D_ynejq")
+debug_color = Color(0, 0.6, 0.701961, 0)
 
+[node name="SearchAreaLarge" type="Area2D" parent="."]
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SearchAreaLarge"]
+shape = SubResource("CircleShape2D_4kigh")
+debug_color = Color(0, 0.6, 0.701961, 0)
+
+[node name="WoodChop" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_vhbtc")
+volume_db = -2.039
+
+[connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]
 [connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="body_exited" from="ChaseRadius" to="." method="_on_chase_radius_body_exited"]

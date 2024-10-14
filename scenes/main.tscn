@@ -1,18 +1,18 @@
-[gd_scene load_steps=8 format=3 uid="uid://cmw2100mkgw3c"]
+[gd_scene load_steps=9 format=3 uid="uid://cmw2100mkgw3c"]
 
+[ext_resource type="Script" path="res://scenes/2DNavigationRegionServer.gd" id="1_3w4ka"]
 [ext_resource type="PackedScene" uid="uid://cjh4kr7do3ddx" path="res://scenes/player.tscn" id="1_skd3a"]
+[ext_resource type="PackedScene" uid="uid://50tod2hsjvde" path="res://scenes/rts_resource_wood.tscn" id="3_bksns"]
+[ext_resource type="PackedScene" uid="uid://b7k5d3rclx1jf" path="res://scenes/rts_resource_gold.tscn" id="4_xu4uk"]
 [ext_resource type="PackedScene" uid="uid://bbqvgiqtvvj75" path="res://scenes/worker.tscn" id="5_gmj38"]
 [ext_resource type="PackedScene" uid="uid://bg5jrjwfpc88n" path="res://scenes/selection_grid.tscn" id="6_fev7a"]
-[ext_resource type="PackedScene" uid="uid://b7k5d3rclx1jf" path="res://scenes/rts_resource_gold.tscn" id="6_q8dsa"]
 [ext_resource type="PackedScene" uid="uid://s7vspcp2kfa4" path="res://scenes/buildings/building_barracks.tscn" id="6_yfd7s"]
-[ext_resource type="PackedScene" uid="uid://50tod2hsjvde" path="res://scenes/rts_resource_wood.tscn" id="9_705p6"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_60m1h"]
-vertices = PackedVector2Array(2743, 32, 2740, 2378, 707, 647, 705, 445, 16, 2375, 417, 645, 2, 22, 418, 442)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(2, 1, 4, 5), PackedInt32Array(5, 4, 6, 7), PackedInt32Array(7, 6, 0, 3)])
+vertices = PackedVector2Array(2738, 37, 2735, 2373, 21, 2370, 7, 27)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-3, 17, 12, 2380, 2745, 2384, 2749, 28)])
 source_geometry_group_name = &"navigation_polygon_source_group"
-agent_radius = 5.0
 
 [node name="main" type="Node2D"]
 metadata/_edit_lock_ = true
@@ -22,9 +22,10 @@ position = Vector2(-2, 0)
 energy = 0.53
 metadata/_edit_lock_ = true
 
-[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
-visible = false
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="." node_paths=PackedStringArray("line")]
 navigation_polygon = SubResource("NavigationPolygon_60m1h")
+script = ExtResource("1_3w4ka")
+line = NodePath("../Line2D")
 metadata/_edit_lock_ = true
 
 [node name="Ambient" type="CanvasModulate" parent="."]
@@ -33,6 +34,8 @@ scale = Vector2(120.81, -678.099)
 color = Color(0.485703, 0.485704, 0.485703, 1)
 
 [node name="SelectionGrid" parent="." instance=ExtResource("6_fev7a")]
+grid_width = 20
+grid_height = 20
 metadata/_edit_lock_ = true
 
 [node name="Units" type="Node2D" parent="."]
@@ -40,35 +43,60 @@ y_sort_enabled = true
 metadata/_edit_lock_ = true
 
 [node name="Worker" parent="Units" instance=ExtResource("5_gmj38")]
-position = Vector2(239, 256)
-max_resource_holding = 5
-collection_rate = 1.1
-movement_speed = 167.285
+position = Vector2(326, 371)
+movement_speed = 150.0
+metadata/_edit_lock_ = true
 
 [node name="Worker2" parent="Units" instance=ExtResource("5_gmj38")]
-position = Vector2(184, 179)
-max_resource_holding = 5
-collection_rate = 1.1
+position = Vector2(345, 474)
+movement_speed = 150.0
+metadata/_edit_lock_ = true
 
 [node name="Resources" type="Node2D" parent="."]
 
-[node name="Resource" parent="Resources" instance=ExtResource("9_705p6")]
-position = Vector2(49, 245)
+[node name="RTS_Resource_Wood" parent="Resources" instance=ExtResource("3_bksns")]
+position = Vector2(840, 359)
 
-[node name="Resource2" parent="Resources" instance=ExtResource("9_705p6")]
-position = Vector2(352, 245)
+[node name="RTS_Resource_Wood2" parent="Resources" instance=ExtResource("3_bksns")]
+position = Vector2(882, 367)
 
-[node name="Resource3" parent="Resources" instance=ExtResource("9_705p6")]
-position = Vector2(848, 253)
+[node name="RTS_Resource_Wood3" parent="Resources" instance=ExtResource("3_bksns")]
+position = Vector2(838, 399)
 
-[node name="RTS_Resource_Gold" parent="Resources" instance=ExtResource("6_q8dsa")]
-position = Vector2(510, 62)
+[node name="RTS_Resource_Wood4" parent="Resources" instance=ExtResource("3_bksns")]
+position = Vector2(884, 409)
+
+[node name="RTS_Resource_Wood5" parent="Resources" instance=ExtResource("3_bksns")]
+position = Vector2(774, 395)
+
+[node name="RTS_Resource_Wood6" parent="Resources" instance=ExtResource("3_bksns")]
+position = Vector2(850, 439)
+
+[node name="RTS_Resource_Wood7" parent="Resources" instance=ExtResource("3_bksns")]
+position = Vector2(792, 453)
+
+[node name="RTS_Resource_Wood8" parent="Resources" instance=ExtResource("3_bksns")]
+position = Vector2(902, 465)
+
+[node name="RTS_Resource_Wood9" parent="Resources" instance=ExtResource("3_bksns")]
+position = Vector2(720, 451)
+
+[node name="RTS_Resource_Gold" parent="Resources" instance=ExtResource("4_xu4uk")]
+position = Vector2(908, 101)
 
 [node name="Player" parent="." instance=ExtResource("1_skd3a")]
 position = Vector2(587, 332)
 limit_left = 0
 limit_top = 0
+camera_bounds = Rect2(0, 0, 2000, 2000)
 
 [node name="Building" parent="." instance=ExtResource("6_yfd7s")]
-position = Vector2(569, 403)
+position = Vector2(652, 101)
 _built = true
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PackedVector2Array(480, 1206)
+width = 5.0
+default_color = Color(1, 1, 1, 0.447059)
+
+[connection signal="path_changed" from="Units/Worker" to="NavigationRegion2D" method="_on_worker_path_changed"]

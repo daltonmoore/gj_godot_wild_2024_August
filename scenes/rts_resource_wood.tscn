@@ -1,8 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://50tod2hsjvde"]
+[gd_scene load_steps=11 format=3 uid="uid://50tod2hsjvde"]
 
 [ext_resource type="Script" path="res://scripts/rts_resource_wood.gd" id="1_ca76u"]
-[ext_resource type="Texture2D" uid="uid://i31scrgufbm7" path="res://art/craftland/48x48/tree.png" id="1_hcpj2"]
+[ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_vsvtk"]
 [ext_resource type="Texture2D" uid="uid://xkaxfaolwau4" path="res://art/craftland/48x48/damaged-tree.png" id="3_v81b4"]
+[ext_resource type="Texture2D" uid="uid://qp1t88ug1nna" path="res://art/craftland/48x48/tree-top-half.png" id="4_gw48v"]
+[ext_resource type="Texture2D" uid="uid://i31scrgufbm7" path="res://art/craftland/48x48/tree-bot-half.png" id="5_2cwhe"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sjpuy"]
+size = Vector2(29, 77)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8o2w2"]
 size = Vector2(64, 160)
@@ -13,24 +18,49 @@ size = Vector2(40.5, 64.5)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vpyt5"]
 size = Vector2(50, 50)
 
-[node name="RTS_Resource_Wood" type="Node2D"]
-script = ExtResource("1_ca76u")
+[sub_resource type="CircleShape2D" id="CircleShape2D_l2f2f"]
+radius = 31.0
 
-[node name="Sprite" type="Sprite2D" parent="."]
-position = Vector2(0, -69)
-texture = ExtResource("1_hcpj2")
+[node name="RTS_Resource_Wood" type="Node2D"]
+z_index = 1
+script = ExtResource("1_ca76u")
+resource_amount = 5.0
+
+[node name="Selection Circle" type="Sprite2D" parent="."]
+visible = false
+self_modulate = Color(0, 1, 0, 1)
+position = Vector2(-5.5, 7.85)
+scale = Vector2(1.10938, 0.785937)
+texture = ExtResource("2_vsvtk")
 
 [node name="DamagedSprite" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(0, -14)
 texture = ExtResource("3_v81b4")
+
+[node name="TopSprite" type="Sprite2D" parent="."]
+position = Vector2(0, -100)
+texture = ExtResource("4_gw48v")
+
+[node name="BotSprite" type="Sprite2D" parent="."]
+position = Vector2(0, -69)
+texture = ExtResource("5_2cwhe")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-3, -21)
+shape = SubResource("RectangleShape2D_sjpuy")
+debug_color = Color(0.805249, 0.416272, 0, 0.42)
 
 [node name="GatherPos" type="Node2D" parent="."]
 position = Vector2(57, 13)
 metadata/_edit_lock_ = true
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." groups=["Resource"]]
 position = Vector2(0, -51)
 metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
 
 [node name="DefaultCollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_8o2w2")
@@ -47,6 +77,11 @@ disabled = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D_ContrustionBlocker"]
 shape = SubResource("RectangleShape2D_vpyt5")
 debug_color = Color(0.981781, 0, 0.368042, 0.42)
+
+[node name="GatherArea" type="Area2D" parent="."]
+
+[node name="GatherCircle" type="CollisionShape2D" parent="GatherArea"]
+shape = SubResource("CircleShape2D_l2f2f")
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_mouse_exited"]
