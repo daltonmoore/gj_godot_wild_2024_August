@@ -23,7 +23,7 @@ func _draw() -> void:
 	if _flash_on and _flashing_hovered_object != null:
 		var pos = _flashing_hovered_object.position
 		draw_rect(
-			Rect2(pos, _flashing_hovered_object.visual_size),
+			Rect2(pos - _flashing_hovered_object.visual_size / 2, _flashing_hovered_object.visual_size),
 			Color.WEB_GREEN,
 			false,
 			2)

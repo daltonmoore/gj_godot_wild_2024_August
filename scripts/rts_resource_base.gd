@@ -4,13 +4,15 @@ extends Selectable
 signal sig_can_gather(worker)
 signal exhausted
 
-@export_range(1, 500) var resource_amount := 100.0
+@export_range(1, 5000) var resource_amount := 100.0
+@export var _gather_area_start_position := Vector2.ZERO
 
 var resource_type : enums.e_resource_type
 var amtlabel = Label.new()
 var _remaining_amount_progress_bar : ProgressBar = ProgressBar.new()
 var _gather_area = Area2D.new()
 var _gather_circle = CollisionShape2D.new()
+
 
 func _ready() -> void:
 	add_child(amtlabel)
@@ -29,6 +31,7 @@ func _ready() -> void:
 	_gather_circle.shape = CircleShape2D.new()
 	_gather_circle.shape.radius = 30
 	_gather_area.add_child(_gather_circle)
+	_gather_area.position = _gather_area_start_position
 	add_child(_gather_area)
 
 
@@ -57,9 +60,9 @@ func get_random_gather_point() -> Vector2:
 	var rand_x = radius * cos(randf_range(0, 2*PI))
 	var rand_y = radius * sin(randf_range(0, 2*PI))
 	var random_point_on_circle = Vector2(rand_x, rand_y)
-	DebugDraw2d.circle(to_global(random_point_on_circle), 10,  16, Color(1, 0, 1), 1, 4)
+	DebugDraw2d.circle(to_global(random_point_on_circle + _gather_area.position), 10,  16, Color(1, 0, 1), 1, 4)
 	
-	return to_global(random_point_on_circle)
+	return to_global(random_point_on_circle + _gather_area.position)
 
 func gather(worker : Worker) -> bool:
 	worker.stop_gathering.connect(_on_worker_stop_gathering)

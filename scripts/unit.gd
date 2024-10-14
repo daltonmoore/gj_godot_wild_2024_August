@@ -54,6 +54,8 @@ func _physics_process(delta: float) -> void:
 		$AnimatedSprite2D.flip_h = true
 	else:
 		$AnimatedSprite2D.flip_h = false
+	
+	#if current_cell == null
 
 
 func _on_velocity_computed(safe_velocity: Vector2):

@@ -1,11 +1,13 @@
-[gd_scene load_steps=16 format=3 uid="uid://bhbncccdbkrqp"]
+[gd_scene load_steps=20 format=3 uid="uid://bhbncccdbkrqp"]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_8pmqa"]
 [ext_resource type="Script" path="res://scripts/health_bar.gd" id="2_5cj1q"]
 [ext_resource type="Texture2D" uid="uid://crng8ya8jy5bx" path="res://art/Tiny Swords (Update 010)/Resources/Resources/W_Idle_(NoShadow) Copy.png" id="3_x3cro"]
+[ext_resource type="Texture2D" uid="uid://bf34ss4w5d3le" path="res://art/craftland/48x48/tree-export.png" id="4_8o28j"]
 [ext_resource type="Texture2D" uid="uid://cj8b60jnchdx" path="res://art/Tiny Swords (Update 010)/Resources/Resources/G_Idle_(NoShadow) Copy.png" id="4_qrmxf"]
 [ext_resource type="Texture2D" uid="uid://dgbhc7ncxrn5o" path="res://art/ui/Square.png" id="5_4mwhn"]
 [ext_resource type="Texture2D" uid="uid://eptiijv022f2" path="res://art/ui/Circle.png" id="5_17vfo"]
+[ext_resource type="Texture2D" uid="uid://dbei06bnq2ej4" path="res://art/craftland/48x48/CL_Crops_Mining_split/CL_Crops_Mining1441.png" id="5_vmeee"]
 [ext_resource type="Texture2D" uid="uid://dg7sa7y03or8v" path="res://art/ui/Circle_yellow.png" id="6_gktx7"]
 [ext_resource type="Script" path="res://scripts/tab_button.gd" id="8_6sc8r"]
 [ext_resource type="Texture2D" uid="uid://ymjtgpwyg4uf" path="res://art/ui/Square_yellow.png" id="8_bpbla"]
@@ -14,6 +16,17 @@
 [ext_resource type="PackedScene" uid="uid://gn6tlvfvi30a" path="res://scenes/buildings/building_house.tscn" id="12_acpg0"]
 [ext_resource type="PackedScene" uid="uid://bgdk7aq3pnvep" path="res://scenes/buildings/building_ghost_barracks.tscn" id="13_at4en"]
 [ext_resource type="PackedScene" uid="uid://s7vspcp2kfa4" path="res://scenes/buildings/building_barracks.tscn" id="13_gkj3m"]
+
+[sub_resource type="FontFile" id="FontFile_ifsga"]
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
+
+[sub_resource type="Theme" id="Theme_75a3u"]
+default_font = SubResource("FontFile_ifsga")
 
 [sub_resource type="LabelSettings" id="LabelSettings_tkgln"]
 font_size = 12
@@ -110,6 +123,88 @@ texture_normal = ExtResource("5_17vfo")
 texture_pressed = ExtResource("6_gktx7")
 stretch_mode = 3
 
+[node name="SelectedUnitInfo" type="Control" parent="Root"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -30.0
+grow_vertical = 0
+
+[node name="ColorRect" type="ColorRect" parent="Root/SelectedUnitInfo"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 56.0
+offset_top = -152.0
+offset_right = 464.0
+grow_vertical = 0
+color = Color(0.843137, 0.717647, 0.603922, 1)
+
+[node name="NameLabel" type="Label" parent="Root/SelectedUnitInfo"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 64.0
+offset_top = -144.0
+offset_right = 122.0
+offset_bottom = -121.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Name:"
+
+[node name="SelectedObjectName" type="Label" parent="Root/SelectedUnitInfo"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 123.0
+offset_top = -144.0
+offset_right = 181.0
+offset_bottom = -121.0
+grow_vertical = 0
+theme = SubResource("Theme_75a3u")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "None"
+
+[node name="UnitPicture" type="TextureRect" parent="Root/SelectedUnitInfo"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 80.0
+offset_top = -121.0
+offset_right = 138.0
+offset_bottom = -40.0
+grow_vertical = 0
+texture = ExtResource("4_8o28j")
+expand_mode = 3
+
+[node name="InfoBox" type="VBoxContainer" parent="Root/SelectedUnitInfo"]
+layout_mode = 1
+offset_left = 147.0
+offset_top = -90.0
+offset_right = 304.0
+offset_bottom = 14.0
+metadata/_edit_group_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Root/SelectedUnitInfo/InfoBox"]
+visible = false
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Root/SelectedUnitInfo/InfoBox/HBoxContainer"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+texture = ExtResource("5_vmeee")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Root/SelectedUnitInfo/InfoBox/HBoxContainer"]
+layout_mode = 2
+text = "100"
+
 [node name="ResourcesBg" type="ColorRect" parent="Root"]
 layout_mode = 0
 offset_left = 82.0
@@ -153,14 +248,6 @@ stretch_mode = 5
 [node name="GoldAmount" type="Label" parent="Root/ResourceContainer"]
 layout_mode = 2
 text = "0"
-
-[node name="SelectedObjectName" type="Label" parent="Root"]
-layout_mode = 0
-offset_left = 84.0
-offset_top = 579.0
-offset_right = 142.0
-offset_bottom = 602.0
-text = "None"
 
 [node name="HealthBar" type="ProgressBar" parent="Root"]
 layout_mode = 0
