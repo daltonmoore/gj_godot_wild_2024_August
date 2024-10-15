@@ -3,7 +3,9 @@ enum e_resource_type {
 	none,
 	wood,
 	gold,
-	meat
+	meat,
+	supply,
+	supply_cap
 }
 
 
@@ -13,6 +15,14 @@ enum e_object_type {
 	resource
 }
 
+
+enum e_building_type {
+	none,
+	townhall,
+	house,
+	barracks,
+	tower
+}
 
 
 enum e_order_type {

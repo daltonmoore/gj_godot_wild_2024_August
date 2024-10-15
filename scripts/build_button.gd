@@ -1,6 +1,11 @@
-extends TabButton
+extends TextureButton
 @export var scene_building_ghost : PackedScene
 @export var scene_building_real : PackedScene
+
+func _ready() -> void:
+	# Owner is always set to the scene's root node
+	button_down.connect(_on_button_down.bind())
+	button_up.connect(_on_button_up.bind())
 
 func _on_button_down() -> void:
 	print()

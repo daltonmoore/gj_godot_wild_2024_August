@@ -13,6 +13,7 @@ var _selection_grid : SelectionGrid
 func _ready() -> void:
 	InputManager.left_click_pressed.connect(_press)
 	InputManager.left_click_released.connect(place_building)
+	InputManager.right_click_released.connect(cancel_building_placement)
 	InputManager.mouse_move.connect(_snap_ghost)
 	#GlobalTileMap.current_hovered_tile_changed.connect(_snap_ghost)
 	_selection_grid = get_node("/root/main/SelectionGrid")
@@ -54,10 +55,11 @@ func place_building(event) -> void:
 			!can_afford_to_place_building):
 		return
 	
+	spend_resources()
+	
 	get_tree().get_root().add_child(real_instance)
 	real_instance.position = _current_ghost.position
-	_current_ghost.queue_free()
-	_current_ghost = null
+	set_ghost(null)
 	CommandManager.build(real_instance)
 	var block = Polygon2D.new()
 	block.polygon = real_instance.building_corners
@@ -66,3 +68,16 @@ func place_building(event) -> void:
 	get_tree().get_root().get_node("/root/main/NavigationRegion2D").add_child(block)
 	(get_tree().get_root().get_node("/root/main/NavigationRegion2D") as NavigationRegion2D).bake_navigation_polygon()
 
+func spend_resources() -> void:
+	var cost = real_instance.cost
+	for r in cost:
+		match r:
+			"Gold":
+				ResourceManager._add_resource(-cost["Gold"], enums.e_resource_type.gold)
+			"Wood":
+				ResourceManager._add_resource(-cost["Wood"], enums.e_resource_type.wood)
+			"Meat":
+				ResourceManager._add_resource(-cost["Meat"], enums.e_resource_type.meat)
+
+func cancel_building_placement(event) -> void:
+	set_ghost(null)

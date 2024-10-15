@@ -10,8 +10,13 @@ signal finish_building
 @export var building_corners : PackedVector2Array
 @export var cost : Dictionary = {"Gold": 0.0,"Wood": 0.0,"Meat": 0.0}
 @export var _built := false
+@export var armor := 5
+@export var building_type := enums.e_building_type.none
+@export var supply_cap := 0
+@export var default_rally_point_location := Vector2.ZERO
 
 var building_nav_mesh_blocker
+var rally_point
 
 var _current_build_time := 0.0
 var _default_cursor = load("res://art/cursors/mmorpg-cursorpack-Narehop/gold-pointer/pointer_8.png")
@@ -20,7 +25,11 @@ var _construction_cursor_texture = load("res://art/cursors/mmorpg-cursorpack-Nar
 
 
 func _ready() -> void:
+	rally_point = Node2D.new()
+	add_child(rally_point)
+	rally_point.position = default_rally_point_location
 	if _built:
+		ResourceManager._add_resource(supply_cap, enums.e_resource_type.supply_cap)
 		cursor_texture = _default_cursor
 		$Visual.texture = built_sprite
 		$ProgressBar.visible = false
@@ -32,6 +41,15 @@ func _ready() -> void:
 	
 	$BuildTimer.wait_time = total_build_time
 	$BuildTimer.timeout.connect(_finish_building)
+	
+	var ui_detail_one = UI_Detail.new()
+	ui_detail_one.image_one_path = "res://art/icons/RPG Graphics Pack - Icons/Pack 1A/armor/armor_09.png"
+	ui_detail_one.detail_one = armor
+	var building_picture_path = ""
+	match building_type:
+		enums.e_building_type.townhall:
+			building_picture_path = "res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/Castle/Castle_Blue-export.png"
+	details = [ui_detail_one, building_picture_path]
 
 func _process(delta: float) -> void:
 	if $BuildTimer.paused:
@@ -92,3 +110,7 @@ func _finish_building() -> void:
 	_built = true
 	$ProgressBar.visible = false
 	cursor_texture = _default_cursor
+
+
+func get_rally_point_position() -> Vector2:
+	return to_global(rally_point.position)

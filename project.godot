@@ -28,6 +28,7 @@ Hud="*res://scenes/hud.tscn"
 BuildManager="*res://scripts/BuildManager.gd"
 CommandManager="*res://scenes/command_manager.tscn"
 ResourceManager="*res://scripts/resource_manager.gd"
+UnitManager="*res://scripts/unit_manager.gd"
 
 [input]
 

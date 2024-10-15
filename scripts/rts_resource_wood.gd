@@ -11,10 +11,12 @@ func _ready() -> void:
 	$TopSprite.z_index = Globals.foreground_z_index
 	$BotSprite.z_index = Globals.background_z_index
 	$DamagedTimer.timeout.connect(_on_damaged_timer_timeout)
+	
 	var ui_detail_one = UI_Detail.new()
 	ui_detail_one.image_one_path = "res://art/craftland/48x48/CL_Crops_Mining_split/CL_Crops_Mining1441.png"
 	ui_detail_one.detail_one = resource_amount
-	details = [ui_detail_one]
+	var tree_picture = "res://art/craftland/48x48/tree-export.png"
+	details = [ui_detail_one, tree_picture]
 	
 	cursor_texture = load("res://art/cursors/mmorpg-cursorpack-Narehop/gold-pointer/pointer_36.png")
 	resource_type = enums.e_resource_type.wood
@@ -59,7 +61,3 @@ func _on_damaged_timer_timeout():
 		$DamagedSprite.visible = true
 		$Area2D/DefaultCollisionShape2D.set_deferred("disabled", true)
 		$Area2D/DamagedCollisionShape2D.set_deferred("disabled", false)
-
-class UI_Detail:
-	var image_one_path
-	var detail_one

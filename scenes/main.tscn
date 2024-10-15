@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://b7k5d3rclx1jf" path="res://scenes/rts_resource_gold.tscn" id="4_xu4uk"]
 [ext_resource type="PackedScene" uid="uid://bbqvgiqtvvj75" path="res://scenes/worker.tscn" id="5_gmj38"]
 [ext_resource type="PackedScene" uid="uid://bg5jrjwfpc88n" path="res://scenes/selection_grid.tscn" id="6_fev7a"]
-[ext_resource type="PackedScene" uid="uid://s7vspcp2kfa4" path="res://scenes/buildings/building_barracks.tscn" id="6_yfd7s"]
+[ext_resource type="PackedScene" uid="uid://blr4k6u27v7fn" path="res://scenes/buildings/building_townhall.tscn" id="7_jk4y1"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_60m1h"]
 vertices = PackedVector2Array(2738, 37, 2735, 2373, 21, 2370, 7, 27)
@@ -56,39 +56,30 @@ metadata/_edit_lock_ = true
 
 [node name="RTS_Resource_Wood" parent="Resources" instance=ExtResource("3_bksns")]
 position = Vector2(840, 359)
-_gather_area_start_position = null
 
 [node name="RTS_Resource_Wood2" parent="Resources" instance=ExtResource("3_bksns")]
 position = Vector2(882, 367)
-_gather_area_start_position = null
 
 [node name="RTS_Resource_Wood3" parent="Resources" instance=ExtResource("3_bksns")]
 position = Vector2(838, 399)
-_gather_area_start_position = null
 
 [node name="RTS_Resource_Wood4" parent="Resources" instance=ExtResource("3_bksns")]
 position = Vector2(884, 409)
-_gather_area_start_position = null
 
 [node name="RTS_Resource_Wood5" parent="Resources" instance=ExtResource("3_bksns")]
 position = Vector2(774, 395)
-_gather_area_start_position = null
 
 [node name="RTS_Resource_Wood6" parent="Resources" instance=ExtResource("3_bksns")]
 position = Vector2(850, 439)
-_gather_area_start_position = null
 
 [node name="RTS_Resource_Wood7" parent="Resources" instance=ExtResource("3_bksns")]
 position = Vector2(792, 453)
-_gather_area_start_position = null
 
 [node name="RTS_Resource_Wood8" parent="Resources" instance=ExtResource("3_bksns")]
 position = Vector2(902, 465)
-_gather_area_start_position = null
 
 [node name="RTS_Resource_Wood9" parent="Resources" instance=ExtResource("3_bksns")]
 position = Vector2(720, 451)
-_gather_area_start_position = null
 
 [node name="RTS_Resource_Gold" parent="Resources" instance=ExtResource("4_xu4uk")]
 position = Vector2(908, 101)
@@ -99,13 +90,14 @@ limit_left = 0
 limit_top = 0
 camera_bounds = Rect2(0, 0, 2000, 2000)
 
-[node name="Building" parent="." instance=ExtResource("6_yfd7s")]
-position = Vector2(652, 101)
-_built = true
-
 [node name="Line2D" type="Line2D" parent="."]
 points = PackedVector2Array(480, 1206)
 width = 5.0
 default_color = Color(1, 1, 1, 0.447059)
+
+[node name="Building" parent="." instance=ExtResource("7_jk4y1")]
+position = Vector2(513, 147)
+_built = true
+building_type = 1
 
 [connection signal="path_changed" from="Units/Worker" to="NavigationRegion2D" method="_on_worker_path_changed"]

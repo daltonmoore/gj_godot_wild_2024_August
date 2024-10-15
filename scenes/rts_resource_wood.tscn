@@ -24,7 +24,6 @@ radius = 31.0
 [node name="RTS_Resource_Wood" type="Node2D"]
 z_index = 1
 script = ExtResource("1_ca76u")
-resource_amount = null
 
 [node name="Selection Circle" type="Sprite2D" parent="."]
 visible = false

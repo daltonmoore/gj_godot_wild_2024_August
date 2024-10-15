@@ -43,6 +43,9 @@ func _on_resource_selected_flash_timer_timeout():
 
 
 func _order_units() -> void:
+	if BuildManager.get_ghost() != null:
+		return
+	
 	if CursorManager.cursor_over_selectable():
 		# collect resource
 		_current_flash_count = 0

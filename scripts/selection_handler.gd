@@ -124,12 +124,14 @@ func _select_units():
 	#		in both old and new selection alone
 	for u in selected_units:
 		u.set_selection_circle_visible(false)
+		u._in_selection = false
 
 	# finished with old units, store new selected units
 	selected_units = newly_selected_units
 	
 	for u in selected_units:
 		u.set_selection_circle_visible(true)
+		u._in_selection = true
 
 func _select_selectable_objects():
 	if _current_selected_object != CursorManager.current_hovered_object:

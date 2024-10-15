@@ -62,7 +62,8 @@ func _physics_process(delta: float) -> void:
 	if _bundle_instance != null and !_bundle_instance.is_queued_for_deletion():
 		_bundle_instance.flip_h = $AnimatedSprite2D.flip_h
 
-func _on_navigation_finished():
+func _on_navigation_finished() -> void:
+	super()
 	emit_signal("path_changed", [])
 	if (_current_order_type == enums.e_order_type.gather
 			and _resource_goal != null):
@@ -160,7 +161,6 @@ func _on_resource_exhausted() -> void:
 		$AnimatedSprite2D.animation = "idle"
 
 func _deposit_resources():
-	Hud.update_resource(_current_resource_holding_type, _current_resource_holding)
 	ResourceManager._add_resource(_current_resource_holding, _current_resource_holding_type)
 	_current_resource_holding = 0
 	_holding_resource_bundle = false
