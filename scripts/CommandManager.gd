@@ -66,7 +66,16 @@ func _order_units() -> void:
 				for u in SelectionHandler.selected_units:
 					u.order_deposit_resources(building)
 	else:
+		var group_guid = hash(Time.get_unix_time_from_system())
+		if len(SelectionHandler.selected_units) > 1:
+			UnitManager.groups[group_guid] = SelectionHandler.selected_units.duplicate()
 		for u in SelectionHandler.selected_units:
+			if len(SelectionHandler.selected_units) > 1:
+				print()
+				print(u.name)
+				if u.group_guid != null:
+					UnitManager.leave_group(u)
+				u.group_guid = group_guid
 			u.order_move(get_global_mouse_position(), enums.e_order_type.move)
 
 func build(building) -> void:

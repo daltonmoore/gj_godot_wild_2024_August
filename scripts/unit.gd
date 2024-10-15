@@ -5,6 +5,7 @@ extends CharacterBody2D
 @export var cost : Dictionary = {"Gold": 0.0,"Wood": 0.0,"Meat": 0.0, "Supply": 1}
 
 var details
+var group_guid
 
 # Public Vars
 var current_cell: SelectionGridCell:
@@ -120,7 +121,7 @@ func _find_close_in_group_units_and_stop_them() -> void:
 			continue
 		if a.owner.is_in_group(Globals.unit_group):
 			var unit = a.owner as Unit
-			if unit._in_selection:
+			if UnitManager.groups.has(group_guid) and unit.group_guid == group_guid:
 				unit.stop()
 	UnitManager.group_stopping = false
 
