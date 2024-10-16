@@ -13,10 +13,8 @@ func _on_body_entered(body: Node2D) -> void:
 	
 	if u != null:
 		if u.current_cell != null:
-			print("exiting cell %s" % u.current_cell.grid_pos)
 			_selection_grid.cell_exited(u.current_cell, body)
 		_selection_grid.cell_entered(self, body)
-		print("entering cell %s" % self.grid_pos)
 		u.current_cell = self
 
 

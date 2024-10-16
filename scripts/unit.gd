@@ -3,6 +3,7 @@ extends CharacterBody2D
 
 @export var movement_speed: float = 4.0
 @export var cost : Dictionary = {"Gold": 0.0,"Wood": 0.0,"Meat": 0.0, "Supply": 1}
+@export var confirm_acks := []
 
 var details
 var group_guid
@@ -18,12 +19,23 @@ var current_cell: SelectionGridCell:
 var _current_cell_label
 var _current_order_type : enums.e_order_type
 var _in_selection := false
+var _audio_stream_player := AudioStreamPlayer2D.new()
+var _audio_streams := []
 
 @onready var navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 
 func _ready() -> void:
 	navigation_agent.debug_enabled = Globals.debug
+	add_to_group(Globals.unit_group)
+	z_index = Globals.unit_z_index
 	ResourceManager._add_resource(cost["Supply"], enums.e_resource_type.supply)
+	
+	confirm_acks.append(load("res://sound/LEOHPAZ_Command_Speech/Human/Human_Confirm_1.wav"))
+	confirm_acks.append(load("res://sound/LEOHPAZ_Command_Speech/Human/Human_Confirm_2.wav"))
+	confirm_acks.append(load("res://sound/LEOHPAZ_Command_Speech/Human/Human_Confirm_3.wav"))
+	add_child(_audio_stream_player)
+	
+	# __________________________________________________________________________
 	# Debug name text
 	var label = Label.new()
 	label.text = "%s" % name
@@ -34,17 +46,30 @@ func _ready() -> void:
 	_current_cell_label = Label.new()
 	add_child(_current_cell_label)
 	_current_cell_label.position = Vector2(0, 25) # is relative pos
-	add_to_group(Globals.unit_group)
+	# __________________________________________________________________________
+	
 	navigation_agent.velocity_computed.connect(Callable(_on_velocity_computed))
 	$Area2D.mouse_entered.connect(on_mouse_overlap)
 	$Area2D.mouse_exited.connect(on_mouse_exit)
-	z_index = Globals.unit_z_index
 	
 	var ui_detail_one = UI_Detail.new()
 	ui_detail_one.image_one_path = "res://art/icons/RPG Graphics Pack - Icons/Pack 1A-Renamed/boot/boot_03.png"
 	ui_detail_one.detail_one = movement_speed
 	var unit_picture_path = "res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Pawn/Blue/Pawn_Blue-still.png"
 	details = [ui_detail_one, unit_picture_path]
+	
+	var clean_timer = Timer.new()
+	clean_timer.wait_time = .5
+	clean_timer.timeout.connect(func(): 
+		print("cleaning up done streams")
+		var stream = _audio_streams.pop_back()
+		if stream != null and !stream.is_queued_for_deletion() and !stream.playing:
+			stream.queue_free()
+		elif stream != null:
+			_audio_streams.push_back(stream)
+	)
+	add_child(clean_timer)
+	clean_timer.start()
 
 
 func set_movement_target(movement_target: Vector2) -> void:
@@ -75,6 +100,15 @@ func _on_velocity_computed(safe_velocity: Vector2) -> void:
 	move_and_slide()
 
 func order_move(in_goal, in_order_type : enums.e_order_type) -> void:
+	var acknowledger = UnitManager.group_get_acknowledger(group_guid)
+	if  acknowledger == null or acknowledger == self:
+		var temp_stream = AudioStreamPlayer2D.new()
+		prints("created stream %s" % temp_stream)
+		temp_stream.stream = confirm_acks[randi_range(0, len(confirm_acks) - 1)]
+		_audio_streams.push_back(temp_stream)
+		add_child(temp_stream)
+		temp_stream.play()
+		UnitManager.group_set_acknowledger(group_guid, self)
 	set_movement_target(in_goal)
 
 func stop() -> void:
@@ -111,8 +145,8 @@ func can_afford_to_build() -> bool:
 	return can_afford
 
 func _on_navigation_finished() -> void:
-	if _in_selection and !UnitManager.group_stopping:
-		UnitManager.group_stopping = true
+	if _in_selection and !UnitManager.groups[group_guid].group_stopping:
+		UnitManager.groups[group_guid].group_stopping = true
 		_find_close_in_group_units_and_stop_them()
 
 
@@ -124,6 +158,6 @@ func _find_close_in_group_units_and_stop_them() -> void:
 			var unit = a.owner as Unit
 			if UnitManager.groups.has(group_guid) and unit.group_guid == group_guid:
 				unit.stop()
-	UnitManager.group_stopping = false
+	UnitManager.groups[group_guid].group_stopping = false
 
 

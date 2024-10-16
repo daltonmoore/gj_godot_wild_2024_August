@@ -66,13 +66,12 @@ func _order_units() -> void:
 				for u in SelectionHandler.selected_units:
 					u.order_deposit_resources(building)
 	else:
-		var group_guid = hash(Time.get_unix_time_from_system())
+		var group_guid = 0
 		if len(SelectionHandler.selected_units) > 1:
-			UnitManager.groups[group_guid] = SelectionHandler.selected_units.duplicate()
+			group_guid = UnitManager.add_group(SelectionHandler.selected_units.duplicate())
 		for u in SelectionHandler.selected_units:
 			if len(SelectionHandler.selected_units) > 1:
 				print()
-				print(u.name)
 				if u.group_guid != null:
 					UnitManager.leave_group(u)
 				u.group_guid = group_guid
