@@ -113,7 +113,7 @@ func get_units_in_select_box(select_box):
 			DebugDraw2d.rect(item.position, size, Color(0, 1, 0), 1, 2)
 		selected_cells.append(item)
 	
-	# Storing everything in Plane2Ds	
+	# Storing everything in Plane2Ds
 	var top_plane = Plane2D.new(top_left, top_right)
 	var right_plane = Plane2D.new(top_right, bot_right)
 	var bot_plane = Plane2D.new(bot_right, bot_left)

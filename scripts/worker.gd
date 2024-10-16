@@ -50,6 +50,8 @@ func _process(delta: float) -> void:
 	# Debug name text
 	if current_cell != null:
 		_current_cell_label.text = "%s" % current_cell.grid_pos
+	else:
+		_current_cell_label.text = "none cell"
 	
 	if $AnimatedSprite2D.animation == "chop":
 		if !$WoodChop.playing:

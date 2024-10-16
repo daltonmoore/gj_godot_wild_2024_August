@@ -47,10 +47,10 @@ func _ready() -> void:
 	details = [ui_detail_one, unit_picture_path]
 
 
-func set_movement_target(movement_target: Vector2):
+func set_movement_target(movement_target: Vector2) -> void:
 	navigation_agent.set_target_position(movement_target)
 
-func set_selection_circle_visible(visible):
+func set_selection_circle_visible(visible) -> void:
 	$"Selection Circle".visible = visible
 
 func _physics_process(delta: float) -> void:
@@ -67,22 +67,23 @@ func _physics_process(delta: float) -> void:
 	else:
 		$AnimatedSprite2D.flip_h = false
 	
-	#if current_cell == null
+	if current_cell != null:
+		DebugDraw2d.rect(current_cell.position)
 
-func _on_velocity_computed(safe_velocity: Vector2):
+func _on_velocity_computed(safe_velocity: Vector2) -> void:
 	velocity = safe_velocity
 	move_and_slide()
 
-func order_move(in_goal, in_order_type : enums.e_order_type):
+func order_move(in_goal, in_order_type : enums.e_order_type) -> void:
 	set_movement_target(in_goal)
 
 func stop() -> void:
 	set_movement_target(position)
 
-func on_mouse_overlap():
+func on_mouse_overlap() -> void:
 	SelectionHandler.mouse_hovered_unit = self
 
-func on_mouse_exit():
+func on_mouse_exit() -> void:
 	if SelectionHandler.mouse_hovered_unit == self:
 		SelectionHandler.mouse_hovered_unit = null
 

@@ -52,6 +52,18 @@ position = Vector2(345, 474)
 movement_speed = 150.0
 metadata/_edit_lock_ = true
 
+[node name="Worker3" parent="Units" instance=ExtResource("5_gmj38")]
+position = Vector2(485, 474)
+movement_speed = 150.0
+
+[node name="Worker4" parent="Units" instance=ExtResource("5_gmj38")]
+position = Vector2(471, 378)
+movement_speed = 150.0
+
+[node name="Worker5" parent="Units" instance=ExtResource("5_gmj38")]
+position = Vector2(212, 412)
+movement_speed = 150.0
+
 [node name="Resources" type="Node2D" parent="."]
 
 [node name="RTS_Resource_Wood" parent="Resources" instance=ExtResource("3_bksns")]

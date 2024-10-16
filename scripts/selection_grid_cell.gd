@@ -12,15 +12,17 @@ func _on_body_entered(body: Node2D) -> void:
 	var u = body as Unit
 	
 	if u != null:
-		_selection_grid.cell_entered(self, body)
 		if u.current_cell != null:
+			print("exiting cell %s" % u.current_cell.grid_pos)
 			_selection_grid.cell_exited(u.current_cell, body)
+		_selection_grid.cell_entered(self, body)
+		print("entering cell %s" % self.grid_pos)
 		u.current_cell = self
 
 
-func _on_body_exited(body: Node2D) -> void:
-	var u = body as Unit
-	
-	if u != null:
-		_selection_grid.cell_exited(self, body)	
-		u.current_cell = null
+#func _on_body_exited(body: Node2D) -> void:
+	#var u = body as Unit
+	#
+	#if u != null:
+		#_selection_grid.cell_exited(self, body)	
+		#u.current_cell = null
