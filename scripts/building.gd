@@ -1,6 +1,7 @@
 class_name Building
 extends Selectable
 
+signal sig_start_building_unit(detail)
 signal finish_building
 signal update_unit_build_progress(new_value, max_value)
 
@@ -31,7 +32,7 @@ var _current_build_time := 0.0
 var _current_unit_build_time := 0.0
 var _default_cursor = load("res://art/cursors/mmorpg-cursorpack-Narehop/gold-pointer/pointer_8.png")
 var _construction_cursor_texture = load("res://art/cursors/mmorpg-cursorpack-Narehop/gold-pointer/pointer_37.png")
-
+var _ui_detail_build_queue = UI_Detail.new()
 
 
 func _ready() -> void:
@@ -63,15 +64,11 @@ func _ready() -> void:
 	ui_detail_one.image_one_path = "res://art/icons/RPG Graphics Pack - Icons/Pack 1A/armor/armor_09.png"
 	ui_detail_one.detail_one = armor
 	
-	var ui_detail_build_queue = UI_Detail.new()
-	ui_detail_build_queue.image_one_path = "res://art/icons/RPG Graphics Pack - Icons/Pack 1A-Renamed/weapon/weapon_sword_07.png"
-	ui_detail_build_queue.detail_one = ProgressBar.new()
-	
 	var building_picture_path = ""
 	match building_type:
 		enums.e_building_type.townhall:
 			building_picture_path = "res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/Castle/Castle_Blue-export.png"
-	details = [ui_detail_one, building_picture_path, ui_detail_build_queue]
+	details = [ui_detail_one, building_picture_path]
 
 func _process(delta: float) -> void:
 	
@@ -113,6 +110,7 @@ func queue_build_unit(purchase_type : enums.e_purchase_type, local_unit_scene) -
 	match purchase_type:
 		enums.e_purchase_type.worker:
 			unit_to_build.scene = load("res://scenes/worker.tscn")
+			unit_to_build.image_path = "res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Pawn/Blue/Pawn_Blue-still.png"
 	_build_queue.push_back(unit_to_build)
 	if _build_queue.size() == 1:
 		start_building_unit(purchase_type)
@@ -133,6 +131,8 @@ func get_random_point_along_perimeter(pos) -> Vector2:
 
 func start_building_unit(purchase_type : enums.e_purchase_type) -> void:
 	if $UnitBuildTimer.is_stopped():
+		_ui_detail_build_queue.image_one_path = _build_queue[0].image_path
+		sig_start_building_unit.emit(_ui_detail_build_queue)
 		_current_unit_build_time = 0.0
 		$UnitBuildTimer.wait_time = build_times[purchase_type]
 		$UnitBuildTimer.start()
@@ -178,3 +178,4 @@ class build_item:
 	var scene
 	var purchase_type : enums.e_purchase_type
 	var total_build_time := 5.0
+	var image_path

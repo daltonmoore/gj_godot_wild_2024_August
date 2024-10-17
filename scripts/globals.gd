@@ -15,3 +15,10 @@ const tile_map_layer_foreground = 1
 const tile_map_custom_data_layer_selectable = "Selectable"
 const tile_map_custom_data_layer_type = "Type" # Type of tile such as: Wood, Gold etc.
 
+static func arrays_have_same_content(a1 : Array, a2: Array) -> bool:
+	if a1.size() != a2.size():
+		return false
+	return false
+#TODO: finish this method
+	#for item in a1:
+#
