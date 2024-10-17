@@ -361,7 +361,7 @@ radius = 924.15
 [node name="Worker" type="CharacterBody2D"]
 y_sort_enabled = true
 script = ExtResource("1_ybqxx")
-movement_speed = 100.0
+movement_speed = 150.0
 cost = {
 "Gold": 0.0,
 "Meat": 50.0,

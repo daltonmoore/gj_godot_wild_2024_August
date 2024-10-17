@@ -48,6 +48,7 @@ func _ready() -> void:
 	_current_cell_label.position = Vector2(0, 25) # is relative pos
 	# __________________________________________________________________________
 	
+	navigation_agent.navigation_finished.connect(_on_navigation_finished)
 	navigation_agent.velocity_computed.connect(Callable(_on_velocity_computed))
 	$Area2D.mouse_entered.connect(on_mouse_overlap)
 	$Area2D.mouse_exited.connect(on_mouse_exit)
@@ -108,7 +109,8 @@ func order_move(in_goal, in_order_type : enums.e_order_type) -> void:
 		_audio_streams.push_back(temp_stream)
 		add_child(temp_stream)
 		temp_stream.play()
-		UnitManager.group_set_acknowledger(group_guid, self)
+		if group_guid != null:
+			UnitManager.group_set_acknowledger(group_guid, self)
 	set_movement_target(in_goal)
 
 func stop() -> void:
@@ -145,7 +147,7 @@ func can_afford_to_build() -> bool:
 	return can_afford
 
 func _on_navigation_finished() -> void:
-	if _in_selection and !UnitManager.groups[group_guid].group_stopping:
+	if group_guid != null and !UnitManager.groups[group_guid].group_stopping:
 		UnitManager.groups[group_guid].group_stopping = true
 		_find_close_in_group_units_and_stop_them()
 

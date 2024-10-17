@@ -70,12 +70,14 @@ func _order_units() -> void:
 		if len(SelectionHandler.selected_units) > 1:
 			group_guid = UnitManager.add_group(SelectionHandler.selected_units.duplicate())
 		for u in SelectionHandler.selected_units:
+			if u.group_guid != null:
+				UnitManager.leave_group(u)
 			if len(SelectionHandler.selected_units) > 1:
 				print()
-				if u.group_guid != null:
-					UnitManager.leave_group(u)
 				u.group_guid = group_guid
 			u.order_move(get_global_mouse_position(), enums.e_order_type.move)
+		if group_guid != 0:
+			DebugDraw2d.circle(UnitManager.get_group_average_position(group_guid), 10, 16, Color(1, 0, 1), 1, 5)
 
 func build(building) -> void:
 	for u in SelectionHandler.selected_units:

@@ -39,7 +39,6 @@ func _ready() -> void:
 	auto_label.position = Vector2(20, -60)
 	going_to_new_resource_label.position = Vector2(20, -80)
 	
-	navigation_agent.navigation_finished.connect(_on_navigation_finished)
 	$ResourceGatherTick.timeout.connect(_on_resource_gather_tick_timeout)
 	$ResourceGatherTick.wait_time = collection_rate
 	super()

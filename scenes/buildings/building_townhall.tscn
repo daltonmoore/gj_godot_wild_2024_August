@@ -21,6 +21,9 @@ cost = {
 "Meat": 0.0,
 "Wood": 100.0
 }
+_built = null
+armor = null
+building_type = null
 supply_cap = 10
 default_rally_point_location = Vector2(0, 90)
 
@@ -49,6 +52,8 @@ max_value = 1.0
 
 [node name="BuildTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="UnitBuildTimer" type="Timer" parent="."]
 
 [connection signal="mouse_entered" from="Visual/Area2D" to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Visual/Area2D" to="." method="_on_mouse_exited"]

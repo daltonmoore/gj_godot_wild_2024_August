@@ -44,25 +44,20 @@ metadata/_edit_lock_ = true
 
 [node name="Worker" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(326, 371)
-movement_speed = 150.0
 metadata/_edit_lock_ = true
 
 [node name="Worker2" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(345, 474)
-movement_speed = 150.0
 metadata/_edit_lock_ = true
 
 [node name="Worker3" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(485, 474)
-movement_speed = 150.0
 
 [node name="Worker4" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(471, 378)
-movement_speed = 150.0
 
 [node name="Worker5" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(212, 412)
-movement_speed = 150.0
 
 [node name="Resources" type="Node2D" parent="."]
 
@@ -110,6 +105,7 @@ default_color = Color(1, 1, 1, 0.447059)
 [node name="Building" parent="." instance=ExtResource("7_jk4y1")]
 position = Vector2(513, 147)
 _built = true
+armor = null
 building_type = 1
 
 [connection signal="path_changed" from="Units/Worker" to="NavigationRegion2D" method="_on_worker_path_changed"]

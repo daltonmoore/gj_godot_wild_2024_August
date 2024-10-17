@@ -1,6 +1,7 @@
 extends TextureButton
 
 @export var unit_to_build : PackedScene
+@export var purchase_type : enums.e_purchase_type
 
 func _ready() -> void:
 	# Owner is always set to the scene's root node
@@ -15,3 +16,5 @@ func _on_button_up() -> void:
 	if _local_unit_scene.can_afford_to_build():
 		get_tree().get_root().add_child(_local_unit_scene)
 		_local_unit_scene.position = SelectionHandler._current_selected_object.get_rally_point_position()
+		SelectionHandler._current_selected_object.queue_build_unit()
+		

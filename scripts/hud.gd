@@ -29,19 +29,24 @@ func update_selection(new_selection : Array):
 		$Root/SelectedUnitInfo/SelectedObjectName.text = new_selection[0].name
 		for detail in new_selection[0].details:
 			if detail is UI_Detail:
-				var h_box = HBoxContainer.new()
-				var pic = TextureRect.new()
-				pic.texture = load(detail.image_one_path)
-				pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-				pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-				pic.custom_minimum_size = Vector2(24, 24)
-				h_box.add_child(pic)
-				
-				var label = Label.new()
-				label.text = str(detail.detail_one)
-				h_box.add_child(label)
-				
-				info_box.add_child(h_box)
+				if detail.detail_one is ProgressBar:
+					var unit_build_progress_bar = ProgressBar.new()
+					new_selection[0].update_unit_build_progress.connect(func(new_value): unit_build_progress_bar = new_value)
+					info_box.add_child(unit_build_progress_bar)
+				else:
+					var h_box = HBoxContainer.new()
+					var pic = TextureRect.new()
+					pic.texture = load(detail.image_one_path)
+					pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+					pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+					pic.custom_minimum_size = Vector2(24, 24)
+					h_box.add_child(pic)
+					
+					var label = Label.new()
+					label.text = str(detail.detail_one)
+					h_box.add_child(label)
+					
+					info_box.add_child(h_box)
 			elif detail is String:
 				$Root/SelectedUnitInfo/UnitPicture.texture = load(detail)
 		if new_selection[0] is Worker:

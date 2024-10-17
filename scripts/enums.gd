@@ -32,3 +32,9 @@ enum e_order_type {
 	gather,
 	move
 }
+
+
+enum e_purchase_type {
+	none,
+	worker
+}
