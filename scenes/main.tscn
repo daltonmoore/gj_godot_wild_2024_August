@@ -105,7 +105,6 @@ default_color = Color(1, 1, 1, 0.447059)
 [node name="Building" parent="." instance=ExtResource("7_jk4y1")]
 position = Vector2(513, 147)
 _built = true
-armor = null
 building_type = 1
 
 [connection signal="path_changed" from="Units/Worker" to="NavigationRegion2D" method="_on_worker_path_changed"]

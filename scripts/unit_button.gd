@@ -14,7 +14,5 @@ func _on_button_down() -> void:
 func _on_button_up() -> void:
 	var _local_unit_scene = unit_to_build.instantiate()
 	if _local_unit_scene.can_afford_to_build():
-		get_tree().get_root().add_child(_local_unit_scene)
-		_local_unit_scene.position = SelectionHandler._current_selected_object.get_rally_point_position()
-		SelectionHandler._current_selected_object.queue_build_unit()
+		SelectionHandler._current_selected_object.queue_build_unit(purchase_type, _local_unit_scene)
 		

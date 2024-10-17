@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+var unit_build_progress_bar : ProgressBar
+
 func _ready() -> void:
 	SelectionHandler.selection_changed.connect(update_selection)
 
@@ -30,9 +32,9 @@ func update_selection(new_selection : Array):
 		for detail in new_selection[0].details:
 			if detail is UI_Detail:
 				if detail.detail_one is ProgressBar:
-					var unit_build_progress_bar = ProgressBar.new()
-					new_selection[0].update_unit_build_progress.connect(func(new_value): unit_build_progress_bar = new_value)
+					unit_build_progress_bar = ProgressBar.new()
 					info_box.add_child(unit_build_progress_bar)
+					new_selection[0].update_unit_build_progress.connect(_update_detail_progress_bar)
 				else:
 					var h_box = HBoxContainer.new()
 					var pic = TextureRect.new()
@@ -60,5 +62,8 @@ func update_selection(new_selection : Array):
 		$Root/BuilderMenu.visible = false
 		$Root/BuildingMenu.visible = false
 
-
+func _update_detail_progress_bar(new_value, max_value) -> void:
+	if unit_build_progress_bar != null:
+		unit_build_progress_bar.max_value = max_value
+		unit_build_progress_bar.value = new_value
 

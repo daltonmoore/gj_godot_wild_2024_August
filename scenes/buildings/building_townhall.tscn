@@ -17,15 +17,15 @@ built_sprite = ExtResource("4_5xs6l")
 total_build_time = 5.0
 building_corners = PackedVector2Array(-140, -80, -140, 80, 140, 80, 140, -80)
 cost = {
-"Gold": 100.0,
-"Meat": 0.0,
-"Wood": 100.0
+1: 100.0,
+2: 100.0,
+3: 0.0
 }
-_built = null
-armor = null
-building_type = null
 supply_cap = 10
 default_rally_point_location = Vector2(0, 90)
+build_times = {
+1: 2.0
+}
 
 [node name="Selection Circle" type="Sprite2D" parent="."]
 visible = false

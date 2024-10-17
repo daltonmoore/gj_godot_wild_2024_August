@@ -361,13 +361,16 @@ radius = 924.15
 [node name="Worker" type="CharacterBody2D"]
 y_sort_enabled = true
 script = ExtResource("1_ybqxx")
+max_resource_holding = null
+collection_rate = null
 movement_speed = 150.0
 cost = {
-"Gold": 0.0,
-"Meat": 50.0,
-"Supply": 1,
-"Wood": 0.0
+1: 0.0,
+2: 0.0,
+3: 50.0,
+4: 1
 }
+confirm_acks = null
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 target_desired_distance = 21.2

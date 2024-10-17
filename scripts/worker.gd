@@ -90,7 +90,7 @@ func _wait_for_can_gather(unit):
 		_resource_goal.sig_can_gather.disconnect(_wait_for_can_gather)
 		_begin_gathering()
 
-func order_move(in_goal, in_order_type : enums.e_order_type):
+func order_move(in_goal, in_order_type : enums.e_order_type, silent := false):
 	_current_order_type = in_order_type
 	
 	if in_order_type == enums.e_order_type.move:
@@ -127,7 +127,7 @@ func order_move(in_goal, in_order_type : enums.e_order_type):
 	else:
 		$AnimatedSprite2D.animation = "walk"
 	
-	super(in_goal, in_order_type)
+	super(in_goal, in_order_type, silent)
 
 func order_deposit_resources(building: Building):
 	_is_turning_in_resources = true
@@ -162,7 +162,7 @@ func _on_resource_exhausted() -> void:
 		$AnimatedSprite2D.animation = "idle"
 
 func _deposit_resources():
-	ResourceManager._add_resource(_current_resource_holding, _current_resource_holding_type)
+	ResourceManager._update_resource(_current_resource_holding, _current_resource_holding_type)
 	_current_resource_holding = 0
 	_holding_resource_bundle = false
 	$AnimatedSprite2D.animation = "idle"

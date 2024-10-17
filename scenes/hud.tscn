@@ -499,6 +499,7 @@ texture_normal = ExtResource("5_4mwhn")
 texture_pressed = ExtResource("8_bpbla")
 script = ExtResource("19_cq2ih")
 unit_to_build = ExtResource("20_1l1xu")
+purchase_type = 1
 metadata/_edit_lock_ = true
 
 [node name="Label" type="Label" parent="Root/BuildingMenu/MainPage/MarginContainer/WorkerButton"]

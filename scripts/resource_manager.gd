@@ -11,11 +11,16 @@ var supply : int
 var supply_cap : int
 
 func _ready() -> void:
-	_add_resource(starting_gold, enums.e_resource_type.gold)
-	_add_resource(starting_wood, enums.e_resource_type.wood)
-	_add_resource(starting_meat, enums.e_resource_type.meat)
+	_update_resource(starting_gold, enums.e_resource_type.gold)
+	_update_resource(starting_wood, enums.e_resource_type.wood)
+	_update_resource(starting_meat, enums.e_resource_type.meat)
 
-func _add_resource(amount : float, type : enums.e_resource_type):
+func _spend_resources(cost):
+	for c in cost:
+		if c != enums.e_resource_type.supply:
+			_update_resource(-cost[c], c)
+
+func _update_resource(amount : float, type : enums.e_resource_type):
 	if type == enums.e_resource_type.none:
 		return
 	

@@ -2,7 +2,12 @@ class_name Unit
 extends CharacterBody2D
 
 @export var movement_speed: float = 4.0
-@export var cost : Dictionary = {"Gold": 0.0,"Wood": 0.0,"Meat": 0.0, "Supply": 1}
+@export var cost : Dictionary = {
+	enums.e_resource_type.gold: 0.0,
+	enums.e_resource_type.wood: 0.0,
+	enums.e_resource_type.meat: 0.0,
+	enums.e_resource_type.supply: 1
+	}
 @export var confirm_acks := []
 
 var details
@@ -28,7 +33,7 @@ func _ready() -> void:
 	navigation_agent.debug_enabled = Globals.debug
 	add_to_group(Globals.unit_group)
 	z_index = Globals.unit_z_index
-	ResourceManager._add_resource(cost["Supply"], enums.e_resource_type.supply)
+	ResourceManager._update_resource(cost[enums.e_resource_type.supply], enums.e_resource_type.supply)
 	
 	confirm_acks.append(load("res://sound/LEOHPAZ_Command_Speech/Human/Human_Confirm_1.wav"))
 	confirm_acks.append(load("res://sound/LEOHPAZ_Command_Speech/Human/Human_Confirm_2.wav"))
@@ -100,9 +105,9 @@ func _on_velocity_computed(safe_velocity: Vector2) -> void:
 	velocity = safe_velocity
 	move_and_slide()
 
-func order_move(in_goal, in_order_type : enums.e_order_type) -> void:
+func order_move(in_goal, in_order_type : enums.e_order_type, silent := false) -> void:
 	var acknowledger = UnitManager.group_get_acknowledger(group_guid)
-	if  acknowledger == null or acknowledger == self:
+	if !silent and acknowledger == null or acknowledger == self:
 		var temp_stream = AudioStreamPlayer2D.new()
 		prints("created stream %s" % temp_stream)
 		temp_stream.stream = confirm_acks[randi_range(0, len(confirm_acks) - 1)]
@@ -127,19 +132,19 @@ func can_afford_to_build() -> bool:
 	var can_afford = true
 	for r in cost:
 		match r:
-			"Gold":
+			enums.e_resource_type.gold:
 				if ResourceManager.gold < cost[r]:
 					can_afford = false
 					break
-			"Wood":
+			enums.e_resource_type.wood:
 				if ResourceManager.wood < cost[r]:
 					can_afford = false
 					break
-			"Meat":
+			enums.e_resource_type.meat:
 				if ResourceManager.meat < cost[r]:
 					can_afford = false
 					break
-			"Suply":
+			enums.e_resource_type.supply:
 				if ResourceManager.supply_cap < cost[r] + ResourceManager.supply:
 					can_afford = false
 					break

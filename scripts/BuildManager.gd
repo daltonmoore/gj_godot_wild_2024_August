@@ -69,15 +69,7 @@ func place_building(event) -> void:
 	(get_tree().get_root().get_node("/root/main/NavigationRegion2D") as NavigationRegion2D).bake_navigation_polygon()
 
 func spend_resources() -> void:
-	var cost = real_instance.cost
-	for r in cost:
-		match r:
-			"Gold":
-				ResourceManager._add_resource(-cost["Gold"], enums.e_resource_type.gold)
-			"Wood":
-				ResourceManager._add_resource(-cost["Wood"], enums.e_resource_type.wood)
-			"Meat":
-				ResourceManager._add_resource(-cost["Meat"], enums.e_resource_type.meat)
+	ResourceManager._spend_resources(real_instance.cost)
 
 func cancel_building_placement(event) -> void:
 	set_ghost(null)
