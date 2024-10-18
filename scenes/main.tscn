@@ -44,20 +44,35 @@ metadata/_edit_lock_ = true
 
 [node name="Worker" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(326, 371)
+max_resource_holding = 5
+collection_rate = 1.1
+confirm_acks = []
 metadata/_edit_lock_ = true
 
 [node name="Worker2" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(345, 474)
+max_resource_holding = 5
+collection_rate = 1.1
+confirm_acks = []
 metadata/_edit_lock_ = true
 
 [node name="Worker3" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(485, 474)
+max_resource_holding = 5
+collection_rate = 1.1
+confirm_acks = []
 
 [node name="Worker4" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(471, 378)
+max_resource_holding = 5
+collection_rate = 1.1
+confirm_acks = []
 
 [node name="Worker5" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(212, 412)
+max_resource_holding = 5
+collection_rate = 1.1
+confirm_acks = []
 
 [node name="Resources" type="Node2D" parent="."]
 

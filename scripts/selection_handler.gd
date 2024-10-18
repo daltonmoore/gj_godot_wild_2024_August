@@ -3,8 +3,8 @@ extends Node2D
 
 signal selection_changed(selection)
 
-
 var mouse_hovered_unit
+var mouse_hovered_ui_element
 var selected_units = []
 
 var _current_selected_object
@@ -15,32 +15,19 @@ var _selection_grid : SelectionGrid
 
 @export var _debug_selection = false
 
-
 # debug vars
 var mouse_hovered_unit_label = Label.new()
 
-
 func _ready() -> void:
 	get_tree().create_timer(.2).timeout.connect(timer_timeout)
-	z_index = Globals.top_z_index
-	
-	# Debug mouse_hovered_unit text
-	#add_child(mouse_hovered_unit_label)
-	#mouse_hovered_unit_label.position = Vector2(200, 300) # is relative pos
-	
+	z_index = Globals.top_z_index # this keeps the select box on top of everything
 	InputManager.left_click_pressed.connect(_select)
 	InputManager.left_click_released.connect(_select)
 
-
 func _process(delta: float) -> void:
 	queue_redraw()
-	#if mouse_hovered_unit != null:
-		#mouse_hovered_unit_label.text = "Hovered Unit: %s" % mouse_hovered_unit.name
-	#else:
-		#mouse_hovered_unit_label.text = "Hovered Unit: None"
 
-
-func _draw():	
+func _draw():
 	if(_stop_drawing_dude):
 		return
 	_select_box.position = _selection_box_start_pos
@@ -51,7 +38,7 @@ func _draw():
 # more info here: https://stackoverflow.com/questions/69981662/godot-input-is-action-just-pressed-runs-twice
 # DOES work I just had two Selection Handlers in the scene because autoload and I had one I put there
 func _select(event):
-	if BuildManager.get_ghost() != null:
+	if BuildManager.get_ghost() != null or mouse_hovered_ui_element != null:
 		return
 	
 	if event.is_pressed():
@@ -59,7 +46,6 @@ func _select(event):
 		_selection_box_start_pos = get_global_mouse_position()
 	elif event.is_released():
 		_handle_click_release()
-
 
 func _handle_click_release():
 	_stop_drawing_dude = true
@@ -104,7 +90,6 @@ func _handle_click_release():
 	
 	_select_units()
 	_select_selectable_objects()
-
 
 func _select_units():
 	var newly_selected_units = []

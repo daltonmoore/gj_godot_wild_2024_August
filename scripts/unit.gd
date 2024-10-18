@@ -67,7 +67,6 @@ func _ready() -> void:
 	var clean_timer = Timer.new()
 	clean_timer.wait_time = .5
 	clean_timer.timeout.connect(func(): 
-		print("cleaning up done streams")
 		var stream = _audio_streams.pop_back()
 		if stream != null and !stream.is_queued_for_deletion() and !stream.playing:
 			stream.queue_free()
