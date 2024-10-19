@@ -11,6 +11,7 @@ signal update_unit_build_progress(new_value, max_value, current_build_item)
 @export var built_sprite : CompressedTexture2D
 @export var total_build_time : float
 @export var building_corners : PackedVector2Array
+## Gold is 2, Wood is 1, Meat is 3
 @export var cost : Dictionary = {
 	enums.e_resource_type.gold: 0.0,
 	enums.e_resource_type.wood: 0.0,
@@ -21,6 +22,7 @@ signal update_unit_build_progress(new_value, max_value, current_build_item)
 @export var building_type := enums.e_building_type.none
 @export var supply_cap := 0
 @export var default_rally_point_location := Vector2.ZERO
+## 1 is Worker purchase type
 @export var build_times : Dictionary = {enums.e_purchase_type.worker: 10.0}
 
 var building_nav_mesh_blocker
@@ -35,8 +37,6 @@ var _current_build_time := 0.0
 var _current_unit_build_time := 0.0
 var _default_cursor = load("res://art/cursors/mmorpg-cursorpack-Narehop/gold-pointer/pointer_8.png")
 var _construction_cursor_texture = load("res://art/cursors/mmorpg-cursorpack-Narehop/gold-pointer/pointer_37.png")
-var _ui_detail_build_queue = UI_Detail.new()
-
 
 func _ready() -> void:
 	_supply_blocked_audio_stream_player = AudioStreamPlayer2D.new()
@@ -77,12 +77,10 @@ func _ready() -> void:
 		enums.e_building_type.townhall:
 			building_picture_path = "res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/Castle/Castle_Blue-export.png"
 	
-	_ui_detail_build_queue.detail_one = ProgressBar.new()
 	
-	details = [ui_detail_one, building_picture_path, _ui_detail_build_queue]
+	details = [ui_detail_one, building_picture_path]
 
 func _process(delta: float) -> void:
-	
 	if !$UnitBuildTimer.is_stopped():
 		_current_unit_build_time += delta
 		update_unit_build_progress.emit(
@@ -97,7 +95,16 @@ func _process(delta: float) -> void:
 		$ProgressBar.value = _current_build_time / total_build_time
 
 func cancel_build_item(build_item) -> void:
-	_build_queue.remove_at(_build_queue.find(build_item))
+	var index = _build_queue.find(build_item)
+	if index == 0:
+		$UnitBuildTimer.stop()
+	
+	_build_queue.remove_at(index)
+	sig_build_queue_updated.emit(_build_queue)
+	if _build_queue.size() > 0:
+		start_building_unit(_build_queue[0].purchase_type)
+	else:
+		sig_unit_build_queue_finished.emit()
 
 # can afford to build the building?
 func can_afford_to_build() -> bool:
@@ -148,9 +155,11 @@ func get_random_point_along_perimeter(pos) -> Vector2:
 	DebugDraw2d.circle(bot_edge_point + position, 10,  16, Color(1, 0, 1), 1, 4)
 	return to_global(bot_edge_point) 
 
+func is_currently_building() -> bool:
+	return _build_queue.size() > 0
+
 func start_building_unit(purchase_type : enums.e_purchase_type) -> void:
 	if $UnitBuildTimer.is_stopped():
-		_ui_detail_build_queue.image_one_path = _build_queue[0].image_path
 		_current_unit_build_time = 0.0
 		$UnitBuildTimer.wait_time = build_times[purchase_type]
 		$UnitBuildTimer.start()
@@ -205,3 +214,4 @@ class build_item:
 	var total_build_time := 5.0
 	var supply_cost
 	var image_path
+

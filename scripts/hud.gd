@@ -4,9 +4,8 @@ extends CanvasLayer
 @onready var info_box = $Root/SelectedUnitInfo/InfoBox
 @onready var supply_texture_rect = $Root/ResourceContainer/SupplyTextureRect
 
-var unit_build_h_box : HBoxContainer
+var unit_current_build_h_box : HBoxContainer
 var unit_build_progress_bar : ProgressBar
-var unit_build_pic : TextureRect
 var unit_build_queue_container : HFlowContainer
 var _old_selection_first_item
 
@@ -48,8 +47,19 @@ func update_selection(new_selection : Array) -> void:
 		_old_selection_first_item = new_selection[0]
 	
 	if new_selection != null and len(new_selection) == 1:
-		$Root/SelectedUnitInfo/SelectedObjectName.text = new_selection[0].name
 		_handle_details(new_selection)
+		
+		# deal with the build queue and progress bar for the building
+		if new_selection[0] is Building:
+			_setup_build_queue(new_selection)
+			_update_build_queue(new_selection[0]._build_queue)
+			
+			if !new_selection[0].is_currently_building():
+				unit_current_build_h_box.visible = false
+			else:
+				unit_current_build_h_box.visible = true
+		
+		$Root/SelectedUnitInfo/SelectedObjectName.text = new_selection[0].name
 		if new_selection[0] is Worker:
 			$Root/BuilderMenu.visible = true
 			$Root/BuildingMenu.visible = false
@@ -78,11 +88,7 @@ func _handle_details(new_selection) -> void:
 			unit_pic.texture = load(detail)
 			unit_pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			unit_pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		elif detail.detail_one is ProgressBar:
-			_construct_unit_build_progress_bar(detail, new_selection[0])
-			unit_build_queue_container = HFlowContainer.new()
-			unit_build_queue_container.name = "UnitBuildQueueContainer"
-			info_box.add_child(unit_build_queue_container)
+			unit_pic.size = Vector2(64, 64)
 		elif detail is UI_Detail:
 			var h_box = HBoxContainer.new()
 			var pic = TextureRect.new()
@@ -98,64 +104,79 @@ func _handle_details(new_selection) -> void:
 			
 			info_box.add_child(h_box)
 
-func _construct_unit_build_progress_bar(detail, current_building) -> void:
-	var h_box = HBoxContainer.new()
-	h_box.name = "UnitBuildHbox"
-	
-	unit_build_pic = TextureRect.new()
-	unit_build_pic.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
-	unit_build_pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	
-	unit_build_progress_bar = ProgressBar.new()
-	unit_build_progress_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	current_building.update_unit_build_progress.connect(_update_unit_build_progress_bar)
-	current_building.sig_unit_build_queue_finished.connect(_hide_unit_build_h_box_bar)
-	current_building.sig_build_queue_updated.connect(_on_build_queue_updated)	
-	
-	h_box.add_child(unit_build_pic)
-	h_box.add_child(unit_build_progress_bar)
-	info_box.add_child(h_box)
-	h_box.visible = false
-	unit_build_h_box = h_box
-
 func _update_unit_build_progress_bar(new_value, max_value, build_queue) -> void:
-	unit_build_h_box.visible = true
+	unit_current_build_h_box.visible = true
 	if unit_build_progress_bar != null:
 		unit_build_progress_bar.max_value = max_value
 		unit_build_progress_bar.value = new_value
 	
-	if (unit_build_pic != null and 
-			(unit_build_pic.texture == null or 
-			unit_build_pic.texture.resource_path != build_queue[0].image_path)):
-		unit_build_pic.texture = load(build_queue[0].image_path)
+	#if (unit_build_pic != null and 
+			#(unit_build_pic.texture == null or 
+			#unit_build_pic.texture.resource_path != build_queue[0].image_path)):
+		#unit_build_pic.texture = load(build_queue[0].image_path)
 
 func _on_build_queue_updated(build_queue) -> void:
-	for child in unit_build_queue_container.get_children():
-		unit_build_queue_container.remove_child(child)
-		child.queue_free()
+	if unit_build_queue_container != null:
+		for child in unit_build_queue_container.get_children():
+			unit_build_queue_container.remove_child(child)
+			child.queue_free()
 	
-	if build_queue.size() <= 1:
-		return
+	for child in unit_current_build_h_box.get_children():
+		if child is TextureButton:
+			unit_current_build_h_box.remove_child(child)
+			child.queue_free()
 	
-	var build_queue_excluding_currently_building = build_queue.duplicate()
-	build_queue_excluding_currently_building.remove_at(0)
-	for build_item in build_queue_excluding_currently_building:
-		var queued_unit_btn = TextureButton.new()
-		var texture = load(build_item.image_path)
-		queued_unit_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-		queued_unit_btn.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-		queued_unit_btn.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
-		queued_unit_btn.ignore_texture_size = true
-		queued_unit_btn.custom_minimum_size = Vector2(16, 16)
-		queued_unit_btn.texture_normal = texture
-		queued_unit_btn.texture_pressed = texture
-		queued_unit_btn.mouse_entered.connect(_mouse_entered_ui_element.bind(queued_unit_btn))
-		queued_unit_btn.pressed.connect(_cancel_build_queue_item.bind(queued_unit_btn, build_item))
+	_update_build_queue(build_queue)
+
+func _setup_build_queue(new_selection) -> void:
+	new_selection[0].update_unit_build_progress.connect(_update_unit_build_progress_bar)
+	unit_current_build_h_box = _construct_currently_building_ui(new_selection[0]._build_queue, new_selection[0])
+	unit_current_build_h_box.name = "UnitBuildHbox"
+	info_box.add_child(unit_current_build_h_box)
+	
+	unit_build_queue_container = HFlowContainer.new()
+	unit_build_queue_container.name = "UnitBuildQueueContainer"
+	info_box.add_child(unit_build_queue_container)
+
+func _update_build_queue(build_queue):
+	for i in len(build_queue):
+		var build_item = build_queue[i]
+		var queued_unit_btn = _construct_unit_texture_button(build_item)
 		
-		unit_build_queue_container.add_child(queued_unit_btn)
+		if i == 0:
+			unit_current_build_h_box.add_child(queued_unit_btn)
+			unit_current_build_h_box.move_child(queued_unit_btn, 0)
+			queued_unit_btn.custom_minimum_size = Vector2(32,32)
+		else:
+			unit_build_queue_container.add_child(queued_unit_btn)
+
+func _construct_currently_building_ui(build_queue, current_building) -> HBoxContainer:
+	var currently_building_h_box = HBoxContainer.new()
+	unit_build_progress_bar = ProgressBar.new()
+	unit_build_progress_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	current_building.sig_unit_build_queue_finished.connect(_hide_unit_build_h_box_bar)
+	current_building.sig_build_queue_updated.connect(_on_build_queue_updated)
+	currently_building_h_box.visible = true
+	currently_building_h_box.add_child(unit_build_progress_bar)
+	return currently_building_h_box
+
+func _construct_unit_texture_button(build_item) -> TextureButton:
+	var texture = load(build_item.image_path)
+	var btn = TextureButton.new()
+	btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	btn.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	btn.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
+	btn.ignore_texture_size = true
+	btn.custom_minimum_size = Vector2(16, 16)
+	btn.texture_normal = texture
+	btn.texture_pressed = texture
+	btn.mouse_entered.connect(_mouse_entered_ui_element.bind(btn))
+	btn.pressed.connect(_cancel_build_queue_item.bind(btn, build_item))
+	
+	return btn
 
 func _hide_unit_build_h_box_bar() -> void:
-	unit_build_h_box.visible = false
+	unit_current_build_h_box.visible = false
 
 func _mouse_entered_ui_element(ui_element) -> void:
 	if ui_element is TextureButton:

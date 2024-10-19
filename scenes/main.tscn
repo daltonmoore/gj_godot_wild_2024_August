@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://cmw2100mkgw3c"]
 
-[ext_resource type="Script" path="res://scenes/2DNavigationRegionServer.gd" id="1_3w4ka"]
+[ext_resource type="Script" path="res://scripts/2DNavigationRegionServer.gd" id="1_3w4ka"]
 [ext_resource type="PackedScene" uid="uid://cjh4kr7do3ddx" path="res://scenes/player.tscn" id="1_skd3a"]
 [ext_resource type="PackedScene" uid="uid://50tod2hsjvde" path="res://scenes/rts_resource_wood.tscn" id="3_bksns"]
 [ext_resource type="PackedScene" uid="uid://b7k5d3rclx1jf" path="res://scenes/rts_resource_gold.tscn" id="4_xu4uk"]
@@ -44,35 +44,20 @@ metadata/_edit_lock_ = true
 
 [node name="Worker" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(326, 371)
-max_resource_holding = 5
-collection_rate = 1.1
-confirm_acks = []
 metadata/_edit_lock_ = true
 
 [node name="Worker2" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(345, 474)
-max_resource_holding = 5
-collection_rate = 1.1
-confirm_acks = []
 metadata/_edit_lock_ = true
 
 [node name="Worker3" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(485, 474)
-max_resource_holding = 5
-collection_rate = 1.1
-confirm_acks = []
 
 [node name="Worker4" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(471, 378)
-max_resource_holding = 5
-collection_rate = 1.1
-confirm_acks = []
 
 [node name="Worker5" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(212, 412)
-max_resource_holding = 5
-collection_rate = 1.1
-confirm_acks = []
 
 [node name="Resources" type="Node2D" parent="."]
 
@@ -112,14 +97,13 @@ limit_left = 0
 limit_top = 0
 camera_bounds = Rect2(0, 0, 2000, 2000)
 
+[node name="BuildingTownHall" parent="." instance=ExtResource("7_jk4y1")]
+position = Vector2(557, 155)
+_built = true
+
 [node name="Line2D" type="Line2D" parent="."]
 points = PackedVector2Array(480, 1206)
 width = 5.0
 default_color = Color(1, 1, 1, 0.447059)
-
-[node name="Building" parent="." instance=ExtResource("7_jk4y1")]
-position = Vector2(513, 147)
-_built = true
-building_type = 1
 
 [connection signal="path_changed" from="Units/Worker" to="NavigationRegion2D" method="_on_worker_path_changed"]

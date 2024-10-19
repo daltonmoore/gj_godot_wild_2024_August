@@ -14,13 +14,14 @@ script = ExtResource("1_mnky4")
 construction_sprite = ExtResource("2_q2feu")
 destroyed_sprite = ExtResource("3_ynhbv")
 built_sprite = ExtResource("4_tj5j3")
-total_build_time = 2.0
+total_build_time = 6.0
 building_corners = PackedVector2Array(50, -50, 50, 50, -50, 50, -50, -50)
 cost = {
-"Gold": 50.0,
-"Meat": 0.0,
-"Wood": 50.0
+1: 25.0,
+2: 0.0,
+3: 0.0
 }
+building_type = 2
 
 [node name="Selection Circle" type="Sprite2D" parent="."]
 visible = false
