@@ -10,10 +10,10 @@ extends CharacterBody2D
 	}
 @export var confirm_acks := []
 
-var details
-var group_guid
 
 # Public Vars
+var details
+var group_guid
 var current_cell: SelectionGridCell:
 	get:
 		return current_cell
@@ -27,9 +27,11 @@ var _in_selection := false
 var _audio_stream_player := AudioStreamPlayer2D.new()
 var _audio_streams := []
 
+@onready var attackable : Attackable
 @onready var navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 
 func _ready() -> void:
+	attackable = $Attackable
 	navigation_agent.debug_enabled = Globals.debug
 	add_to_group(Globals.unit_group)
 	z_index = Globals.unit_z_index

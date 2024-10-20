@@ -63,6 +63,9 @@ position = Vector2(212, 412)
 [node name="Swordsman" parent="Units" instance=ExtResource("4_cdmta")]
 position = Vector2(598, 534)
 
+[node name="Swordsman2" parent="Units" instance=ExtResource("4_cdmta")]
+position = Vector2(695, 587)
+
 [node name="Resources" type="Node2D" parent="."]
 
 [node name="RTS_Resource_Wood" parent="Resources" instance=ExtResource("3_bksns")]
