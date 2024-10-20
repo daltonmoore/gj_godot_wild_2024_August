@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bgdk7aq3pnvep"]
 
 [ext_resource type="Script" path="res://scripts/building_ghost.gd" id="1_bmi0j"]
-[ext_resource type="Texture2D" uid="uid://3u1h8pvneacc" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/Castle/Castle_Blue-export.png" id="2_etaxp"]
+[ext_resource type="Texture2D" uid="uid://iwqikkqyenrh" path="res://art/open game art/barracks.png" id="2_4v3y4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kbjjq"]
 size = Vector2(279, 202)
@@ -14,7 +14,7 @@ position = Vector2(3.5, 0)
 shape = SubResource("RectangleShape2D_kbjjq")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_etaxp")
+texture = ExtResource("2_4v3y4")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]

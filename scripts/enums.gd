@@ -30,11 +30,13 @@ enum e_order_type {
 	build,
 	deposit,
 	gather,
-	move
+	move,
+	attack
 }
 
 
 enum e_purchase_type {
 	none,
-	worker
+	worker,
+	swordsman
 }

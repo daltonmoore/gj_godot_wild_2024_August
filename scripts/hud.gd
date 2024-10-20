@@ -66,6 +66,7 @@ func update_selection(new_selection : Array) -> void:
 		elif new_selection[0] is Building:
 			$Root/BuilderMenu.visible = false
 			$Root/BuildingMenu.visible = true
+			_update_building_menu(new_selection[0])
 	else:
 		unit_pic.texture = null
 		$Root/SelectedUnitInfo/SelectedObjectName.text = "None"
@@ -83,6 +84,9 @@ func _flash_ui_element(ui_element) -> void:
 		await get_tree().create_timer(.2).timeout
 
 func _handle_details(new_selection) -> void:
+	if new_selection[0].details == null:
+		return
+	
 	for detail in new_selection[0].details:
 		if detail is String:
 			unit_pic.texture = load(detail)
@@ -104,6 +108,15 @@ func _handle_details(new_selection) -> void:
 			
 			info_box.add_child(h_box)
 
+func _update_building_menu(new_selection) -> void:
+	match new_selection.building_type:
+		enums.e_building_type.townhall:
+			$Root/BuildingMenu/MainPage/MarginContainer/WorkerButton.visible = true
+			$Root/BuildingMenu/MainPage/SwordsmanButton.visible = false
+		enums.e_building_type.barracks:
+			$Root/BuildingMenu/MainPage/MarginContainer/WorkerButton.visible = false
+			$Root/BuildingMenu/MainPage/SwordsmanButton.visible = true
+
 func _update_unit_build_progress_bar(new_value, max_value, build_queue) -> void:
 	unit_current_build_h_box.visible = true
 	if unit_build_progress_bar != null:
@@ -119,11 +132,13 @@ func _on_build_queue_updated(build_queue) -> void:
 	if unit_build_queue_container != null:
 		for child in unit_build_queue_container.get_children():
 			unit_build_queue_container.remove_child(child)
+			print("freeing %s" % child.name)
 			child.queue_free()
-	
+	print("_____________________________________________________")
 	for child in unit_current_build_h_box.get_children():
 		if child is TextureButton:
 			unit_current_build_h_box.remove_child(child)
+			print("freeing %s" % child.name)
 			child.queue_free()
 	
 	_update_build_queue(build_queue)
@@ -163,6 +178,7 @@ func _construct_currently_building_ui(build_queue, current_building) -> HBoxCont
 func _construct_unit_texture_button(build_item) -> TextureButton:
 	var texture = load(build_item.image_path)
 	var btn = TextureButton.new()
+	btn.name = "unit_build_button_" + str(hash(Time.get_unix_time_from_system()))
 	btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	btn.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	btn.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
@@ -186,8 +202,6 @@ func _mouse_entered_ui_element(ui_element) -> void:
 
 func _cancel_build_queue_item(button, build_item) -> void:
 	SelectionHandler._current_selected_object.cancel_build_item(build_item)
-	unit_build_queue_container.remove_child(button)
-	button.queue_free()
 
 func _handle_building_signal_disconnects(building) -> void:
 	building.sig_build_queue_updated.disconnect(_on_build_queue_updated)

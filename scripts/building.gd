@@ -23,7 +23,7 @@ signal update_unit_build_progress(new_value, max_value, current_build_item)
 @export var supply_cap := 0
 @export var default_rally_point_location := Vector2.ZERO
 ## 1 is Worker purchase type
-@export var build_times : Dictionary = {enums.e_purchase_type.worker: 10.0}
+@export var build_times : Dictionary = {}
 
 var building_nav_mesh_blocker
 var rally_point

@@ -23,6 +23,9 @@ cost = {
 }
 building_type = 1
 supply_cap = 10
+build_times = {
+1: 25.0
+}
 
 [node name="Selection Circle" type="Sprite2D" parent="."]
 visible = false

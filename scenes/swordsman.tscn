@@ -1,0 +1,306 @@
+[gd_scene load_steps=36 format=3 uid="uid://dluhwbliivbp8"]
+
+[ext_resource type="Script" path="res://scripts/swordsman.gd" id="1_ptif3"]
+[ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_j6ccn"]
+[ext_resource type="Texture2D" uid="uid://cdwhvwbnka6tr" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue.png" id="3_h3cef"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]
+radius = 7.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ujx2b"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(0, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yxfx5"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(192, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ikgco"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(384, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tqga4"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(576, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r2kfg"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(768, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mn16f"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(960, 384, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cwdts"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(0, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gquhp"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(192, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2xi0o"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(384, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_87id8"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(576, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_favu4"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(768, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k788b"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(960, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_woq83"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1lh5w"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7m83p"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ocbrq"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vk7gq"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y81eg"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xs5yy"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(0, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pj7vn"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(192, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3yted"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(384, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g8hco"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(576, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wnagj"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(768, 192, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0fmj0"]
+atlas = ExtResource("3_h3cef")
+region = Rect2(960, 192, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_py6nv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ujx2b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yxfx5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ikgco")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tqga4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r2kfg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mn16f")
+}],
+"loop": true,
+"name": &"front_attack_1",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cwdts")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gquhp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2xi0o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_87id8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_favu4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k788b")
+}],
+"loop": true,
+"name": &"front_attack_2",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_woq83")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1lh5w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7m83p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ocbrq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vk7gq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y81eg")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xs5yy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pj7vn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3yted")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g8hco")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wnagj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0fmj0")
+}],
+"loop": true,
+"name": &"run",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kikdj"]
+radius = 225.18
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_n7gtl"]
+radius = 51.0882
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ko4iw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4l5a1"]
+size = Vector2(35, 49)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ynejq"]
+radius = 326.337
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4kigh"]
+radius = 924.15
+
+[node name="Swordsman" type="CharacterBody2D"]
+y_sort_enabled = true
+script = ExtResource("1_ptif3")
+movement_speed = 175.0
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+target_desired_distance = 21.2
+avoidance_enabled = true
+radius = 30.0
+max_speed = 500.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -3)
+shape = SubResource("CircleShape2D_78wmw")
+
+[node name="Selection Circle" type="Sprite2D" parent="."]
+visible = false
+self_modulate = Color(0, 1, 0, 1)
+position = Vector2(0, -6)
+scale = Vector2(0.4375, 0.353125)
+texture = ExtResource("2_j6ccn")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -27)
+sprite_frames = SubResource("SpriteFrames_py6nv")
+animation = &"idle"
+autoplay = "idle"
+metadata/_edit_lock_ = true
+
+[node name="ChaseRadius" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChaseRadius"]
+shape = SubResource("CircleShape2D_kikdj")
+debug_color = Color(0.994425, 0, 0.222291, 0.42)
+
+[node name="WakeTrigger" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WakeTrigger"]
+shape = SubResource("CircleShape2D_n7gtl")
+
+[node name="WeaponTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="WeaponPivot" type="Node2D" parent="."]
+visible = false
+metadata/_edit_group_ = true
+
+[node name="WeaponTrigger" type="Area2D" parent="WeaponPivot"]
+position = Vector2(21, 1.06581e-14)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WeaponPivot/WeaponTrigger"]
+shape = SubResource("CircleShape2D_ko4iw")
+debug_color = Color(0.830114, 0.393404, 3.85046e-07, 0.42)
+
+[node name="Area2D" type="Area2D" parent="."]
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -25)
+shape = SubResource("RectangleShape2D_4l5a1")
+
+[node name="SearchAreaSmall" type="Area2D" parent="."]
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SearchAreaSmall"]
+shape = SubResource("CircleShape2D_ynejq")
+debug_color = Color(0, 0.6, 0.701961, 0)
+
+[node name="SearchAreaLarge" type="Area2D" parent="."]
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SearchAreaLarge"]
+shape = SubResource("CircleShape2D_4kigh")
+debug_color = Color(0, 0.6, 0.701961, 0)
+
+[connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]
+[connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="body_exited" from="ChaseRadius" to="." method="_on_chase_radius_body_exited"]
+[connection signal="body_entered" from="WakeTrigger" to="." method="_on_wake_trigger_body_entered"]
+[connection signal="timeout" from="WeaponTimer" to="." method="_on_weapon_timer_timeout"]
+[connection signal="body_entered" from="WeaponPivot/WeaponTrigger" to="." method="_on_weapon_trigger_body_entered"]
+[connection signal="body_exited" from="WeaponPivot/WeaponTrigger" to="." method="_on_weapon_trigger_body_exited"]

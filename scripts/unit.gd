@@ -76,7 +76,6 @@ func _ready() -> void:
 	add_child(clean_timer)
 	clean_timer.start()
 
-
 func set_movement_target(movement_target: Vector2) -> void:
 	navigation_agent.set_target_position(movement_target)
 
@@ -154,7 +153,6 @@ func _on_navigation_finished() -> void:
 	if group_guid != null and !UnitManager.groups[group_guid].group_stopping:
 		UnitManager.groups[group_guid].group_stopping = true
 		_find_close_in_group_units_and_stop_them()
-
 
 func _find_close_in_group_units_and_stop_them() -> void:
 	for a in $SearchAreaSmall.get_overlapping_areas():

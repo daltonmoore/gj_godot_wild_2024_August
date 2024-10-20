@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://cmw2100mkgw3c"]
+[gd_scene load_steps=10 format=3 uid="uid://cmw2100mkgw3c"]
 
 [ext_resource type="Script" path="res://scripts/2DNavigationRegionServer.gd" id="1_3w4ka"]
 [ext_resource type="PackedScene" uid="uid://cjh4kr7do3ddx" path="res://scenes/player.tscn" id="1_skd3a"]
 [ext_resource type="PackedScene" uid="uid://50tod2hsjvde" path="res://scenes/rts_resource_wood.tscn" id="3_bksns"]
+[ext_resource type="PackedScene" uid="uid://dluhwbliivbp8" path="res://scenes/swordsman.tscn" id="4_cdmta"]
 [ext_resource type="PackedScene" uid="uid://b7k5d3rclx1jf" path="res://scenes/rts_resource_gold.tscn" id="4_xu4uk"]
 [ext_resource type="PackedScene" uid="uid://bbqvgiqtvvj75" path="res://scenes/worker.tscn" id="5_gmj38"]
 [ext_resource type="PackedScene" uid="uid://bg5jrjwfpc88n" path="res://scenes/selection_grid.tscn" id="6_fev7a"]
@@ -58,6 +59,9 @@ position = Vector2(471, 378)
 
 [node name="Worker5" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(212, 412)
+
+[node name="Swordsman" parent="Units" instance=ExtResource("4_cdmta")]
+position = Vector2(598, 534)
 
 [node name="Resources" type="Node2D" parent="."]
 

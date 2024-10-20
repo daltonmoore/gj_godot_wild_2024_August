@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://s7vspcp2kfa4"]
 
 [ext_resource type="Script" path="res://scripts/building.gd" id="1_hioce"]
-[ext_resource type="Texture2D" uid="uid://b8uqks3hooa23" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/Castle/Castle_Construction.png" id="2_nec2u"]
+[ext_resource type="Texture2D" uid="uid://bnvxnqv1u48xg" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/Tower/Tower_Construction.png" id="2_wbwiq"]
 [ext_resource type="Texture2D" uid="uid://bix5k51bgrr7b" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/Castle/Castle_Destroyed.png" id="3_ono4h"]
 [ext_resource type="Texture2D" uid="uid://iwqikkqyenrh" path="res://art/open game art/barracks.png" id="4_fj23l"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="5_ljgri"]
@@ -11,15 +11,19 @@ size = Vector2(285, 181)
 
 [node name="Building" type="Node2D"]
 script = ExtResource("1_hioce")
-construction_sprite = ExtResource("2_nec2u")
+construction_sprite = ExtResource("2_wbwiq")
 destroyed_sprite = ExtResource("3_ono4h")
 built_sprite = ExtResource("4_fj23l")
 total_build_time = 5.0
 building_corners = PackedVector2Array(-140, -80, -140, 80, 140, 80, 140, -80)
 cost = {
-"Gold": 100.0,
-"Meat": 0.0,
-"Wood": 100.0
+1: 175.0,
+2: 0.0,
+3: 0.0
+}
+building_type = 3
+build_times = {
+2: 27.0
 }
 
 [node name="Selection Circle" type="Sprite2D" parent="."]
@@ -47,6 +51,8 @@ max_value = 1.0
 
 [node name="BuildTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="UnitBuildTimer" type="Timer" parent="."]
 
 [connection signal="mouse_entered" from="Visual/Area2D" to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Visual/Area2D" to="." method="_on_mouse_exited"]
