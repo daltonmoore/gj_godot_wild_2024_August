@@ -130,6 +130,9 @@ func _select_selectable_objects():
 	_current_selected_object.set_selection_circle_visible(true)
 	Hud.update_selection([_current_selected_object])
 
+func has_units_selected() -> bool:
+	return selected_units.size() > 0
+
 #TODO: make this wait on a signal instead
 # weird hack to wait for setting selection grid
 func timer_timeout():

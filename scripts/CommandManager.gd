@@ -57,7 +57,7 @@ func _order_units() -> void:
 		var building = CursorManager.current_hovered_inanimate_object as Building
 		if resource != null:
 			for u in SelectionHandler.selected_units:
-				u.gather_resource(resource)
+				u.order_gather_resource(resource)
 		elif building != null:
 			if !building._built:
 				for u in SelectionHandler.selected_units:

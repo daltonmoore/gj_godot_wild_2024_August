@@ -21,18 +21,18 @@ var current_cell: SelectionGridCell:
 		current_cell = value
 
 # Private Vars
+var _audio_stream_player := AudioStreamPlayer2D.new()
+var _audio_streams := []
 var _current_cell_label
 var _current_order_type : enums.e_order_type
 var _in_selection := false
-var _audio_stream_player := AudioStreamPlayer2D.new()
-var _audio_streams := []
+var _targetted_enemy
 
-@onready var attackable : Attackable
-@onready var anim_sprite = $AnimatedSprite2D
+@onready var anim_sprite : AnimatedSprite2D = $AnimatedSprite2D
+@onready var attack_range_area : Area2D = $AttackRangeArea
 @onready var navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 
 func _ready() -> void:
-	attackable = $Attackable
 	navigation_agent.debug_enabled = Globals.debug
 	add_to_group(Globals.unit_group)
 	z_index = Globals.unit_z_index
@@ -42,6 +42,10 @@ func _ready() -> void:
 	confirm_acks.append(load("res://sound/LEOHPAZ_Command_Speech/Human/Human_Confirm_2.wav"))
 	confirm_acks.append(load("res://sound/LEOHPAZ_Command_Speech/Human/Human_Confirm_3.wav"))
 	add_child(_audio_stream_player)
+	
+	if attack_range_area != null:
+		attack_range_area.body_entered.connect(_on_attack_range_body_entered)
+		attack_range_area.body_exited.connect(_on_attack_range_body_exited)
 	
 	# __________________________________________________________________________
 	# Debug name text
@@ -58,8 +62,8 @@ func _ready() -> void:
 	
 	navigation_agent.navigation_finished.connect(_on_navigation_finished)
 	navigation_agent.velocity_computed.connect(Callable(_on_velocity_computed))
-	$Area2D.mouse_entered.connect(on_mouse_overlap)
-	$Area2D.mouse_exited.connect(on_mouse_exit)
+	$Area2D.mouse_entered.connect(_on_mouse_overlap)
+	$Area2D.mouse_exited.connect(_on_mouse_exit)
 	
 	var ui_detail_one = UI_Detail.new()
 	ui_detail_one.image_one_path = "res://art/icons/RPG Graphics Pack - Icons/Pack 1A-Renamed/boot/boot_03.png"
@@ -79,12 +83,6 @@ func _ready() -> void:
 	add_child(clean_timer)
 	clean_timer.start()
 
-func set_movement_target(movement_target: Vector2) -> void:
-	navigation_agent.set_target_position(movement_target)
-
-func set_selection_circle_visible(visible) -> void:
-	$"Selection Circle".visible = visible
-
 func _physics_process(delta: float) -> void:
 	var next_path_position: Vector2 = navigation_agent.get_next_path_position()
 	var new_velocity: Vector2 = global_position.direction_to(next_path_position) * movement_speed
@@ -102,36 +100,24 @@ func _physics_process(delta: float) -> void:
 	if current_cell != null:
 		DebugDraw2d.rect(current_cell.position)
 
-func _on_velocity_computed(safe_velocity: Vector2) -> void:
-	velocity = safe_velocity
-	move_and_slide()
-
 func order_move(in_goal, in_order_type : enums.e_order_type, silent := false) -> void:
-	var acknowledger = UnitManager.group_get_acknowledger(group_guid)
-	if !silent and acknowledger == null or acknowledger == self:
-		var temp_stream = AudioStreamPlayer2D.new()
-		prints("created stream %s" % temp_stream)
-		temp_stream.stream = confirm_acks[randi_range(0, len(confirm_acks) - 1)]
-		_audio_streams.push_back(temp_stream)
-		add_child(temp_stream)
-		temp_stream.play()
-		if group_guid != null:
-			UnitManager.group_set_acknowledger(group_guid, self)
+	_acknowledge(silent)
 	anim_sprite.animation = "run"
 	set_movement_target(in_goal)
 
 func order_attack(enemy):
+	_targetted_enemy = enemy
 	print("Attacking enemy %s" % enemy.name)
+	order_move(enemy.position, enums.e_order_type.attack)
 
 func stop() -> void:
 	set_movement_target(position)
 
-func on_mouse_overlap() -> void:
-	SelectionHandler.mouse_hovered_unit = self
+func set_movement_target(movement_target: Vector2) -> void:
+	navigation_agent.set_target_position(movement_target)
 
-func on_mouse_exit() -> void:
-	if SelectionHandler.mouse_hovered_unit == self:
-		SelectionHandler.mouse_hovered_unit = null
+func set_selection_circle_visible(visible) -> void:
+	$"Selection Circle".visible = visible
 
 func can_afford_to_build() -> bool:
 	var can_afford = true
@@ -156,11 +142,51 @@ func can_afford_to_build() -> bool:
 	
 	return can_afford
 
+func _on_mouse_overlap() -> void:
+	SelectionHandler.mouse_hovered_unit = self
+
+func _on_mouse_exit() -> void:
+	if SelectionHandler.mouse_hovered_unit == self:
+		SelectionHandler.mouse_hovered_unit = null
+
+func _on_velocity_computed(safe_velocity: Vector2) -> void:
+	velocity = safe_velocity
+	move_and_slide()
+
+func _on_attack_range_body_entered(body: Node2D) -> void:
+	if body != _targetted_enemy:
+		return
+	
+	stop()
+	await navigation_agent.navigation_finished
+	_begin_attacking()
+
 func _on_navigation_finished() -> void:
 	anim_sprite.animation = "idle"
-	if group_guid != null and !UnitManager.groups[group_guid].group_stopping:
+	# the goal of checking that the current order type is move is to prevent
+	# the unit stopping early before reaching the enemy/resource
+	if _current_order_type == enums.e_order_type.move and group_guid != null and !UnitManager.groups[group_guid].group_stopping:
 		UnitManager.groups[group_guid].group_stopping = true
 		_find_close_in_group_units_and_stop_them()
+
+func _on_attack_range_body_exited(body: Node2D) -> void:
+	pass # Replace with function body.
+
+func _acknowledge(silent : bool) -> void:
+	var acknowledger = UnitManager.group_get_acknowledger(group_guid)
+	if !silent and acknowledger == null or acknowledger == self:
+		var temp_stream = AudioStreamPlayer2D.new()
+		prints("created stream %s" % temp_stream)
+		temp_stream.stream = confirm_acks[randi_range(0, len(confirm_acks) - 1)]
+		_audio_streams.push_back(temp_stream)
+		add_child(temp_stream)
+		temp_stream.play()
+		if group_guid != null:
+			UnitManager.group_set_acknowledger(group_guid, self)
+
+func _begin_attacking() -> void:
+	#TODO: directional attack
+	anim_sprite.animation = "front_attack_1"
 
 func _find_close_in_group_units_and_stop_them() -> void:
 	for a in $SearchAreaSmall.get_overlapping_areas():

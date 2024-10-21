@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" path="res://scripts/swordsman.gd" id="1_ptif3"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_j6ccn"]
-[ext_resource type="Script" path="res://scripts/attackable.gd" id="2_tkcd2"]
 [ext_resource type="Texture2D" uid="uid://cdwhvwbnka6tr" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue.png" id="3_h3cef"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]
@@ -216,14 +215,14 @@ radius = 326.337
 [sub_resource type="CircleShape2D" id="CircleShape2D_4kigh"]
 radius = 924.15
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_sh5o2"]
+radius = 103.044
+
 [node name="Swordsman" type="CharacterBody2D"]
 y_sort_enabled = true
 script = ExtResource("1_ptif3")
 movement_speed = 175.0
 team = 1
-
-[node name="Attackable" type="Node2D" parent="."]
-script = ExtResource("2_tkcd2")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 target_desired_distance = 21.2
@@ -300,6 +299,12 @@ metadata/_edit_group_ = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SearchAreaLarge"]
 shape = SubResource("CircleShape2D_4kigh")
 debug_color = Color(0, 0.6, 0.701961, 0)
+
+[node name="AttackRangeArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackRangeArea"]
+shape = SubResource("CircleShape2D_sh5o2")
+debug_color = Color(0.996078, 0, 0, 0.129412)
 
 [connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]
 [connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]

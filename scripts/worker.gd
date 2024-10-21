@@ -63,33 +63,6 @@ func _physics_process(delta: float) -> void:
 	if _bundle_instance != null and !_bundle_instance.is_queued_for_deletion():
 		_bundle_instance.flip_h = anim_sprite.flip_h
 
-func _on_navigation_finished() -> void:
-	super()
-	emit_signal("path_changed", [])
-	if (_current_order_type == enums.e_order_type.gather
-			and _resource_goal != null):
-		if _resource_goal.resource_type == enums.e_resource_type.wood:
-			anim_sprite.animation = "chop"
-		assert ($ResourceGatherTick.is_stopped())
-		var b_can_gather = _resource_goal.gather(self)
-		
-		if !b_can_gather:
-			anim_sprite.animation = "idle"
-			assert(_resource_goal.sig_can_gather.is_connected(_wait_for_can_gather) == false)
-			_resource_goal.sig_can_gather.connect(_wait_for_can_gather)
-		else:
-			_begin_gathering()
-	elif _holding_resource_bundle:
-		anim_sprite.animation = "idle_holding"
-		_set_bundle_anim("idle")
-	else:
-		anim_sprite.animation = "idle"
-
-func _wait_for_can_gather(unit):
-	if _resource_goal.gather(self):
-		_resource_goal.sig_can_gather.disconnect(_wait_for_can_gather)
-		_begin_gathering()
-
 func order_move(in_goal, in_order_type : enums.e_order_type, silent := false):
 	super(in_goal, in_order_type, silent)
 	_current_order_type = in_order_type
@@ -131,62 +104,7 @@ func order_deposit_resources(building: Building):
 		navigation_agent.navigation_finished.connect(_deposit_resources)
 	order_move(building.get_random_point_along_perimeter(position), enums.e_order_type.deposit)
 
-func build(building) -> void:
-	print(building)
-	_current_building = building
-	
-	navigation_agent.navigation_finished.connect(_begin_construction)
-	order_move(building.get_random_point_along_perimeter(position), enums.e_order_type.build)
-
-func _begin_construction() -> void:
-	navigation_agent.navigation_finished.disconnect(_begin_construction)
-	anim_sprite.animation = "mine"
-	_current_building.start_building()
-	_current_building.finish_building.connect(_on_finish_construction)
-
-func _on_finish_construction() -> void:
-	_current_building.finish_building.disconnect(_on_finish_construction)
-	_current_building = null
-	anim_sprite.animation = "idle"
-
-func _on_resource_exhausted() -> void:
-	_stop_gathering(false, true)
-	var closest_resource = _find_next_closest_resource()
-	if closest_resource != null:
-		gather_resource(closest_resource)
-	else:
-		anim_sprite.animation = "idle"
-
-func _deposit_resources():
-	ResourceManager._update_resource(_current_resource_holding, _current_resource_holding_type)
-	_current_resource_holding = 0
-	_holding_resource_bundle = false
-	anim_sprite.animation = "idle"
-	if _bundle_instance != null:
-		_bundle_instance.queue_free()
-	
-	if _auto_gather:
-		if _resource_goal != null:
-			gather_resource(_resource_goal)
-		else:
-			var closest_resource = _find_next_closest_resource()
-			print("Resource Goal is Null! finding closest resource")
-			if closest_resource != null:
-				gather_resource(closest_resource)
-
-func _on_resource_gather_tick_timeout():
-	if _resource_goal == null:
-		_stop_gathering(true, true)
-		var closest_resource = _find_next_closest_resource()
-		if closest_resource != null:
-			gather_resource(closest_resource)
-		return
-	_current_resource_holding += _resource_goal.take(1)
-	assert (_current_resource_holding <= max_resource_holding)
-	if _current_resource_holding == max_resource_holding:
-		_stop_gathering(false, true, true)
-
-func gather_resource(resource: RTS_Resource_Base):
+func order_gather_resource(resource: RTS_Resource_Base):
 	if _current_resource_holding >= max_resource_holding:
 		print("Not gathering anymore because holding max resources already")
 		return
@@ -207,6 +125,88 @@ func gather_resource(resource: RTS_Resource_Base):
 	
 	#TODO:when should the unit drop all they are holding?
 	#		AOE2 clears it out when they start collecting a different resource
+
+func build(building) -> void:
+	print(building)
+	_current_building = building
+	
+	navigation_agent.navigation_finished.connect(_begin_construction)
+	order_move(building.get_random_point_along_perimeter(position), enums.e_order_type.build)
+
+func _on_navigation_finished() -> void:
+	super()
+	emit_signal("path_changed", [])
+	if (_current_order_type == enums.e_order_type.gather
+			and _resource_goal != null):
+		if _resource_goal.resource_type == enums.e_resource_type.wood:
+			anim_sprite.animation = "chop"
+		assert ($ResourceGatherTick.is_stopped())
+		var b_can_gather = _resource_goal.gather(self)
+		
+		if !b_can_gather:
+			anim_sprite.animation = "idle"
+			assert(_resource_goal.sig_can_gather.is_connected(_wait_for_can_gather) == false)
+			_resource_goal.sig_can_gather.connect(_wait_for_can_gather)
+		else:
+			_begin_gathering()
+	elif _holding_resource_bundle:
+		anim_sprite.animation = "idle_holding"
+		_set_bundle_anim("idle")
+	else:
+		anim_sprite.animation = "idle"
+
+func _wait_for_can_gather(unit):
+	if _resource_goal.gather(self):
+		_resource_goal.sig_can_gather.disconnect(_wait_for_can_gather)
+		_begin_gathering()
+
+func _begin_construction() -> void:
+	navigation_agent.navigation_finished.disconnect(_begin_construction)
+	anim_sprite.animation = "mine"
+	_current_building.start_building()
+	_current_building.finish_building.connect(_on_finish_construction)
+
+func _on_finish_construction() -> void:
+	_current_building.finish_building.disconnect(_on_finish_construction)
+	_current_building = null
+	anim_sprite.animation = "idle"
+
+func _on_resource_exhausted() -> void:
+	_stop_gathering(false, true)
+	var closest_resource = _find_next_closest_resource()
+	if closest_resource != null:
+		order_gather_resource(closest_resource)
+	else:
+		anim_sprite.animation = "idle"
+
+func _deposit_resources():
+	ResourceManager._update_resource(_current_resource_holding, _current_resource_holding_type)
+	_current_resource_holding = 0
+	_holding_resource_bundle = false
+	anim_sprite.animation = "idle"
+	if _bundle_instance != null:
+		_bundle_instance.queue_free()
+	
+	if _auto_gather:
+		if _resource_goal != null:
+			order_gather_resource(_resource_goal)
+		else:
+			var closest_resource = _find_next_closest_resource()
+			print("Resource Goal is Null! finding closest resource")
+			if closest_resource != null:
+				order_gather_resource(closest_resource)
+
+func _on_resource_gather_tick_timeout():
+	if _resource_goal == null:
+		_stop_gathering(true, true)
+		var closest_resource = _find_next_closest_resource()
+		if closest_resource != null:
+			order_gather_resource(closest_resource)
+		return
+	_current_resource_holding += _resource_goal.take(1)
+	assert (_current_resource_holding <= max_resource_holding)
+	if _current_resource_holding == max_resource_holding:
+		_stop_gathering(false, true, true)
 
 func _begin_gathering():
 	$ResourceGatherTick.start()

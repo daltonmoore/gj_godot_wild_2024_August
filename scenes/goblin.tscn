@@ -1,7 +1,6 @@
-[gd_scene load_steps=32 format=3 uid="uid://bgv3jfx46sn4t"]
+[gd_scene load_steps=31 format=3 uid="uid://bgv3jfx46sn4t"]
 
 [ext_resource type="Script" path="res://scripts/units/enemy/goblin.gd" id="1_pq78i"]
-[ext_resource type="Script" path="res://scripts/attackable.gd" id="2_mag4o"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="3_oisd4"]
 [ext_resource type="Texture2D" uid="uid://ha20xrg7fvf2" path="res://art/Tiny Swords (Update 010)/Factions/Goblins/Troops/Torch/Red/Torch_Red.png" id="4_mqg2b"]
 
@@ -184,14 +183,13 @@ y_sort_enabled = true
 script = ExtResource("1_pq78i")
 team = 2
 
-[node name="Attackable" type="Node2D" parent="."]
-script = ExtResource("2_mag4o")
-
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 target_desired_distance = 21.2
 avoidance_enabled = true
 radius = 30.0
 max_speed = 500.0
+avoidance_layers = 2
+avoidance_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -3)

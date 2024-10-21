@@ -6,13 +6,15 @@ enum cursor_type {
 	default,
 	wood,
 	select,
-	building
+	building,
+	attack
 }
 
 var current_hovered_tile : TileData
 var current_hovered_inanimate_object : Selectable
 
 var _cursor_select = load("res://art/cursors/mmorpg-cursorpack-Narehop/cursors/cursor1.png")
+var _cursor_attack = load("res://art/cursors/mmorpg-cursorpack-Narehop/gold-pointer/pointer_23.png")
 var _cursor_default = load("res://art/cursors/mmorpg-cursorpack-Narehop/cursors/cursor8.png")
 var _current_cursor_type = cursor_type.default
 
@@ -27,8 +29,12 @@ func _mouse_move(event) -> void:
 	
 	# Updating cursor
 	if SelectionHandler.mouse_hovered_unit != null:
-		Input.set_custom_mouse_cursor(_cursor_select)
-		_current_cursor_type = cursor_type.select
+		if cursor_over_enemy() and SelectionHandler.has_units_selected():
+			Input.set_custom_mouse_cursor(_cursor_attack)
+			_current_cursor_type = cursor_type.attack
+		else:
+			Input.set_custom_mouse_cursor(_cursor_select)
+			_current_cursor_type = cursor_type.select
 	else:
 		Input.set_custom_mouse_cursor(_cursor_default)
 		_current_cursor_type = cursor_type.default
