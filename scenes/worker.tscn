@@ -314,7 +314,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_uu114")
 }],
 "loop": true,
-"name": &"walk",
+"name": &"run",
 "speed": 10.0
 }, {
 "frames": [{
@@ -337,7 +337,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_18yvc")
 }],
 "loop": true,
-"name": &"walk_holding",
+"name": &"run_holding",
 "speed": 10.0
 }]
 
@@ -369,6 +369,7 @@ cost = {
 3: 50.0,
 4: 1
 }
+team = 1
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 target_desired_distance = 21.2
@@ -390,7 +391,7 @@ texture = ExtResource("2_smnw2")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -27)
 sprite_frames = SubResource("SpriteFrames_5imfe")
-animation = &"hammer"
+animation = &"run_holding"
 autoplay = "idle"
 metadata/_edit_lock_ = true
 

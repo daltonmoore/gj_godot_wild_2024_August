@@ -52,7 +52,7 @@ func _process(delta: float) -> void:
 	else:
 		_current_cell_label.text = "none cell"
 	
-	if $AnimatedSprite2D.animation == "chop":
+	if anim_sprite.animation == "chop":
 		if !$WoodChop.playing:
 			$WoodChop.play()
 	elif $WoodChop.playing:
@@ -61,7 +61,7 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	super(delta)
 	if _bundle_instance != null and !_bundle_instance.is_queued_for_deletion():
-		_bundle_instance.flip_h = $AnimatedSprite2D.flip_h
+		_bundle_instance.flip_h = anim_sprite.flip_h
 
 func _on_navigation_finished() -> void:
 	super()
@@ -69,21 +69,21 @@ func _on_navigation_finished() -> void:
 	if (_current_order_type == enums.e_order_type.gather
 			and _resource_goal != null):
 		if _resource_goal.resource_type == enums.e_resource_type.wood:
-			$AnimatedSprite2D.animation = "chop"
+			anim_sprite.animation = "chop"
 		assert ($ResourceGatherTick.is_stopped())
 		var b_can_gather = _resource_goal.gather(self)
 		
 		if !b_can_gather:
-			$AnimatedSprite2D.animation = "idle"
+			anim_sprite.animation = "idle"
 			assert(_resource_goal.sig_can_gather.is_connected(_wait_for_can_gather) == false)
 			_resource_goal.sig_can_gather.connect(_wait_for_can_gather)
 		else:
 			_begin_gathering()
 	elif _holding_resource_bundle:
-		$AnimatedSprite2D.animation = "idle_holding"
+		anim_sprite.animation = "idle_holding"
 		_set_bundle_anim("idle")
 	else:
-		$AnimatedSprite2D.animation = "idle"
+		anim_sprite.animation = "idle"
 
 func _wait_for_can_gather(unit):
 	if _resource_goal.gather(self):
@@ -91,6 +91,7 @@ func _wait_for_can_gather(unit):
 		_begin_gathering()
 
 func order_move(in_goal, in_order_type : enums.e_order_type, silent := false):
+	super(in_goal, in_order_type, silent)
 	_current_order_type = in_order_type
 	
 	if in_order_type == enums.e_order_type.move:
@@ -122,12 +123,7 @@ func order_move(in_goal, in_order_type : enums.e_order_type, silent := false):
 		navigation_agent.navigation_finished.disconnect(_deposit_resources)
 	
 	if _holding_resource_bundle:
-		$AnimatedSprite2D.animation = "walk_holding"
-		_set_bundle_anim("walk")
-	else:
-		$AnimatedSprite2D.animation = "walk"
-	
-	super(in_goal, in_order_type, silent)
+		_set_bundle_anim("run")
 
 func order_deposit_resources(building: Building):
 	_is_turning_in_resources = true
@@ -144,14 +140,14 @@ func build(building) -> void:
 
 func _begin_construction() -> void:
 	navigation_agent.navigation_finished.disconnect(_begin_construction)
-	$AnimatedSprite2D.animation = "mine"
+	anim_sprite.animation = "mine"
 	_current_building.start_building()
 	_current_building.finish_building.connect(_on_finish_construction)
 
 func _on_finish_construction() -> void:
 	_current_building.finish_building.disconnect(_on_finish_construction)
 	_current_building = null
-	$AnimatedSprite2D.animation = "idle"
+	anim_sprite.animation = "idle"
 
 func _on_resource_exhausted() -> void:
 	_stop_gathering(false, true)
@@ -159,13 +155,13 @@ func _on_resource_exhausted() -> void:
 	if closest_resource != null:
 		gather_resource(closest_resource)
 	else:
-		$AnimatedSprite2D.animation = "idle"
+		anim_sprite.animation = "idle"
 
 func _deposit_resources():
 	ResourceManager._update_resource(_current_resource_holding, _current_resource_holding_type)
 	_current_resource_holding = 0
 	_holding_resource_bundle = false
-	$AnimatedSprite2D.animation = "idle"
+	anim_sprite.animation = "idle"
 	if _bundle_instance != null:
 		_bundle_instance.queue_free()
 	
@@ -270,10 +266,10 @@ func _set_bundle_anim(type: String):
 			amt = "three"
 	
 	if type == "idle":
-		$AnimatedSprite2D.animation = "idle_holding"
+		anim_sprite.animation = "idle_holding"
 		_bundle_instance.animation = "idle_"+amt+"_bob"
-	elif type == "walk":
-		$AnimatedSprite2D.animation = "walk_holding"
+	elif type == "run":
+		anim_sprite.animation = "run_holding"
 		_bundle_instance.animation = "walking_"+amt+"_bob"
 
 func _find_closest_townhall() -> Building:

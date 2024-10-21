@@ -29,7 +29,7 @@ func _draw() -> void:
 			2)
 
 func _order(event) -> void:
-	if SelectionHandler.selected_units != null:
+	if SelectionHandler.selected_units != null and len(SelectionHandler.selected_units) > 0:
 		_order_units()
 
 
@@ -43,7 +43,7 @@ func _on_resource_selected_flash_timer_timeout():
 
 
 func _order_units() -> void:
-	if BuildManager.get_ghost() != null:
+	if BuildManager.get_ghost() != null or SelectionHandler.selected_units[0].team == enums.e_team.enemy:
 		return
 	
 	if CursorManager.cursor_over_selectable():
@@ -52,9 +52,9 @@ func _order_units() -> void:
 		$SelectedFlashTimer.stop()
 		$SelectedFlashTimer.start()
 		_flash_on = true
-		_flashing_hovered_object = CursorManager.current_hovered_object
-		var resource = CursorManager.current_hovered_object as RTS_Resource_Base
-		var building = CursorManager.current_hovered_object as Building
+		_flashing_hovered_object = CursorManager.current_hovered_inanimate_object
+		var resource = CursorManager.current_hovered_inanimate_object as RTS_Resource_Base
+		var building = CursorManager.current_hovered_inanimate_object as Building
 		if resource != null:
 			for u in SelectionHandler.selected_units:
 				u.gather_resource(resource)
@@ -75,7 +75,10 @@ func _order_units() -> void:
 			if len(SelectionHandler.selected_units) > 1:
 				print()
 				u.group_guid = group_guid
-			u.order_move(get_global_mouse_position(), enums.e_order_type.move)
+			if CursorManager.cursor_over_enemy():
+				u.order_attack(SelectionHandler.mouse_hovered_unit)
+			else:
+				u.order_move(get_global_mouse_position(), enums.e_order_type.move)
 		if group_guid != 0:
 			DebugDraw2d.circle(UnitManager.get_group_average_position(group_guid), 10, 16, Color(1, 0, 1), 1, 5)
 

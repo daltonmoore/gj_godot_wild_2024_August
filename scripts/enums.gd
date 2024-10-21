@@ -40,3 +40,9 @@ enum e_purchase_type {
 	worker,
 	swordsman
 }
+
+enum e_team {
+	none,
+	player,
+	enemy
+}

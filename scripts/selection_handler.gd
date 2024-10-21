@@ -119,10 +119,10 @@ func _select_units():
 		u._in_selection = true
 
 func _select_selectable_objects():
-	if _current_selected_object != CursorManager.current_hovered_object:
+	if _current_selected_object != CursorManager.current_hovered_inanimate_object:
 		if _current_selected_object != null:
 			_current_selected_object.set_selection_circle_visible(false)
-		_current_selected_object = CursorManager.current_hovered_object
+		_current_selected_object = CursorManager.current_hovered_inanimate_object
 	
 	if _current_selected_object == null:
 		return

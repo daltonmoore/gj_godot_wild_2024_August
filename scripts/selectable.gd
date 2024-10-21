@@ -11,7 +11,7 @@ func _on_mouse_entered() -> void:
 
 
 func _on_mouse_exited() -> void:
-	if CursorManager.current_hovered_object == self:
+	if CursorManager.current_hovered_inanimate_object == self:
 		CursorManager.set_current_hovered_object(null)
 		
 

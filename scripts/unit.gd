@@ -1,7 +1,7 @@
 class_name Unit
 extends CharacterBody2D
 
-@export var movement_speed: float = 4.0
+@export var movement_speed: float = 100.0
 @export var cost : Dictionary = {
 	enums.e_resource_type.gold: 0.0,
 	enums.e_resource_type.wood: 0.0,
@@ -9,7 +9,7 @@ extends CharacterBody2D
 	enums.e_resource_type.supply: 1
 	}
 @export var confirm_acks := []
-
+@export var team : enums.e_team
 
 # Public Vars
 var details
@@ -28,6 +28,7 @@ var _audio_stream_player := AudioStreamPlayer2D.new()
 var _audio_streams := []
 
 @onready var attackable : Attackable
+@onready var anim_sprite = $AnimatedSprite2D
 @onready var navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 
 func _ready() -> void:
@@ -116,7 +117,11 @@ func order_move(in_goal, in_order_type : enums.e_order_type, silent := false) ->
 		temp_stream.play()
 		if group_guid != null:
 			UnitManager.group_set_acknowledger(group_guid, self)
+	anim_sprite.animation = "run"
 	set_movement_target(in_goal)
+
+func order_attack(enemy):
+	print("Attacking enemy %s" % enemy.name)
 
 func stop() -> void:
 	set_movement_target(position)
@@ -152,6 +157,7 @@ func can_afford_to_build() -> bool:
 	return can_afford
 
 func _on_navigation_finished() -> void:
+	anim_sprite.animation = "idle"
 	if group_guid != null and !UnitManager.groups[group_guid].group_stopping:
 		UnitManager.groups[group_guid].group_stopping = true
 		_find_close_in_group_units_and_stop_them()

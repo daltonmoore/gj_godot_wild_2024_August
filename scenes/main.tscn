@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cmw2100mkgw3c"]
+[gd_scene load_steps=11 format=3 uid="uid://cmw2100mkgw3c"]
 
 [ext_resource type="Script" path="res://scripts/2DNavigationRegionServer.gd" id="1_3w4ka"]
 [ext_resource type="PackedScene" uid="uid://cjh4kr7do3ddx" path="res://scenes/player.tscn" id="1_skd3a"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dluhwbliivbp8" path="res://scenes/swordsman.tscn" id="4_cdmta"]
 [ext_resource type="PackedScene" uid="uid://b7k5d3rclx1jf" path="res://scenes/rts_resource_gold.tscn" id="4_xu4uk"]
 [ext_resource type="PackedScene" uid="uid://bbqvgiqtvvj75" path="res://scenes/worker.tscn" id="5_gmj38"]
+[ext_resource type="PackedScene" uid="uid://bgv3jfx46sn4t" path="res://scenes/goblin.tscn" id="5_noj73"]
 [ext_resource type="PackedScene" uid="uid://bg5jrjwfpc88n" path="res://scenes/selection_grid.tscn" id="6_fev7a"]
 [ext_resource type="PackedScene" uid="uid://blr4k6u27v7fn" path="res://scenes/buildings/building_townhall.tscn" id="7_jk4y1"]
 
@@ -65,6 +66,9 @@ position = Vector2(598, 534)
 
 [node name="Swordsman2" parent="Units" instance=ExtResource("4_cdmta")]
 position = Vector2(695, 587)
+
+[node name="Goblin" parent="Units" instance=ExtResource("5_noj73")]
+position = Vector2(977, 592)
 
 [node name="Resources" type="Node2D" parent="."]
 
