@@ -1,6 +1,7 @@
 class_name Unit
 extends CharacterBody2D
 
+@export var attack_animations : Dictionary = {}
 @export var movement_speed: float = 100.0
 @export var cost : Dictionary = {
 	enums.e_resource_type.gold: 0.0,
@@ -30,6 +31,7 @@ var _targetted_enemy
 
 @onready var anim_sprite : AnimatedSprite2D = $AnimatedSprite2D
 @onready var attack_range_area : Area2D = $AttackRangeArea
+@onready var facing : RayCast2D = $Facing
 @onready var navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 
 func _ready() -> void:
@@ -91,6 +93,10 @@ func _physics_process(delta: float) -> void:
 		navigation_agent.set_velocity(new_velocity)
 	else:
 		_on_velocity_computed(new_velocity)
+	
+	if facing != null:
+		facing.target_position = new_velocity
+		DebugDraw2d.arrow_vector(position, new_velocity)
 	
 	if new_velocity.dot(Vector2.RIGHT) < 0:
 		$AnimatedSprite2D.flip_h = true
@@ -187,6 +193,13 @@ func _acknowledge(silent : bool) -> void:
 func _begin_attacking() -> void:
 	#TODO: directional attack
 	anim_sprite.animation = "front_attack_1"
+	var _unit_to_enemy = position.direction_to(_targetted_enemy.position)
+	var _b_enemy_is_above_me = Vector2.UP.dot(_unit_to_enemy) > 0
+	var _b_enemy_is_right_of_me = Vector2.RIGHT.dot(_unit_to_enemy) > 0
+	print("above? %s" % _b_enemy_is_above_me)
+	print("right? %s" % _b_enemy_is_right_of_me)
+	if _b_enemy_is_above_me:
+		anim_sprite.animation = attack_animations["up"][0]
 
 func _find_close_in_group_units_and_stop_them() -> void:
 	for a in $SearchAreaSmall.get_overlapping_areas():
