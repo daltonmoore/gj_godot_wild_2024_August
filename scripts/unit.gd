@@ -99,9 +99,9 @@ func _physics_process(delta: float) -> void:
 		DebugDraw2d.arrow_vector(position, new_velocity)
 	
 	if new_velocity.dot(Vector2.RIGHT) < 0:
-		$AnimatedSprite2D.flip_h = true
+		anim_sprite.flip_h = true
 	else:
-		$AnimatedSprite2D.flip_h = false
+		anim_sprite.flip_h = false
 	
 	if current_cell != null:
 		DebugDraw2d.rect(current_cell.position)
@@ -191,15 +191,25 @@ func _acknowledge(silent : bool) -> void:
 			UnitManager.group_set_acknowledger(group_guid, self)
 
 func _begin_attacking() -> void:
-	#TODO: directional attack
 	anim_sprite.animation = "front_attack_1"
 	var _unit_to_enemy = position.direction_to(_targetted_enemy.position)
-	var _b_enemy_is_above_me = Vector2.UP.dot(_unit_to_enemy) > 0
-	var _b_enemy_is_right_of_me = Vector2.RIGHT.dot(_unit_to_enemy) > 0
-	print("above? %s" % _b_enemy_is_above_me)
-	print("right? %s" % _b_enemy_is_right_of_me)
-	if _b_enemy_is_above_me:
-		anim_sprite.animation = attack_animations["up"][0]
+	var _up_dot_unit_to_enemy = Vector2.UP.dot(_unit_to_enemy)
+	var _right_dot_unit_to_enemy = Vector2.RIGHT.dot(_unit_to_enemy)
+	print("above dot %s" % _up_dot_unit_to_enemy)
+	print("right dot %s" % _right_dot_unit_to_enemy)
+	
+	# up or down takes over
+	if abs(_up_dot_unit_to_enemy) > abs(_right_dot_unit_to_enemy):
+		if _up_dot_unit_to_enemy > 0:
+			anim_sprite.animation = attack_animations["up"][0]
+		else:
+			anim_sprite.animation = attack_animations["down"][0]
+	else:
+		anim_sprite.animation = attack_animations["front"][0]
+		if _right_dot_unit_to_enemy > 0:
+			anim_sprite.flip_h = false
+		else:
+			anim_sprite.flip_h = true
 
 func _find_close_in_group_units_and_stop_them() -> void:
 	for a in $SearchAreaSmall.get_overlapping_areas():
