@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://ha20xrg7fvf2" path="res://art/Tiny Swords (Update 010)/Factions/Goblins/Troops/Torch/Red/Torch_Red.png" id="4_mqg2b"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]
-radius = 7.0
+radius = 18.0278
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g31lm"]
 atlas = ExtResource("4_mqg2b")
@@ -213,6 +213,8 @@ metadata/_edit_lock_ = true
 
 [node name="ChaseRadius" type="Area2D" parent="."]
 visible = false
+monitoring = false
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ChaseRadius"]
 shape = SubResource("CircleShape2D_kikdj")
@@ -220,6 +222,8 @@ debug_color = Color(0.994425, 0, 0.222291, 0.42)
 
 [node name="WakeTrigger" type="Area2D" parent="."]
 visible = false
+monitoring = false
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WakeTrigger"]
 shape = SubResource("CircleShape2D_n7gtl")
@@ -240,6 +244,8 @@ shape = SubResource("CircleShape2D_ko4iw")
 debug_color = Color(0.830114, 0.393404, 3.85046e-07, 0.42)
 
 [node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
 metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
@@ -262,9 +268,6 @@ metadata/_edit_group_ = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SearchAreaLarge"]
 shape = SubResource("CircleShape2D_4kigh")
 debug_color = Color(0, 0.6, 0.701961, 0)
-
-[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
-vertices = PackedVector2Array(-18, -50, -17, -1, 17, -1, 17, -50)
 
 [connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]
 [connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]

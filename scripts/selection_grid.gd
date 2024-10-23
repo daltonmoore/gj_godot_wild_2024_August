@@ -21,22 +21,24 @@ func _ready() -> void:
 	for i in grid_height:
 		for k in grid_width:
 			var pos = Vector2(x, y) + grid_start_offset
-			if debug:
-				DebugDraw2d.rect(pos, size, Color(1, 0, 1), 1, INF)
-			
 			var cell = selection_grid_cell.instantiate()
+			var cell_collision_shape = (cell.get_child(0) as CollisionShape2D)
 			cell.position = pos
-			(cell.get_child(0) as CollisionShape2D).shape.size = size
+			cell_collision_shape.shape.size = size
 			cell.grid_pos = Vector2(x/size.x, y/size.x) 
 			cell.grid_index = cell.grid_pos.x + (cell.grid_pos.y * grid_width)
 			add_child(cell)
 			
 			if debug:
+				cell_collision_shape.debug_color = Color(1,0,1,.1)
+				DebugDraw2d.rect(pos, size, Color(1, 0, 1), 1, INF)
 				# Debug coordinate text
 				var label = Label.new()
 				label.text = "%.v" % cell.grid_pos
 				cell.add_child(label)
 				label.position = Vector2(-size.x/2,-size.x/2) # is relative pos
+			else:
+				cell_collision_shape.debug_color = Color(0,0,0,0)
 			
 			cell_dict[cell.grid_pos] = cell
 			x+=size.x

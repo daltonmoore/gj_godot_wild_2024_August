@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://b6afaav2w8fko"]
+
+[ext_resource type="Texture2D" uid="uid://bao6i8x4ppt4o" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Archer/Arrow/Arrow.png" id="1_6r00v"]
+[ext_resource type="Script" path="res://scripts/units/grid_locked_unit.gd" id="2_oyx2a"]
+[ext_resource type="Texture2D" uid="uid://bgc0ik3fkd4di" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Archer/Blue/Archer_Blue.png" id="3_bgqpq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4yi2e"]
+atlas = ExtResource("1_6r00v")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6jal2"]
+atlas = ExtResource("3_bgqpq")
+region = Rect2(48, 240, 96, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ak8r2"]
+size = Vector2(48, 48)
+
+[node name="GridLockedUnit" type="Sprite2D" groups=["friendly_units"]]
+texture = SubResource("AtlasTexture_4yi2e")
+script = ExtResource("2_oyx2a")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = SubResource("AtlasTexture_6jal2")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+collision_mask = 4
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_ak8r2")
+disabled = true

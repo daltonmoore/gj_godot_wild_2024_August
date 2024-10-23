@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cdwhvwbnka6tr" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue.png" id="3_h3cef"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]
-radius = 7.0
+radius = 20.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wl51v"]
 atlas = ExtResource("3_h3cef")

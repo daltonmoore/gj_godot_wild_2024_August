@@ -57,4 +57,3 @@ func _update_resource(amount : float, type : enums.e_resource_type):
 			changed_value = supply_cap
 	
 	Hud.update_resource(type, changed_value)
-

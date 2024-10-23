@@ -89,7 +89,3 @@ func build(building) -> void:
 func free() -> void:
 	InputManager.right_click.disconnect(_order)
 	super()
-
-
-
-

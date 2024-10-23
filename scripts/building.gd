@@ -214,4 +214,3 @@ class build_item:
 	var total_build_time := 5.0
 	var supply_cost
 	var image_path
-

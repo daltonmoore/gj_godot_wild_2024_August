@@ -393,10 +393,12 @@ offset_top = -208.0
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 0
+current_tab = 0
 tabs_visible = false
 
 [node name="MainPage" type="TabBar" parent="Root/BuilderMenu"]
 layout_mode = 2
+metadata/_tab_index = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="Root/BuilderMenu/MainPage"]
 layout_mode = 2
@@ -442,6 +444,7 @@ autowrap_mode = 2
 [node name="SimpleBuildings" type="TabBar" parent="Root/BuilderMenu"]
 visible = false
 layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="MarginContainer2" type="MarginContainer" parent="Root/BuilderMenu/SimpleBuildings"]
 layout_mode = 2
@@ -573,12 +576,14 @@ offset_top = -208.0
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 0
+current_tab = 0
 tabs_visible = false
 metadata/_edit_lock_ = true
 
 [node name="MainPage" type="TabBar" parent="Root/BuildingMenu"]
 layout_mode = 2
 metadata/_edit_lock_ = true
+metadata/_tab_index = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="Root/BuildingMenu/MainPage"]
 layout_mode = 2
@@ -653,6 +658,7 @@ autowrap_mode = 2
 [node name="SimpleBuildings" type="TabBar" parent="Root/BuildingMenu"]
 visible = false
 layout_mode = 2
+metadata/_tab_index = 1
 
 [connection signal="button_down" from="Root/VBoxContainer/SelectedUnitActionsContainer2/AspectRatioContainer/SimpleBuildings" to="." method="_on_simple_buildings_button_down"]
 [connection signal="button_up" from="Root/VBoxContainer/SelectedUnitActionsContainer2/AspectRatioContainer/SimpleBuildings" to="." method="_on_simple_buildings_button_up"]

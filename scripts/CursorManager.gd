@@ -62,11 +62,3 @@ func cursor_over_resource() -> bool:
 
 func set_current_hovered_object(object):
 	current_hovered_inanimate_object = object
-
-
-
-
-
-
-
-

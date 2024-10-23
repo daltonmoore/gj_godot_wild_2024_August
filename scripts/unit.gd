@@ -11,6 +11,7 @@ extends CharacterBody2D
 	}
 @export var confirm_acks := []
 @export var team : enums.e_team
+@export var attack_range := 100.0
 
 # Public Vars
 var details
@@ -105,6 +106,11 @@ func _physics_process(delta: float) -> void:
 	
 	if current_cell != null:
 		DebugDraw2d.rect(current_cell.position)
+	
+	if _targetted_enemy != null: #and  <= attack_range:
+		print(position.distance_to(_targetted_enemy.position))
+		if position.distance_to(_targetted_enemy.position) <= attack_range:
+			DebugDraw2d.circle(position, attack_range, 16, Color.RED, 1, 0)
 
 func order_move(in_goal, in_order_type : enums.e_order_type, silent := false) -> void:
 	_acknowledge(silent)
@@ -159,14 +165,6 @@ func _on_velocity_computed(safe_velocity: Vector2) -> void:
 	velocity = safe_velocity
 	move_and_slide()
 
-func _on_attack_range_body_entered(body: Node2D) -> void:
-	if body != _targetted_enemy:
-		return
-	
-	stop()
-	await navigation_agent.navigation_finished
-	_begin_attacking()
-
 func _on_navigation_finished() -> void:
 	anim_sprite.animation = "idle"
 	# the goal of checking that the current order type is move is to prevent
@@ -174,6 +172,20 @@ func _on_navigation_finished() -> void:
 	if _current_order_type == enums.e_order_type.move and group_guid != null and !UnitManager.groups[group_guid].group_stopping:
 		UnitManager.groups[group_guid].group_stopping = true
 		_find_close_in_group_units_and_stop_them()
+	
+	# TODO: auto-attack
+	#if _current_order_type != enums.e_order_type.attack:
+		#_find_closest_enemy()
+
+func _on_attack_range_body_entered(body: Node2D) -> void:
+	push_warning("Not doing anything when attack range area is entered")
+	return
+	if body != _targetted_enemy:
+		return
+	
+	stop()
+	await navigation_agent.navigation_finished
+	_begin_attacking()
 
 func _on_attack_range_body_exited(body: Node2D) -> void:
 	pass # Replace with function body.
@@ -220,5 +232,3 @@ func _find_close_in_group_units_and_stop_them() -> void:
 			if UnitManager.groups.has(group_guid) and unit.group_guid == group_guid:
 				unit.stop()
 	UnitManager.groups[group_guid].group_stopping = false
-
-
