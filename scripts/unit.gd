@@ -88,6 +88,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	var next_path_position: Vector2 = navigation_agent.get_next_path_position()
+	print(global_position)
 	var new_velocity: Vector2 = global_position.direction_to(next_path_position) * movement_speed
 	
 	if navigation_agent.avoidance_enabled:
@@ -126,6 +127,7 @@ func stop() -> void:
 	set_movement_target(position)
 
 func set_movement_target(movement_target: Vector2) -> void:
+	var temp_global_pos = global_position
 	navigation_agent.set_target_position(movement_target)
 
 func set_selection_circle_visible(visible) -> void:

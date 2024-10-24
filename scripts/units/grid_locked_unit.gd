@@ -1,7 +1,9 @@
+class_name GridLockedUnit
 extends Sprite2D
 
 @export var move_speed := 0.5
 @export var line : Line2D
+@export var grid_size: Vector2 = Vector2(16,16)
 
 @onready var tile_map_layer: TileMapLayer = $"../TileMapLayer"
 @onready var sprite_2d: Sprite2D = $Sprite2D
@@ -10,16 +12,20 @@ extends Sprite2D
 
 var astar_grid: AStarGrid2D
 var current_path : Array[Vector2i]
-var last_mouse_pos : Vector2
 var is_moving = false
 
+var _move_to: Vector2
+var _try_count: int = 0
+var _max_try_count: int = 5
+
 func _ready() -> void:
-	InputManager.left_click_released.connect(_on_left_click_release)
+	z_index = Globals.top_z_index
+	#InputManager.left_click_released.connect(_on_left_click_release)
 	
 	astar_grid = AStarGrid2D.new()
 	astar_grid.region = tile_map_layer.get_used_rect()
-	astar_grid.cell_size = Vector2(48, 48)
-	astar_grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
+	astar_grid.cell_size = grid_size
+	astar_grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_ALWAYS
 	astar_grid.update()
 	
 	var region_size = astar_grid.region.size
@@ -52,7 +58,6 @@ func _on_left_click_release(_event) -> void:
 	if is_moving:
 		return
 	
-	last_mouse_pos = get_global_mouse_position()
 	move()
 	#move_old(global_position.direction_to(get_global_mouse_position()).round())
 
@@ -86,32 +91,28 @@ func move_old(direction: Vector2):
 	
 	sprite_2d.global_position = tile_map_layer.map_to_local(current_tile)
 
+func set_move_to(move_to):
+	_move_to = move_to
+
 func move():
-	var friendly_units = get_tree().get_nodes_in_group("friendly_units")
-	var occupied_positions = []
+	current_path = _get_path(_move_to)
 	
-	for unit in friendly_units:
-		if unit == self:
-			continue
-		
-		occupied_positions.append(tile_map_layer.local_to_map(unit.global_position))
-	
-	for pos in occupied_positions:
-		astar_grid.set_point_solid(pos)
-	
-	current_path = astar_grid.get_id_path(
-		tile_map_layer.local_to_map(global_position),
-		tile_map_layer.local_to_map(last_mouse_pos)
-	)
-	
-	for pos in occupied_positions:
-		astar_grid.set_point_solid(pos, false)
-	
-	# remove current position from path
-	current_path.pop_front()
-	
-	if current_path.is_empty():
+	while current_path.is_empty() and _try_count < _max_try_count:
+		if global_position == _move_to:
+			print("Reached destination")
+			_try_count = 0
+			return
+		_try_count += 1
 		print("can't find path")
+		await get_tree().create_timer(.1).timeout
+		# try again
+		var pos_just_before_destination = _move_to.direction_to(global_position)*grid_size + _move_to
+		var _just_before_tile_pos = tile_map_layer.local_to_map(pos_just_before_destination)
+		DebugDraw2d.rect(tile_map_layer.map_to_local(_just_before_tile_pos), grid_size, Color.RED,1, 2)
+		current_path = _get_path(pos_just_before_destination)
+	
+	_try_count = 0
+	if current_path.is_empty():
 		return
 	
 	var orignal_position = Vector2(global_position)
@@ -124,3 +125,29 @@ func move():
 	for point in current_path:
 		debug_array_of_points_in_global.append(tile_map_layer.map_to_local(point))
 	line.points = PackedVector2Array(debug_array_of_points_in_global)
+
+func _get_path(dest) -> Array[Vector2i]:
+	var friendly_units = get_tree().get_nodes_in_group("friendly_units")
+	var occupied_positions = []
+	
+	for unit in friendly_units:
+		if unit == self:
+			continue
+		
+		occupied_positions.append(tile_map_layer.local_to_map(unit.global_position))
+	
+	for pos in occupied_positions:
+		astar_grid.set_point_solid(pos)
+	
+	var path = astar_grid.get_id_path(
+		tile_map_layer.local_to_map(global_position),
+		tile_map_layer.local_to_map(dest)
+	)
+	
+	for pos in occupied_positions:
+		astar_grid.set_point_solid(pos, false)
+	
+	# remove current position from path
+	path.pop_front()
+	
+	return path

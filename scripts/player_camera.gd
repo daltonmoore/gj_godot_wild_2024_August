@@ -3,6 +3,7 @@ extends Camera2D
 
 @export var camera_speed: float
 @export var camera_bounds: Rect2
+@export var edge_scroll: bool
 
 var _zoom_pos
 
@@ -23,20 +24,22 @@ func _physics_process(delta: float) -> void:
 	var horz_direction := Input.get_axis("Left", "Right")
 	var vert_direction := Input.get_axis("Up", "Down")
 	
-	var viewport_rect = get_viewport().get_visible_rect()
-	if (get_local_mouse_position().x > (viewport_rect.size.x / zoom.x / 2) - 20): # right boundary
-		DebugDraw2d.circle(get_global_mouse_position(), 10, 16, Color.GREEN)
-		horz_direction = 1
-	elif (get_local_mouse_position().x < -(viewport_rect.size.x / zoom.x / 2) + 20): # left boundary
-		DebugDraw2d.circle(get_global_mouse_position(), 10, 16, Color.GREEN)
-		horz_direction = -1
-	
-	if (get_local_mouse_position().y > (viewport_rect.size.y / zoom.y / 2) - 20): # bottom boundary
-		DebugDraw2d.circle(get_global_mouse_position(), 10, 16, Color.GREEN)
-		vert_direction = 1
-	elif (get_local_mouse_position().y < -(viewport_rect.size.y / zoom.y / 2) + 20): # top boundary
-		DebugDraw2d.circle(get_global_mouse_position(), 10, 16, Color.GREEN)
-		vert_direction = -1
+	# edge scroll
+	if edge_scroll:
+		var viewport_rect = get_viewport().get_visible_rect()
+		if (get_local_mouse_position().x > (viewport_rect.size.x / zoom.x / 2) - 20): # right boundary
+			DebugDraw2d.circle(get_global_mouse_position(), 10, 16, Color.GREEN)
+			horz_direction = 1
+		elif (get_local_mouse_position().x < -(viewport_rect.size.x / zoom.x / 2) + 20): # left boundary
+			DebugDraw2d.circle(get_global_mouse_position(), 10, 16, Color.GREEN)
+			horz_direction = -1
+		
+		if (get_local_mouse_position().y > (viewport_rect.size.y / zoom.y / 2) - 20): # bottom boundary
+			DebugDraw2d.circle(get_global_mouse_position(), 10, 16, Color.GREEN)
+			vert_direction = 1
+		elif (get_local_mouse_position().y < -(viewport_rect.size.y / zoom.y / 2) + 20): # top boundary
+			DebugDraw2d.circle(get_global_mouse_position(), 10, 16, Color.GREEN)
+			vert_direction = -1
 	
 	
 	position += Vector2(horz_direction * camera_speed * delta, 
@@ -58,5 +61,3 @@ func _input(event: InputEvent) -> void:
 				_zoom_pos = get_global_mouse_position()
 				# call the zoom function
 				zoom /= 1.05
-
-
