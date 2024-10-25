@@ -13,7 +13,7 @@ func _ready() -> void:
 	z_index = Globals.background_z_index
 	$SelectedFlashTimer.timeout.connect(_on_resource_selected_flash_timer_timeout)
 	$SelectedFlashTimer.wait_time = _flash_rate
-	InputManager.right_click_pressed.connect(_order)
+	#TODO: COME BACK AND UNCOMMENT THIS InputManager.right_click_pressed.connect(_order)
 
 
 func _process(delta: float) -> void:

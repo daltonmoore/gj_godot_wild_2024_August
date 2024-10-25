@@ -4,6 +4,8 @@ extends Camera2D
 @export var camera_speed: float
 @export var camera_bounds: Rect2
 @export var edge_scroll: bool
+@export_range(.7, 1) var min_zoom: float = .7
+@export_range(1.1, 2) var max_zoom: float = 2
 
 var _zoom_pos
 
@@ -25,8 +27,9 @@ func _physics_process(delta: float) -> void:
 	var vert_direction := Input.get_axis("Up", "Down")
 	
 	# edge scroll
+	var viewport_rect = get_viewport().get_visible_rect()
+	
 	if edge_scroll:
-		var viewport_rect = get_viewport().get_visible_rect()
 		if (get_local_mouse_position().x > (viewport_rect.size.x / zoom.x / 2) - 20): # right boundary
 			DebugDraw2d.circle(get_global_mouse_position(), 10, 16, Color.GREEN)
 			horz_direction = 1
@@ -41,10 +44,11 @@ func _physics_process(delta: float) -> void:
 			DebugDraw2d.circle(get_global_mouse_position(), 10, 16, Color.GREEN)
 			vert_direction = -1
 	
-	
 	position += Vector2(horz_direction * camera_speed * delta, 
 			vert_direction * camera_speed * delta)
-	position = position.clamp(Vector2.ZERO, camera_bounds.size)
+	var clamp_min = (viewport_rect.size / 2) / zoom
+	var clamp_max = camera_bounds.size - (viewport_rect.size / 2 / zoom)
+	position = position.clamp(clamp_min, clamp_max)
 	DebugDraw2d.circle(position)
 	
 
@@ -61,3 +65,4 @@ func _input(event: InputEvent) -> void:
 				_zoom_pos = get_global_mouse_position()
 				# call the zoom function
 				zoom /= 1.05
+			zoom = zoom.clampf(min_zoom, max_zoom)

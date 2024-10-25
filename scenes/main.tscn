@@ -3341,9 +3341,9 @@ custom_data_layer_0/type = 1
 sources/0 = SubResource("TileSetAtlasSource_wtqwk")
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_60m1h"]
-vertices = PackedVector2Array(2738.98, 37.9609, 2735.01, 2373.98, 21.9297, 2370.01, 7.0625, 27.0391)
+vertices = PackedVector2Array(1972, 1972, -4, 1972, -4, -4, 1972, -4)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-3, 17, 12, 2380, 2745, 2384, 2749, 28)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-24, -24, -24, 1992, 1992, 1992, 1992, -24)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 
 [node name="main" type="Node2D"]
@@ -3351,7 +3351,6 @@ metadata/_edit_lock_ = true
 
 [node name="FormationManager" type="Node2D" parent="."]
 script = ExtResource("14_7yv5r")
-__debug_test_grid_locked_units = [NodePath("../GridLockedUnit"), NodePath("../GridLockedUnit2"), NodePath("../GridLockedUnit3"), NodePath("../GridLockedUnit4")]
 metadata/_edit_lock_ = true
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
@@ -3367,7 +3366,6 @@ metadata/_edit_lock_ = true
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="." node_paths=PackedStringArray("line")]
 navigation_polygon = SubResource("NavigationPolygon_60m1h")
-enabled = false
 script = ExtResource("1_3w4ka")
 line = NodePath("../Line2D")
 metadata/_edit_lock_ = true
@@ -3452,9 +3450,11 @@ position = Vector2(720, 451)
 position = Vector2(908, 101)
 
 [node name="Player" parent="." instance=ExtResource("1_skd3a")]
-position = Vector2(587, 332)
+position = Vector2(2328, 1848)
 limit_left = 0
 limit_top = 0
+limit_right = 2000
+limit_bottom = 2000
 camera_bounds = Rect2(0, 0, 2000, 2000)
 
 [node name="BuildingTownHall" parent="." instance=ExtResource("7_jk4y1")]
