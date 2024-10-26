@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://dluhwbliivbp8"]
+[gd_scene load_steps=66 format=3 uid="uid://dluhwbliivbp8"]
 
 [ext_resource type="Script" path="res://scripts/swordsman.gd" id="1_ptif3"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_j6ccn"]
@@ -6,6 +6,10 @@
 [ext_resource type="AudioStream" uid="uid://bcj1s3lkmleg1" path="res://sound/LEOHPAZ_Command_Speech/Human/Human_Attack_2.wav" id="3_2f4dy"]
 [ext_resource type="Texture2D" uid="uid://cdwhvwbnka6tr" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue.png" id="3_h3cef"]
 [ext_resource type="AudioStream" uid="uid://brjkkw8usvui3" path="res://sound/LEOHPAZ_Command_Speech/Human/Human_Attack_3.wav" id="4_j7v37"]
+[ext_resource type="AudioStream" uid="uid://dj87lt4qasl84" path="res://sound/Gamemaster Audio - Footstep and Foley Sounds/voice_male_b_hurt_pain_set_1_04.wav" id="5_h8jsl"]
+[ext_resource type="AudioStream" uid="uid://cm2u4uadq6som" path="res://sound/Gamemaster Audio - Footstep and Foley Sounds/voice_male_b_hurt_pain_set_1_05.wav" id="6_gbc4a"]
+[ext_resource type="AudioStream" uid="uid://cyyjae6dkjpjt" path="res://sound/Gamemaster Audio - Footstep and Foley Sounds/voice_male_b_hurt_pain_set_2_08.wav" id="7_c86gr"]
+[ext_resource type="AudioStream" uid="uid://bqtj2ks5lfxgt" path="res://sound/Gamemaster Audio - Footstep and Foley Sounds/voice_male_b_hurt_pain_set_2_09.wav" id="8_kgw1v"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]
 radius = 20.0
@@ -408,7 +412,7 @@ radius = 347.052
 y_sort_enabled = true
 script = ExtResource("1_ptif3")
 engage_sounds = Array[AudioStream]([ExtResource("2_o5l57"), ExtResource("3_2f4dy"), ExtResource("4_j7v37")])
-hurt_sounds = Array[AudioStream]([null])
+hurt_sounds = Array[AudioStream]([ExtResource("5_h8jsl"), ExtResource("6_gbc4a"), ExtResource("7_c86gr"), ExtResource("8_kgw1v")])
 movement_speed = 175.0
 team = 1
 
