@@ -65,6 +65,7 @@ func _physics_process(delta: float) -> void:
 
 func order_move(in_goal, in_order_type : enums.e_order_type, silent := false):
 	super(in_goal, in_order_type, silent)
+	print(enums.e_order_type.keys()[in_order_type])
 	_current_order_type = in_order_type
 	
 	if in_order_type == enums.e_order_type.move:
@@ -74,6 +75,7 @@ func order_move(in_goal, in_order_type : enums.e_order_type, silent := false):
 	if (in_goal.distance_to(position) > 5 and _is_gathering):
 		_stop_gathering()
 	
+	#TODO: this is difficult to understand
 	if (in_order_type != enums.e_order_type.build and _current_building != null and
 			(navigation_agent.navigation_finished.is_connected(_begin_construction) or
 			_current_building.finish_building.is_connected(_on_finish_construction))
@@ -102,7 +104,7 @@ func order_deposit_resources(building: Building):
 	_is_turning_in_resources = true
 	if !navigation_agent.navigation_finished.is_connected(_deposit_resources):
 		navigation_agent.navigation_finished.connect(_deposit_resources)
-	order_move(building.get_random_point_along_perimeter(position), enums.e_order_type.deposit)
+	order_move(building.get_random_point_along_perimeter(position), enums.e_order_type.deposit, _auto_gather)
 
 func order_gather_resource(resource: RTS_Resource_Base):
 	if _current_resource_holding >= max_resource_holding:
@@ -120,7 +122,7 @@ func order_gather_resource(resource: RTS_Resource_Base):
 		resource.exhausted.connect(_on_resource_exhausted)
 	_current_resource_type = resource.resource_type
 	#TODO:take dot into account for gatherpos location
-	order_move(resource.get_random_gather_point(), enums.e_order_type.gather)
+	order_move(resource.get_random_gather_point(), enums.e_order_type.gather, _auto_gather)
 	
 	
 	#TODO:when should the unit drop all they are holding?
@@ -293,7 +295,7 @@ func _find_closest_thing(thing : String, ignore = null, filter = null) -> Node2D
 				if res != null:
 					if res.resource_type != filter:
 						continue
-			print(a.owner.name)
+			print("found closest thing = %s" % a.owner.name)
 			if position.distance_to(a.owner.position) < position.distance_to(closest_pos):
 				closest_thing = a.owner
 				closest_pos = a.owner.position

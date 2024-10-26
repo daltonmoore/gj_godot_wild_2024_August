@@ -32,6 +32,7 @@ UnitManager="*res://scripts/unit_manager.gd"
 [global_group]
 
 friendly_units=""
+enemies=""
 
 [input]
 

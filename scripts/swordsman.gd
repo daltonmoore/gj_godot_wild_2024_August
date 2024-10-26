@@ -10,4 +10,3 @@ func order_attack(enemy):
 
 func _on_navigation_finished() -> void:
 	super()
-	

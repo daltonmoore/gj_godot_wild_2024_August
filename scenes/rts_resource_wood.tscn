@@ -45,9 +45,9 @@ texture = ExtResource("4_gw48v")
 position = Vector2(0, -69)
 texture = ExtResource("5_2cwhe")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="NavMeshBlockerStaticBody" type="StaticBody2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NavMeshBlockerStaticBody"]
 position = Vector2(-3, -21)
 shape = SubResource("RectangleShape2D_sjpuy")
 debug_color = Color(0.805249, 0.416272, 0, 0.42)

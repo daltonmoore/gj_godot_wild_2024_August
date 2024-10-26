@@ -6,12 +6,21 @@ extends Node2D
 
 func _ready() -> void:
 	z_index = Globals.top_z_index
-	InputManager.right_click_released.connect(get_formation_for_currently_selected_units)
+	InputManager.right_click_pressed.connect(get_formation_for_currently_selected_units)
+	
+	if !Globals.debug:
+		return
+	
 	for x in 20:
 		for y in 20:
 			DebugDraw2d.rect(tile_map_layer.map_to_local(Vector2i(x,y)), Vector2(grid_size, grid_size), Color.BLUE,1, INF)
 
 func get_formation_for_currently_selected_units(_event) -> void:
+	# do not do a move formation if we are issuing an attack order on a single unit.
+	# could be a problem when we do attack move
+	if CursorManager.cursor_over_anything():
+		return
+		
 	var mouse_pos = get_global_mouse_position()
 	var marked_positions : Array
 	var silent = false

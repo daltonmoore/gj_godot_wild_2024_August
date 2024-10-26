@@ -50,6 +50,8 @@ func _mouse_move(event) -> void:
 			Input.set_custom_mouse_cursor(current_hovered_inanimate_object.cursor_texture)
 	
 
+func cursor_over_anything() -> bool:
+	return cursor_over_enemy() or cursor_over_resource() or cursor_over_selectable()
 
 func cursor_over_selectable() -> bool:
 	return current_hovered_inanimate_object != null

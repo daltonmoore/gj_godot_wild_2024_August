@@ -23,12 +23,12 @@ func _ready() -> void:
 	visual_size = Vector2(50,50)
 	
 	var block = Polygon2D.new()
-	var rect_size = $StaticBody2D/CollisionShape2D.shape.size
+	var rect_size = $NavMeshBlockerStaticBody/CollisionShape2D.shape.size
 	block.polygon = [Vector2(-rect_size.x/2, -rect_size.y/2),
 			Vector2(rect_size.x/2, -rect_size.y/2),
 			Vector2(rect_size.x/2, rect_size.y/2),
 			Vector2(-rect_size.x/2, rect_size.y/2)]
-	block.position = to_global($StaticBody2D/CollisionShape2D.position)
+	block.position = to_global($NavMeshBlockerStaticBody/CollisionShape2D.position)
 	_nav_mesh_blocker = block
 	_nav_region.add_child(block)
 

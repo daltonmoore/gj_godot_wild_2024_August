@@ -3456,6 +3456,7 @@ limit_top = 0
 limit_right = 2000
 limit_bottom = 2000
 camera_bounds = Rect2(0, 0, 2000, 2000)
+edge_scroll = true
 
 [node name="BuildingTownHall" parent="." instance=ExtResource("7_jk4y1")]
 position = Vector2(557, 155)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://bbqvgiqtvvj75"]
+[gd_scene load_steps=57 format=3 uid="uid://bbqvgiqtvvj75"]
 
 [ext_resource type="Script" path="res://scripts/worker.gd" id="1_ybqxx"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_smnw2"]
@@ -358,21 +358,23 @@ radius = 326.337
 [sub_resource type="CircleShape2D" id="CircleShape2D_4kigh"]
 radius = 924.15
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_3t2kq"]
+radius = 40.1123
+
 [node name="Worker" type="CharacterBody2D"]
 y_sort_enabled = true
 script = ExtResource("1_ybqxx")
 max_resource_holding = 10
-movement_speed = 150.0
 cost = {
 1: 0.0,
 2: 0.0,
 3: 50.0,
 4: 1
 }
+movement_speed = 150.0
 team = 1
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-path_postprocessing = 1
 avoidance_enabled = true
 time_horizon_agents = 2.0
 max_speed = 1000.0
@@ -423,11 +425,11 @@ metadata/_edit_group_ = true
 shape = SubResource("CircleShape2D_ko4iw")
 debug_color = Color(0.830114, 0.393404, 3.85046e-07, 0.42)
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="SelectionHoverArea" type="Area2D" parent="."]
 metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SelectionHoverArea"]
 position = Vector2(0, -25)
 shape = SubResource("RectangleShape2D_4l5a1")
 
@@ -458,6 +460,12 @@ stream = ExtResource("5_vhbtc")
 volume_db = -2.039
 
 [node name="Facing" type="RayCast2D" parent="."]
+
+[node name="AttackArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+shape = SubResource("CircleShape2D_3t2kq")
+debug_color = Color(0.996078, 0, 0.172549, 0.113725)
 
 [connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]
 [connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]
