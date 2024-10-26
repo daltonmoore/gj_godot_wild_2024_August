@@ -1,3 +1,4 @@
+class_name Swordsman
 extends Unit
 
 func order_move(in_goal, in_order_type : enums.e_order_type, silent := false) -> void:

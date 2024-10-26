@@ -429,9 +429,10 @@ texture = ExtResource("2_j6ccn")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -27)
 sprite_frames = SubResource("SpriteFrames_py6nv")
-animation = &"up_attack_2"
+animation = &"front_attack_1"
 autoplay = "idle"
-frame_progress = 0.92961
+frame = 1
+frame_progress = 0.210587
 metadata/_edit_lock_ = true
 
 [node name="SelectionHoverArea" type="Area2D" parent="."]
@@ -464,7 +465,7 @@ debug_color = Color(0, 0.6, 0.701961, 0)
 shape = SubResource("CircleShape2D_gdwjf")
 debug_color = Color(1, 0, 0.109804, 0.113725)
 
-[node name="ProgressBar" type="ProgressBar" parent="."]
+[node name="HealthBar" type="ProgressBar" parent="."]
 offset_left = -64.0
 offset_top = -149.0
 offset_right = 64.0

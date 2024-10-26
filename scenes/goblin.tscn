@@ -1,6 +1,8 @@
-[gd_scene load_steps=31 format=3 uid="uid://bgv3jfx46sn4t"]
+[gd_scene load_steps=33 format=3 uid="uid://bgv3jfx46sn4t"]
 
 [ext_resource type="Script" path="res://scripts/units/enemy/goblin.gd" id="1_pq78i"]
+[ext_resource type="AudioStream" uid="uid://discj5w3ukyhh" path="res://sound/Goblin/Goblin Wounded 1.mp3" id="2_u5q3k"]
+[ext_resource type="AudioStream" uid="uid://chojikkx1xecr" path="res://sound/Goblin/Goblin Wounded 2.mp3" id="3_cxkw3"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="3_oisd4"]
 [ext_resource type="Texture2D" uid="uid://ha20xrg7fvf2" path="res://art/Tiny Swords (Update 010)/Factions/Goblins/Troops/Torch/Red/Torch_Red.png" id="4_mqg2b"]
 
@@ -182,6 +184,7 @@ radius = 40.1123
 [node name="Goblin" type="CharacterBody2D" groups=["enemies"]]
 y_sort_enabled = true
 script = ExtResource("1_pq78i")
+hurt_sounds = [ExtResource("2_u5q3k"), ExtResource("3_cxkw3")]
 team = 2
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
@@ -206,10 +209,8 @@ texture = ExtResource("3_oisd4")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -27)
 sprite_frames = SubResource("SpriteFrames_v2ujg")
-animation = &"idle"
+animation = &"attack_right"
 autoplay = "idle"
-frame = 3
-frame_progress = 0.760862
 metadata/_edit_lock_ = true
 
 [node name="ChaseRadius" type="Area2D" parent="."]
@@ -260,6 +261,14 @@ debug_color = Color(0, 0.6, 0.701961, 0)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
 shape = SubResource("CircleShape2D_m06k7")
 debug_color = Color(0.996078, 0, 0.172549, 0.113725)
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = -64.0
+offset_top = -149.0
+offset_right = 64.0
+offset_bottom = -139.0
+value = 53.13
+show_percentage = false
 
 [connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]
 [connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]

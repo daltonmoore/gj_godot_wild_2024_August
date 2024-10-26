@@ -18,7 +18,7 @@ func _ready() -> void:
 func get_formation_for_currently_selected_units(_event) -> void:
 	# do not do a move formation if we are issuing an attack order on a single unit.
 	# could be a problem when we do attack move
-	if CursorManager.cursor_over_anything():
+	if CursorManager.cursor_over_anything() or SelectionHandler.selected_units[0].team == enums.e_team.enemy:
 		return
 		
 	var mouse_pos = get_global_mouse_position()

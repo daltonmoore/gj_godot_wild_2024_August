@@ -1,0 +1,124 @@
+[gd_scene load_steps=18 format=3 uid="uid://dynlhkjpkogwn"]
+
+[ext_resource type="Texture2D" uid="uid://3yay1xtfy1s8" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Dead/Dead.png" id="1_du6jy"]
+[ext_resource type="Script" path="res://scripts/units/corpse.gd" id="1_kwnut"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dol57"]
+atlas = ExtResource("1_du6jy")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rdi8o"]
+atlas = ExtResource("1_du6jy")
+region = Rect2(128, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_psvo5"]
+atlas = ExtResource("1_du6jy")
+region = Rect2(256, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uao06"]
+atlas = ExtResource("1_du6jy")
+region = Rect2(384, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tb51e"]
+atlas = ExtResource("1_du6jy")
+region = Rect2(512, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ebcn"]
+atlas = ExtResource("1_du6jy")
+region = Rect2(640, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n1qd0"]
+atlas = ExtResource("1_du6jy")
+region = Rect2(768, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xy07w"]
+atlas = ExtResource("1_du6jy")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1jx4g"]
+atlas = ExtResource("1_du6jy")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tos7x"]
+atlas = ExtResource("1_du6jy")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x5bbm"]
+atlas = ExtResource("1_du6jy")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3dfsn"]
+atlas = ExtResource("1_du6jy")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3kbli"]
+atlas = ExtResource("1_du6jy")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wfxd5"]
+atlas = ExtResource("1_du6jy")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_d3f18"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dol57")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rdi8o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_psvo5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uao06")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tb51e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ebcn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n1qd0")
+}],
+"loop": false,
+"name": &"buried",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xy07w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1jx4g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tos7x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x5bbm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3dfsn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3kbli")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wfxd5")
+}],
+"loop": false,
+"name": &"die",
+"speed": 10.0
+}]
+
+[node name="Corpse" type="Node2D"]
+script = ExtResource("1_kwnut")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_d3f18")
+animation = &"die"
+autoplay = "die"
+offset = Vector2(0, -25)

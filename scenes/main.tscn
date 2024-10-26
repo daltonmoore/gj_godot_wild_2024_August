@@ -3349,6 +3349,14 @@ source_geometry_group_name = &"navigation_polygon_source_group"
 [node name="main" type="Node2D"]
 metadata/_edit_lock_ = true
 
+[node name="Player" parent="." instance=ExtResource("1_skd3a")]
+position = Vector2(2328, 1848)
+limit_left = 0
+limit_top = 0
+limit_right = 2000
+limit_bottom = 2000
+camera_bounds = Rect2(0, 0, 2000, 2000)
+
 [node name="FormationManager" type="Node2D" parent="."]
 script = ExtResource("14_7yv5r")
 metadata/_edit_lock_ = true
@@ -3412,6 +3420,12 @@ metadata/_edit_lock_ = true
 position = Vector2(1073, 578)
 metadata/_edit_lock_ = true
 
+[node name="Goblin2" parent="Units" instance=ExtResource("5_noj73")]
+position = Vector2(1128, 696)
+
+[node name="Goblin3" parent="Units" instance=ExtResource("5_noj73")]
+position = Vector2(1032, 792)
+
 [node name="SelectionGrid" parent="." instance=ExtResource("6_fev7a")]
 grid_width = 20
 grid_height = 20
@@ -3448,15 +3462,6 @@ position = Vector2(720, 451)
 
 [node name="RTS_Resource_Gold" parent="Resources" instance=ExtResource("4_xu4uk")]
 position = Vector2(908, 101)
-
-[node name="Player" parent="." instance=ExtResource("1_skd3a")]
-position = Vector2(2328, 1848)
-limit_left = 0
-limit_top = 0
-limit_right = 2000
-limit_bottom = 2000
-camera_bounds = Rect2(0, 0, 2000, 2000)
-edge_scroll = true
 
 [node name="BuildingTownHall" parent="." instance=ExtResource("7_jk4y1")]
 position = Vector2(557, 155)
