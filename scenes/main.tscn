@@ -3424,7 +3424,7 @@ metadata/_edit_lock_ = true
 position = Vector2(1128, 696)
 
 [node name="Goblin3" parent="Units" instance=ExtResource("5_noj73")]
-position = Vector2(1032, 792)
+position = Vector2(648, 888)
 
 [node name="SelectionGrid" parent="." instance=ExtResource("6_fev7a")]
 grid_width = 20

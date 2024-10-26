@@ -6,10 +6,14 @@ signal sig_dying(this)
 #endregion
 
 #region Export
-@export var attack_animations : Dictionary = {}
+@export var attack_animations : Dictionary = {
+	"front": [],
+	"up": [],
+	"down": [],
+}
 @export var attack_range := 100.0
 @export var attack_cooldown := 0.5
-@export var confirm_acks := []
+@export var confirm_acks : Array[AudioStream] = []
 @export var cost : Dictionary = {
 	enums.e_resource_type.gold: 0.0,
 	enums.e_resource_type.wood: 0.0,
@@ -17,11 +21,12 @@ signal sig_dying(this)
 	enums.e_resource_type.supply: 1
 }
 @export var damage : float = 10.0
+@export var engage_sounds : Array[AudioStream] = []
 @export var health : float = 50.0
-@export var hurt_sounds := []
+@export var hurt_sounds : Array[AudioStream] = []
 @export var max_health : float = 50.0
 @export var movement_speed: float = 100.0
-@export var weapon_sounds := []
+@export var weapon_sounds : Array[AudioStream] = []
 @export var team : enums.e_team
 #endregion
 
@@ -56,9 +61,18 @@ var _targetted_enemy : Unit
 @onready var health_bar: ProgressBar = $HealthBar
 @onready var navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 @onready var selection_hover_area: Area2D = $SelectionHoverArea
+@onready var vision_area: Area2D = $VisionArea
 #endregion
 
 func _ready() -> void:
+	for anim_name in anim_sprite.sprite_frames.get_animation_names():
+		if Globals.has_pattern("down.*attack", anim_name):
+			attack_animations["down"].append(anim_name)
+		elif Globals.has_pattern("front.*attack", anim_name):
+			attack_animations["front"].append(anim_name)
+		elif Globals.has_pattern("up.*attack", anim_name):
+			attack_animations["up"].append(anim_name)
+	
 	z_index = Globals.unit_z_index
 	ResourceManager._update_resource(cost[enums.e_resource_type.supply], enums.e_resource_type.supply)
 	navigation_agent.debug_enabled = Globals.debug
@@ -139,16 +153,17 @@ func order_move(in_goal, in_order_type : enums.e_order_type, silent := false) ->
 	set_movement_target(in_goal)
 
 func order_attack(enemy):
+	_create_one_shot_audio_stream("attacking_audio_stream", engage_sounds)
 	_targetted_enemy = enemy
 	print("Attacking enemy %s" % enemy.name)
 	
-	if !_targetted_enemy.get_is_dying():
+	if !_targetted_enemy.get_is_dying() and !_targetted_enemy.sig_dying.is_connected(_on_target_die):
 		_targetted_enemy.sig_dying.connect(_on_target_die)
 	
 	if (attack_area.overlaps_body(_targetted_enemy)):
 		_begin_attacking()
 	else:
-		order_move(enemy.position, enums.e_order_type.attack)
+		order_move(enemy.position, enums.e_order_type.attack, true)
 
 func get_is_dying() -> bool:
 	return _is_dying
@@ -166,15 +181,7 @@ func take_damage(damage: float) -> void:
 	if _is_dying:
 		return
 	
-	var hurt_audio_stream = AudioStreamPlayer2D.new()
-	hurt_audio_stream.name = "hurt_audio_stream"
-	hurt_audio_stream.stream = hurt_sounds[randi_range(0, hurt_sounds.size() - 1)]
-	add_child(hurt_audio_stream)
-	hurt_audio_stream.play()
-	hurt_audio_stream.finished.connect(
-		func():
-			hurt_audio_stream.queue_free()
-	)
+	_create_one_shot_audio_stream("hurt_audio_stream", hurt_sounds)
 	
 	health -= damage
 	health_bar.value = health
@@ -195,8 +202,21 @@ func _acknowledge(silent: bool) -> void:
 func _begin_attacking() -> void:
 	_is_attacking = true
 	anim_sprite.animation = _select_attack_animation()
-	#_on_atack() # allow animation to do the strike
-	#_attack_timer.start()
+
+func _create_one_shot_audio_stream(nombre: String, sound_array: Array[AudioStream]) -> void:
+	if sound_array.size() == 0:
+		push_warning("Cannot create one shot audio for empty array")
+		return
+	
+	var audio_stream = AudioStreamPlayer2D.new()
+	audio_stream.name = nombre + "_" + str(hash(Time.get_unix_time_from_system()))
+	audio_stream.stream = sound_array[randi_range(0, sound_array.size() - 1)]
+	add_child(audio_stream)
+	audio_stream.play()
+	audio_stream.finished.connect(
+		func():
+			audio_stream.queue_free()
+	)
 
 func _die() -> void:
 	var instance = _corpse_scene.instantiate()
@@ -210,6 +230,8 @@ func _die() -> void:
 	#selection_hover_area.get_child(0).set_deferred(&"disabled", true)
 
 	sig_dying.emit(self)
+	if _in_selection:
+		SelectionHandler.remove_from_selection(self)
 	queue_free()
 
 ## You have to pass in the correct amount of StringNames in the anims array
@@ -259,7 +281,12 @@ func _on_attack_area_body_entered(body: Node2D) -> void:
 	_begin_attacking()
 
 func _on_attack_area_body_exited(body: Node2D) -> void:
-	pass # Replace with function body.
+	if body != _targetted_enemy or _targetted_enemy == null:
+		return
+	
+	_is_attacking = false
+	_attack_timer.stop()
+	order_attack(_targetted_enemy)
 
 func _on_atack() -> void:
 	_weapon_audio_stream.stream = weapon_sounds[randi_range(0, weapon_sounds.size() - 1)]

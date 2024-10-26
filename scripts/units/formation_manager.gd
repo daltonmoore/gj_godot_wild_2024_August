@@ -18,13 +18,20 @@ func _ready() -> void:
 func get_formation_for_currently_selected_units(_event) -> void:
 	# do not do a move formation if we are issuing an attack order on a single unit.
 	# could be a problem when we do attack move
-	if CursorManager.cursor_over_anything() or SelectionHandler.selected_units[0].team == enums.e_team.enemy:
+	if (CursorManager.cursor_over_anything() or 
+			(SelectionHandler.selected_units.size() > 0 and 
+			SelectionHandler.selected_units[0] != null and
+			SelectionHandler.selected_units[0].team == enums.e_team.enemy)
+	):
 		return
 		
 	var mouse_pos = get_global_mouse_position()
 	var marked_positions : Array
 	var silent = false
-	for unit : Unit in SelectionHandler.selected_units:
+	for unit in SelectionHandler.selected_units:
+		if unit == null:
+			continue
+		
 		var unit_destination_tile = null
 		var offset = Vector2.ZERO
 		

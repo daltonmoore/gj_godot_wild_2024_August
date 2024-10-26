@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://bbqvgiqtvvj75"]
+[gd_scene load_steps=58 format=3 uid="uid://bbqvgiqtvvj75"]
 
 [ext_resource type="Script" path="res://scripts/worker.gd" id="1_ybqxx"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_smnw2"]
@@ -361,6 +361,9 @@ radius = 924.15
 [sub_resource type="CircleShape2D" id="CircleShape2D_3t2kq"]
 radius = 40.1123
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_3ckoi"]
+radius = 347.052
+
 [node name="Worker" type="CharacterBody2D"]
 y_sort_enabled = true
 script = ExtResource("1_ybqxx")
@@ -474,6 +477,12 @@ offset_right = 64.0
 offset_bottom = -139.0
 value = 53.13
 show_percentage = false
+
+[node name="VisionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisionArea"]
+shape = SubResource("CircleShape2D_3ckoi")
+debug_color = Color(0.756863, 0.454902, 0, 0.0666667)
 
 [connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]
 [connection signal="body_exited" from="ChaseRadius" to="." method="_on_chase_radius_body_exited"]

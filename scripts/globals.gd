@@ -22,3 +22,9 @@ static func arrays_have_same_content(a1 : Array, a2: Array) -> bool:
 #TODO: finish this method
 	#for item in a1:
 #
+
+static func has_pattern(pattern: String, str : String) -> bool:
+	var regex = RegEx.new()
+	regex.compile(pattern)
+	var result = regex.search(str)
+	return result != null

@@ -34,6 +34,13 @@ func _draw():
 	_select_box.end = get_global_mouse_position()
 	draw_rect(_select_box, Color.WEB_GREEN, false)
 
+func remove_from_selection(unit) -> void:
+	var index = selected_units.find(unit)
+	if index == -1:
+		return
+	
+	selected_units.remove_at(index)
+
 # Doesn't work because it fires the event twice. One call for graphics frame and one for physics frame
 # more info here: https://stackoverflow.com/questions/69981662/godot-input-is-action-just-pressed-runs-twice
 # DOES work I just had two Selection Handlers in the scene because autoload and I had one I put there
@@ -107,9 +114,10 @@ func _select_units():
 	# gotta turn off selection circle for old selected units
 	# TODO: could probably optimize this to leave units 
 	#		in both old and new selection alone
-	for u in selected_units:
-		u.set_selection_circle_visible(false)
-		u._in_selection = false
+	if selected_units != null:
+		for u in selected_units:
+			u.set_selection_circle_visible(false)
+			u._in_selection = false
 
 	# finished with old units, store new selected units
 	selected_units = newly_selected_units

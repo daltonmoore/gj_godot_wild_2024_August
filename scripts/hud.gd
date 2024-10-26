@@ -38,7 +38,7 @@ func update_selection(new_selection : Array) -> void:
 		info_box.remove_child(child)
 		child.queue_free()
 	
-	if _old_selection_first_item is Building:
+	if _old_selection_first_item != null and _old_selection_first_item is Building:
 		_handle_building_signal_disconnects(_old_selection_first_item)
 	
 	if new_selection == null or new_selection.size() == 0:

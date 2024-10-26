@@ -40,7 +40,12 @@ func _on_resource_selected_flash_timer_timeout():
 		$SelectedFlashTimer.stop()
 
 func _order_units() -> void:
-	if BuildManager.get_ghost() != null or SelectionHandler.selected_units[0].team == enums.e_team.enemy:
+	var first_selected_unit = SelectionHandler.selected_units[0]
+	if (BuildManager.get_ghost() != null or 
+			(first_selected_unit != null and 
+			!first_selected_unit.is_queued_for_deletion() and 
+			first_selected_unit.team == enums.e_team.enemy)
+	):
 		return
 	
 	if CursorManager.cursor_over_selectable():
@@ -76,7 +81,9 @@ func _handle_move_attack() -> void:
 	#var group_guid = 0
 	#if len(SelectionHandler.selected_units) > 1:
 		#group_guid = UnitManager.add_group(SelectionHandler.selected_units.duplicate())
-	for u : Unit in SelectionHandler.selected_units:
+	for u in SelectionHandler.selected_units:
+		if u == null:
+			continue
 		#if u.group_guid != null:
 			#UnitManager.leave_group(u)
 		#if len(SelectionHandler.selected_units) > 1:

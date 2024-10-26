@@ -1,13 +1,40 @@
-[gd_scene load_steps=33 format=3 uid="uid://bgv3jfx46sn4t"]
+[gd_scene load_steps=46 format=3 uid="uid://bgv3jfx46sn4t"]
 
-[ext_resource type="Script" path="res://scripts/units/enemy/goblin.gd" id="1_pq78i"]
+[ext_resource type="Script" path="res://scripts/units/enemy/enemy.gd" id="1_pq78i"]
+[ext_resource type="AudioStream" uid="uid://cfi2l43wngyak" path="res://sound/Goblin/Goblin Attack Voice 1.mp3" id="2_d0bak"]
 [ext_resource type="AudioStream" uid="uid://discj5w3ukyhh" path="res://sound/Goblin/Goblin Wounded 1.mp3" id="2_u5q3k"]
 [ext_resource type="AudioStream" uid="uid://chojikkx1xecr" path="res://sound/Goblin/Goblin Wounded 2.mp3" id="3_cxkw3"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="3_oisd4"]
+[ext_resource type="AudioStream" uid="uid://c3te38574l7hl" path="res://sound/Goblin/Goblin Attack Voice 2.mp3" id="3_u3bl8"]
+[ext_resource type="AudioStream" uid="uid://cuxetebaig84w" path="res://sound/Goblin/Goblin Attack Voice 3.mp3" id="4_jg4eg"]
 [ext_resource type="Texture2D" uid="uid://ha20xrg7fvf2" path="res://art/Tiny Swords (Update 010)/Factions/Goblins/Troops/Torch/Red/Torch_Red.png" id="4_mqg2b"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]
 radius = 18.0278
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ccr55"]
+atlas = ExtResource("4_mqg2b")
+region = Rect2(0, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ixbw1"]
+atlas = ExtResource("4_mqg2b")
+region = Rect2(192, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4yr24"]
+atlas = ExtResource("4_mqg2b")
+region = Rect2(384, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mircc"]
+atlas = ExtResource("4_mqg2b")
+region = Rect2(576, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jh51l"]
+atlas = ExtResource("4_mqg2b")
+region = Rect2(768, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uwfva"]
+atlas = ExtResource("4_mqg2b")
+region = Rect2(960, 576, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g31lm"]
 atlas = ExtResource("4_mqg2b")
@@ -85,8 +112,55 @@ region = Rect2(768, 192, 192, 192)
 atlas = ExtResource("4_mqg2b")
 region = Rect2(960, 192, 192, 192)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_ukvnl"]
+atlas = ExtResource("4_mqg2b")
+region = Rect2(0, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ob8oo"]
+atlas = ExtResource("4_mqg2b")
+region = Rect2(192, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ilnc"]
+atlas = ExtResource("4_mqg2b")
+region = Rect2(384, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hao6l"]
+atlas = ExtResource("4_mqg2b")
+region = Rect2(576, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_udjgc"]
+atlas = ExtResource("4_mqg2b")
+region = Rect2(768, 768, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bwp3b"]
+atlas = ExtResource("4_mqg2b")
+region = Rect2(960, 768, 192, 192)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_v2ujg"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ccr55")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ixbw1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4yr24")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mircc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jh51l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uwfva")
+}],
+"loop": true,
+"name": &"down_attack",
+"speed": 10.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_g31lm")
@@ -109,8 +183,8 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_g31lm")
 }],
-"loop": false,
-"name": &"attack_right",
+"loop": true,
+"name": &"front_attack",
 "speed": 10.0
 }, {
 "frames": [{
@@ -161,30 +235,49 @@ animations = [{
 "loop": true,
 "name": &"run",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ukvnl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ob8oo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ilnc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hao6l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_udjgc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bwp3b")
+}],
+"loop": true,
+"name": &"up_attack",
+"speed": 10.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kikdj"]
 radius = 225.18
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_n7gtl"]
-radius = 51.0882
+radius = 347.052
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4l5a1"]
 size = Vector2(35, 49)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ynejq"]
-radius = 326.337
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_4kigh"]
-radius = 924.15
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_m06k7"]
-radius = 40.1123
+radius = 100.0
 
 [node name="Goblin" type="CharacterBody2D" groups=["enemies"]]
 y_sort_enabled = true
 script = ExtResource("1_pq78i")
+engage_sounds = [ExtResource("2_d0bak"), ExtResource("3_u3bl8"), ExtResource("4_jg4eg")]
 hurt_sounds = [ExtResource("2_u5q3k"), ExtResource("3_cxkw3")]
+movement_speed = 50.0
 team = 2
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
@@ -209,7 +302,7 @@ texture = ExtResource("3_oisd4")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -27)
 sprite_frames = SubResource("SpriteFrames_v2ujg")
-animation = &"attack_right"
+animation = &"up_attack"
 autoplay = "idle"
 metadata/_edit_lock_ = true
 
@@ -222,13 +315,11 @@ monitorable = false
 shape = SubResource("CircleShape2D_kikdj")
 debug_color = Color(0.994425, 0, 0.222291, 0.42)
 
-[node name="WakeTrigger" type="Area2D" parent="."]
-visible = false
-monitoring = false
-monitorable = false
+[node name="VisionArea" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WakeTrigger"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisionArea"]
 shape = SubResource("CircleShape2D_n7gtl")
+debug_color = Color(0.756863, 0.454902, 0, 0.0666667)
 
 [node name="SelectionHoverArea" type="Area2D" parent="."]
 collision_layer = 2
@@ -239,22 +330,6 @@ metadata/_edit_lock_ = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectionHoverArea"]
 position = Vector2(0, -25)
 shape = SubResource("RectangleShape2D_4l5a1")
-
-[node name="SearchAreaSmall" type="Area2D" parent="."]
-metadata/_edit_lock_ = true
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SearchAreaSmall"]
-shape = SubResource("CircleShape2D_ynejq")
-debug_color = Color(0, 0.6, 0.701961, 0)
-
-[node name="SearchAreaLarge" type="Area2D" parent="."]
-metadata/_edit_lock_ = true
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SearchAreaLarge"]
-shape = SubResource("CircleShape2D_4kigh")
-debug_color = Color(0, 0.6, 0.701961, 0)
 
 [node name="AttackArea" type="Area2D" parent="."]
 
@@ -274,4 +349,3 @@ show_percentage = false
 [connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="body_exited" from="ChaseRadius" to="." method="_on_chase_radius_body_exited"]
-[connection signal="body_entered" from="WakeTrigger" to="." method="_on_wake_trigger_body_entered"]

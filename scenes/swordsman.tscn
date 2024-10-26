@@ -1,8 +1,11 @@
-[gd_scene load_steps=58 format=3 uid="uid://dluhwbliivbp8"]
+[gd_scene load_steps=62 format=3 uid="uid://dluhwbliivbp8"]
 
 [ext_resource type="Script" path="res://scripts/swordsman.gd" id="1_ptif3"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_j6ccn"]
+[ext_resource type="AudioStream" uid="uid://cpabkbbf86kut" path="res://sound/LEOHPAZ_Command_Speech/Human/Human_Attack_1.wav" id="2_o5l57"]
+[ext_resource type="AudioStream" uid="uid://bcj1s3lkmleg1" path="res://sound/LEOHPAZ_Command_Speech/Human/Human_Attack_2.wav" id="3_2f4dy"]
 [ext_resource type="Texture2D" uid="uid://cdwhvwbnka6tr" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue.png" id="3_h3cef"]
+[ext_resource type="AudioStream" uid="uid://brjkkw8usvui3" path="res://sound/LEOHPAZ_Command_Speech/Human/Human_Attack_3.wav" id="4_j7v37"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]
 radius = 20.0
@@ -398,14 +401,14 @@ radius = 924.15
 [sub_resource type="CircleShape2D" id="CircleShape2D_gdwjf"]
 radius = 99.4082
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_xfbis"]
+radius = 347.052
+
 [node name="Swordsman" type="CharacterBody2D"]
 y_sort_enabled = true
 script = ExtResource("1_ptif3")
-attack_animations = {
-"down": [&"down_attack_1", &"down_attack_2"],
-"front": [&"front_attack_1", &"front_attack_2"],
-"up": [&"up_attack_1", &"up_attack_2"]
-}
+engage_sounds = Array[AudioStream]([ExtResource("2_o5l57"), ExtResource("3_2f4dy"), ExtResource("4_j7v37")])
+hurt_sounds = Array[AudioStream]([null])
 movement_speed = 175.0
 team = 1
 
@@ -429,10 +432,8 @@ texture = ExtResource("2_j6ccn")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -27)
 sprite_frames = SubResource("SpriteFrames_py6nv")
-animation = &"front_attack_1"
+animation = &"down_attack_1"
 autoplay = "idle"
-frame = 1
-frame_progress = 0.210587
 metadata/_edit_lock_ = true
 
 [node name="SelectionHoverArea" type="Area2D" parent="."]
@@ -472,6 +473,12 @@ offset_right = 64.0
 offset_bottom = -139.0
 value = 53.13
 show_percentage = false
+
+[node name="VisionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisionArea"]
+shape = SubResource("CircleShape2D_xfbis")
+debug_color = Color(0.756863, 0.454902, 0, 0.0666667)
 
 [connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]
 [connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]
