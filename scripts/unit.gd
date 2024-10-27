@@ -49,6 +49,7 @@ var _current_order_type : enums.e_order_type
 var _death_animated_sprite : AnimatedSprite2D # not used for death animation
 var _is_attacking := false
 var _is_dying := false
+var _is_idle := true
 var _in_selection := false
 var _strike_frame_index := 3 # the frame where the attack animation looks like it is connecting
 var _weapon_audio_stream := AudioStreamPlayer2D.new()
@@ -120,6 +121,11 @@ func _physics_process(delta: float) -> void:
 	
 	if current_cell != null:
 		DebugDraw2d.rect(current_cell.position)
+	
+	if (_targetted_enemy != null and 
+			vision_area.overlaps_body(_targetted_enemy) and
+			!_is_attacking):
+		set_movement_target(_targetted_enemy.global_position)
 
 func can_afford_to_build() -> bool:
 	var can_afford = true
@@ -145,6 +151,7 @@ func can_afford_to_build() -> bool:
 	return can_afford
 
 func order_move(in_goal, in_order_type : enums.e_order_type, silent := false) -> void:
+	_is_idle = false
 	if in_order_type != enums.e_order_type.attack:
 		_stop_attacking()
 	
@@ -203,6 +210,17 @@ func _begin_attacking() -> void:
 	_is_attacking = true
 	anim_sprite.animation = _select_attack_animation()
 
+func _can_attack_body(body) -> bool:
+	return (_is_idle and
+			body is CharacterBody2D and 
+			body.team != team)
+
+func _check_vision_for_enemy_to_attack() -> void:
+	for body in vision_area.get_overlapping_bodies():
+		if (_can_attack_body(body)):
+			order_attack(body)
+			return
+
 func _create_one_shot_audio_stream(nombre: String, sound_array: Array[AudioStream]) -> void:
 	if sound_array.size() == 0:
 		push_warning("Cannot create one shot audio for empty array")
@@ -260,6 +278,47 @@ func _extract_sprite_frames(anims: Array[StringName],
 	
 	return sprite_frames_list
 
+func _select_attack_animation() -> StringName:
+	if len(attack_animations["up"]) == 0:
+		return &""
+	
+	var attack_animation := &""
+	var _unit_to_enemy = position.direction_to(_targetted_enemy.position)
+	var _up_dot_unit_to_enemy = Vector2.UP.dot(_unit_to_enemy)
+	var _right_dot_unit_to_enemy = Vector2.RIGHT.dot(_unit_to_enemy)
+	
+	# up or down takes over
+	if abs(_up_dot_unit_to_enemy) > abs(_right_dot_unit_to_enemy):
+		if _up_dot_unit_to_enemy > 0:
+			attack_animation = attack_animations["up"][0]
+		else:
+			attack_animation = attack_animations["down"][0]
+	else:
+		attack_animation = attack_animations["front"][0]
+		if _right_dot_unit_to_enemy > 0:
+			anim_sprite.flip_h = false
+		else:
+			anim_sprite.flip_h = true
+	
+	return attack_animation
+
+func _stop_attacking() -> void:
+	_targetted_enemy = null
+	_is_attacking = false
+	_attack_timer.stop()
+	anim_sprite.animation = "idle"
+	stop_moving()
+
+func _find_close_in_group_units_and_stop_them() -> void:
+	for a in $SearchAreaSmall.get_overlapping_areas():
+		if a.owner == null:
+			continue
+		if a.owner.is_in_group(Globals.unit_group):
+			var unit = a.owner as Unit
+			if UnitManager.groups.has(group_guid) and unit.group_guid == group_guid:
+				unit.stop()
+	UnitManager.groups[group_guid].group_stopping = false
+
 #region Listeners
 func _on_anim_frame_changed() -> void:
 	if !_is_attacking:
@@ -301,21 +360,23 @@ func _on_mouse_exit() -> void:
 		SelectionHandler.mouse_hovered_unit = null
 
 func _on_navigation_finished() -> void:
+	_is_idle = true
 	anim_sprite.animation = "idle"
-	# the goal of checking that the current order type is move is to prevent
-	# the unit stopping early before reaching the enemy/resource
-	if _current_order_type == enums.e_order_type.move and group_guid != null and !UnitManager.groups[group_guid].group_stopping:
-		UnitManager.groups[group_guid].group_stopping = true
-		_find_close_in_group_units_and_stop_them()
-	
-	# TODO: auto-attack
-	#if _current_order_type != enums.e_order_type.attack:
-		#_find_closest_enemy()
+	_check_vision_for_enemy_to_attack()
 
 func _on_target_die(target) -> void:
 	assert (target == _targetted_enemy)
 	_targetted_enemy.sig_dying.disconnect(_on_target_die)
 	_stop_attacking()
+
+func _on_vision_area_body_entered(body) -> void:
+	if (_can_attack_body(body)):
+		order_attack(body)
+
+func _on_vision_area_body_exited(body) -> void:
+	if body == _targetted_enemy:
+		_stop_attacking()
+		_check_vision_for_enemy_to_attack()
 
 func _on_velocity_computed(safe_velocity: Vector2) -> void:
 	velocity = safe_velocity
@@ -396,42 +457,6 @@ func _setup_signal_connections() -> void:
 	navigation_agent.velocity_computed.connect(Callable(_on_velocity_computed))
 	selection_hover_area.mouse_entered.connect(_on_mouse_overlap)
 	selection_hover_area.mouse_exited.connect(_on_mouse_exit)
+	vision_area.body_entered.connect(_on_vision_area_body_entered)
+	vision_area.body_exited.connect(_on_vision_area_body_exited)
 #endregion
-
-func _select_attack_animation() -> StringName:
-	var attack_animation := &""
-	var _unit_to_enemy = position.direction_to(_targetted_enemy.position)
-	var _up_dot_unit_to_enemy = Vector2.UP.dot(_unit_to_enemy)
-	var _right_dot_unit_to_enemy = Vector2.RIGHT.dot(_unit_to_enemy)
-	
-	# up or down takes over
-	if abs(_up_dot_unit_to_enemy) > abs(_right_dot_unit_to_enemy):
-		if _up_dot_unit_to_enemy > 0:
-			attack_animation = attack_animations["up"][0]
-		else:
-			attack_animation = attack_animations["down"][0]
-	else:
-		attack_animation = attack_animations["front"][0]
-		if _right_dot_unit_to_enemy > 0:
-			anim_sprite.flip_h = false
-		else:
-			anim_sprite.flip_h = true
-	
-	return attack_animation
-
-func _stop_attacking() -> void:
-	_targetted_enemy = null
-	_is_attacking = false
-	_attack_timer.stop()
-	anim_sprite.animation = "idle"
-	stop_moving()
-
-func _find_close_in_group_units_and_stop_them() -> void:
-	for a in $SearchAreaSmall.get_overlapping_areas():
-		if a.owner == null:
-			continue
-		if a.owner.is_in_group(Globals.unit_group):
-			var unit = a.owner as Unit
-			if UnitManager.groups.has(group_guid) and unit.group_guid == group_guid:
-				unit.stop()
-	UnitManager.groups[group_guid].group_stopping = false

@@ -275,8 +275,8 @@ radius = 100.0
 [node name="Goblin" type="CharacterBody2D" groups=["enemies"]]
 y_sort_enabled = true
 script = ExtResource("1_pq78i")
-engage_sounds = [ExtResource("2_d0bak"), ExtResource("3_u3bl8"), ExtResource("4_jg4eg")]
-hurt_sounds = [ExtResource("2_u5q3k"), ExtResource("3_cxkw3")]
+engage_sounds = Array[AudioStream]([ExtResource("2_d0bak"), ExtResource("3_u3bl8"), ExtResource("4_jg4eg")])
+hurt_sounds = Array[AudioStream]([ExtResource("2_u5q3k"), ExtResource("3_cxkw3")])
 movement_speed = 50.0
 team = 2
 
