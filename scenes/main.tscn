@@ -3405,8 +3405,19 @@ position = Vector2(471, 378)
 metadata/_edit_lock_ = true
 
 [node name="Worker5" parent="Units" instance=ExtResource("5_gmj38")]
-position = Vector2(212, 412)
-metadata/_edit_lock_ = true
+position = Vector2(168, 456)
+
+[node name="Worker6" parent="Units" instance=ExtResource("5_gmj38")]
+position = Vector2(216, 264)
+
+[node name="Worker7" parent="Units" instance=ExtResource("5_gmj38")]
+position = Vector2(120, 360)
+
+[node name="Worker8" parent="Units" instance=ExtResource("5_gmj38")]
+position = Vector2(216, 360)
+
+[node name="Worker9" parent="Units" instance=ExtResource("5_gmj38")]
+position = Vector2(168, 552)
 
 [node name="Swordsman" parent="Units" instance=ExtResource("4_cdmta")]
 position = Vector2(598, 534)
@@ -3414,6 +3425,18 @@ metadata/_edit_lock_ = true
 
 [node name="Swordsman2" parent="Units" instance=ExtResource("4_cdmta")]
 position = Vector2(695, 587)
+metadata/_edit_lock_ = true
+
+[node name="Swordsman3" parent="Units" instance=ExtResource("4_cdmta")]
+position = Vector2(504, 648)
+metadata/_edit_lock_ = true
+
+[node name="Swordsman4" parent="Units" instance=ExtResource("4_cdmta")]
+position = Vector2(312, 792)
+metadata/_edit_lock_ = true
+
+[node name="Swordsman5" parent="Units" instance=ExtResource("4_cdmta")]
+position = Vector2(360, 648)
 metadata/_edit_lock_ = true
 
 [node name="Goblin" parent="Units" instance=ExtResource("5_noj73")]
@@ -3424,7 +3447,7 @@ metadata/_edit_lock_ = true
 position = Vector2(1128, 696)
 
 [node name="Goblin3" parent="Units" instance=ExtResource("5_noj73")]
-position = Vector2(648, 888)
+position = Vector2(936, 984)
 
 [node name="SelectionGrid" parent="." instance=ExtResource("6_fev7a")]
 grid_width = 20
@@ -3472,24 +3495,20 @@ points = PackedVector2Array(480, 1206)
 width = 5.0
 default_color = Color(1, 1, 1, 0.447059)
 
-[node name="GridLockedUnit" parent="." node_paths=PackedStringArray("line") instance=ExtResource("12_1qdsn")]
+[node name="GridLockedUnit" parent="." instance=ExtResource("12_1qdsn")]
 position = Vector2(72, 72)
 texture = ExtResource("13_bxe7t")
-line = NodePath("../Line2D")
 
-[node name="GridLockedUnit2" parent="." node_paths=PackedStringArray("line") instance=ExtResource("12_1qdsn")]
+[node name="GridLockedUnit2" parent="." instance=ExtResource("12_1qdsn")]
 position = Vector2(72, 24)
 texture = ExtResource("13_bxe7t")
-line = NodePath("../Line2D")
 
-[node name="GridLockedUnit3" parent="." node_paths=PackedStringArray("line") instance=ExtResource("12_1qdsn")]
+[node name="GridLockedUnit3" parent="." instance=ExtResource("12_1qdsn")]
 position = Vector2(120, 24)
 texture = ExtResource("13_bxe7t")
-line = NodePath("../Line2D")
 
-[node name="GridLockedUnit4" parent="." node_paths=PackedStringArray("line") instance=ExtResource("12_1qdsn")]
+[node name="GridLockedUnit4" parent="." instance=ExtResource("12_1qdsn")]
 position = Vector2(120, 72)
 texture = ExtResource("13_bxe7t")
-line = NodePath("../Line2D")
 
 [connection signal="path_changed" from="Units/Worker" to="NavigationRegion2D" method="_on_worker_path_changed"]

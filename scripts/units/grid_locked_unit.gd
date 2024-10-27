@@ -2,13 +2,13 @@ class_name GridLockedUnit
 extends Sprite2D
 
 @export var move_speed := 0.5
-@export var line : Line2D
-@export var grid_size: Vector2 = Vector2(16,16)
+@export var grid_size: Vector2 = Vector2(48,48)
 
 @onready var tile_map_layer: TileMapLayer = $"../TileMapLayer"
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var ray_cast_2d: RayCast2D = $RayCast2D
 @onready var collision_shape_2d: CollisionShape2D = $Area2D/CollisionShape2D
+@onready var line_2d: Line2D = $Line2D
 
 var astar_grid: AStarGrid2D
 var current_path : Array[Vector2i]
@@ -16,7 +16,7 @@ var is_moving = false
 
 var _move_to: Vector2
 var _try_count: int = 0
-var _max_try_count: int = 5
+var _max_try_count: int = 20
 
 func _ready() -> void:
 	z_index = Globals.top_z_index
@@ -25,7 +25,7 @@ func _ready() -> void:
 	astar_grid = AStarGrid2D.new()
 	astar_grid.region = tile_map_layer.get_used_rect()
 	astar_grid.cell_size = grid_size
-	astar_grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_ALWAYS
+	astar_grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
 	astar_grid.update()
 	
 	var region_size = astar_grid.region.size
@@ -99,17 +99,24 @@ func move():
 	
 	while current_path.is_empty() and _try_count < _max_try_count:
 		if global_position == _move_to:
+			line_2d.default_color = Color.GREEN
 			print("Reached destination")
 			_try_count = 0
 			return
 		_try_count += 1
+		line_2d.default_color = Color.RED
 		print("can't find path")
 		await get_tree().create_timer(.1).timeout
 		# try again
+		line_2d.default_color = Color.PURPLE
 		var pos_just_before_destination = _move_to.direction_to(global_position)*grid_size + _move_to
+		DebugDraw2d.rect(pos_just_before_destination, grid_size, Color.BLUE,1, 3)
 		var _just_before_tile_pos = tile_map_layer.local_to_map(pos_just_before_destination)
-		DebugDraw2d.rect(tile_map_layer.map_to_local(_just_before_tile_pos), grid_size, Color.RED,1, 2)
-		current_path = _get_path(pos_just_before_destination)
+		var temp = _get_path(pos_just_before_destination)
+		if temp.is_empty():
+			current_path = _get_path(_move_to)
+		else:
+			current_path = temp
 	
 	_try_count = 0
 	if current_path.is_empty():
@@ -123,8 +130,8 @@ func move():
 	
 	var debug_array_of_points_in_global : Array
 	for point in current_path:
-		debug_array_of_points_in_global.append(tile_map_layer.map_to_local(point))
-	line.points = PackedVector2Array(debug_array_of_points_in_global)
+		debug_array_of_points_in_global.append(to_local(tile_map_layer.map_to_local(point)))
+	line_2d.points = PackedVector2Array(debug_array_of_points_in_global)
 
 func _get_path(dest) -> Array[Vector2i]:
 	var friendly_units = get_tree().get_nodes_in_group("friendly_units")

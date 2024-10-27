@@ -30,6 +30,7 @@ var auto_label = Label.new()
 var going_to_new_resource_label = Label.new()
 
 func _ready() -> void:
+	_auto_attack = false
 	add_child(wood_label)
 	# add_child(deposit_label)
 	# add_child(auto_label)
@@ -47,10 +48,11 @@ func _process(delta: float) -> void:
 	#auto_label.text = "auto_gather?: %s" % _auto_gather
 	wood_label.text = "wood: %s" % _current_resource_holding
 	# Debug name text
-	if current_cell != null:
-		_current_cell_label.text = "%s" % current_cell.grid_pos
-	else:
-		_current_cell_label.text = "none cell"
+	if Globals.debug:
+		if current_cell != null:
+			_current_cell_label.text = "%s" % current_cell.grid_pos
+		else:
+			_current_cell_label.text = "none cell"
 	
 	if anim_sprite.animation == "chop":
 		if !$WoodChop.playing:

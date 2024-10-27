@@ -12,7 +12,7 @@
 [ext_resource type="AudioStream" uid="uid://bqtj2ks5lfxgt" path="res://sound/Gamemaster Audio - Footstep and Foley Sounds/voice_male_b_hurt_pain_set_2_09.wav" id="8_kgw1v"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]
-radius = 20.0
+radius = 15.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wl51v"]
 atlas = ExtResource("3_h3cef")
@@ -417,10 +417,8 @@ movement_speed = 175.0
 team = 1
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-target_desired_distance = 21.2
 avoidance_enabled = true
-radius = 30.0
-max_speed = 500.0
+max_speed = 1000.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -3)

@@ -1,6 +1,6 @@
 extends Node2D
 
-const debug = true
+const debug = false
 
 const unit_group = "units"
 

@@ -43,6 +43,7 @@ var current_cell: SelectionGridCell:
 #region Private Vars
 var _attack_timer : Timer
 var _audio_streams := []
+var _auto_attack := true
 var _corpse_scene := load("res://scenes/corpse.tscn")
 var _current_cell_label : Label
 var _current_order_type : enums.e_order_type
@@ -105,9 +106,19 @@ func _physics_process(delta: float) -> void:
 	if _is_dying:
 		return
 	
+	if current_cell != null:
+		DebugDraw2d.rect(current_cell.position)
+	
+	if (_targetted_enemy != null and 
+			vision_area.overlaps_body(_targetted_enemy) and
+			!_is_attacking):
+		set_movement_target(_targetted_enemy.global_position)
+	
+	if navigation_agent.is_navigation_finished():
+		return
+
 	var next_path_position: Vector2 = navigation_agent.get_next_path_position()
 	var new_velocity: Vector2 = global_position.direction_to(next_path_position) * movement_speed
-	
 	if navigation_agent.avoidance_enabled:
 		navigation_agent.set_velocity(new_velocity)
 	else:
@@ -118,14 +129,6 @@ func _physics_process(delta: float) -> void:
 			anim_sprite.flip_h = true
 		else:
 			anim_sprite.flip_h = false
-	
-	if current_cell != null:
-		DebugDraw2d.rect(current_cell.position)
-	
-	if (_targetted_enemy != null and 
-			vision_area.overlaps_body(_targetted_enemy) and
-			!_is_attacking):
-		set_movement_target(_targetted_enemy.global_position)
 
 func can_afford_to_build() -> bool:
 	var can_afford = true
@@ -153,6 +156,7 @@ func can_afford_to_build() -> bool:
 func order_move(in_goal, in_order_type : enums.e_order_type, silent := false) -> void:
 	_is_idle = false
 	if in_order_type != enums.e_order_type.attack:
+		_disconnect_signals_on_target_change(_targetted_enemy)
 		_stop_attacking()
 	
 	_acknowledge(silent)
@@ -160,12 +164,13 @@ func order_move(in_goal, in_order_type : enums.e_order_type, silent := false) ->
 	set_movement_target(in_goal)
 
 func order_attack(enemy):
+	_disconnect_signals_on_target_change(enemy)
 	_create_one_shot_audio_stream("attacking_audio_stream", engage_sounds)
 	_targetted_enemy = enemy
 	print("Attacking enemy %s" % enemy.name)
-	
-	if !_targetted_enemy.get_is_dying() and !_targetted_enemy.sig_dying.is_connected(_on_target_die):
-		_targetted_enemy.sig_dying.connect(_on_target_die)
+	var result = _targetted_enemy.sig_dying.connect(_on_target_die)
+	if result == ERR_INVALID_PARAMETER:
+		print()
 	
 	if (attack_area.overlaps_body(_targetted_enemy)):
 		_begin_attacking()
@@ -216,6 +221,7 @@ func _can_attack_body(body) -> bool:
 			body.team != team)
 
 func _check_vision_for_enemy_to_attack() -> void:
+	print("_check_vision_for_enemy_to_attack")
 	for body in vision_area.get_overlapping_bodies():
 		if (_can_attack_body(body)):
 			order_attack(body)
@@ -229,7 +235,8 @@ func _create_one_shot_audio_stream(nombre: String, sound_array: Array[AudioStrea
 	var audio_stream = AudioStreamPlayer2D.new()
 	audio_stream.name = nombre + "_" + str(hash(Time.get_unix_time_from_system()))
 	audio_stream.stream = sound_array[randi_range(0, sound_array.size() - 1)]
-	add_child(audio_stream)
+	add_child.call_deferred(audio_stream)
+	await audio_stream.tree_entered
 	audio_stream.play()
 	audio_stream.finished.connect(
 		func():
@@ -251,6 +258,18 @@ func _die() -> void:
 	if _in_selection:
 		SelectionHandler.remove_from_selection(self)
 	queue_free()
+
+func _disconnect_signals_on_target_change(enemy) -> void:
+	if _targetted_enemy == null:
+		if name == "Swordsman": print("targetted enemy is null so not disconnecting anything")
+		return
+	
+	if _targetted_enemy == enemy:
+		print("enemy and _targetted_enemy are the same!")
+	
+	if _targetted_enemy.sig_dying.is_connected(_on_target_die):
+		print("disconnect from %s" % _targetted_enemy.name)
+		_targetted_enemy.sig_dying.disconnect(_on_target_die)
 
 ## You have to pass in the correct amount of StringNames in the anims array
 ## i.e. if the amount of rows in the full spritesheet is 2 then you need to pass
@@ -332,20 +351,31 @@ func _on_anim_frame_changed() -> void:
 		_on_atack()
 
 func _on_attack_area_body_entered(body: Node2D) -> void:
+	if name == "Swordsman": print("body %s entered attack area" % body.name)
 	if body != _targetted_enemy:
+		if name == "Swordsman":
+			print("body is not target")
+			if _targetted_enemy!= null: print("targetted_enemy is %s " % _targetted_enemy.name)
+			else: print("targetted_enemy is null")
 		return
-	
+	await get_tree().create_timer(.1).timeout
 	stop_moving()
 	await navigation_agent.navigation_finished
 	_begin_attacking()
 
 func _on_attack_area_body_exited(body: Node2D) -> void:
-	if body != _targetted_enemy or _targetted_enemy == null:
+	if name == "Swordsman": print("body %s exited attack area" % body.name)
+	if body != _targetted_enemy or _targetted_enemy == null or _is_dying:
+		if name == "Swordsman":
+			print("body is not target")
+			if _targetted_enemy!= null: print("targetted_enemy is %s " % _targetted_enemy.name)
+			else: print("targetted_enemy is null")
 		return
 	
 	_is_attacking = false
 	_attack_timer.stop()
-	order_attack(_targetted_enemy)
+	if !_targetted_enemy._is_dying:
+		order_attack(_targetted_enemy)
 
 func _on_atack() -> void:
 	_weapon_audio_stream.stream = weapon_sounds[randi_range(0, weapon_sounds.size() - 1)]
@@ -362,7 +392,8 @@ func _on_mouse_exit() -> void:
 func _on_navigation_finished() -> void:
 	_is_idle = true
 	anim_sprite.animation = "idle"
-	_check_vision_for_enemy_to_attack()
+	if _targetted_enemy == null and _auto_attack:
+		_check_vision_for_enemy_to_attack()
 
 func _on_target_die(target) -> void:
 	assert (target == _targetted_enemy)
@@ -370,11 +401,12 @@ func _on_target_die(target) -> void:
 	_stop_attacking()
 
 func _on_vision_area_body_entered(body) -> void:
-	if (_can_attack_body(body)):
+	if _can_attack_body(body) and _auto_attack:
 		order_attack(body)
 
 func _on_vision_area_body_exited(body) -> void:
 	if body == _targetted_enemy:
+		assert(!(self is Worker))
 		_stop_attacking()
 		_check_vision_for_enemy_to_attack()
 
