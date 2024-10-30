@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://bbqvgiqtvvj75"]
+[gd_scene load_steps=55 format=3 uid="uid://bbqvgiqtvvj75"]
 
 [ext_resource type="Script" path="res://scripts/worker.gd" id="1_ybqxx"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_smnw2"]
@@ -7,7 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://e237u06bp3sc" path="res://sound/536736__egomassive__chop.ogg" id="5_vhbtc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]
-radius = 2.0
+radius = 3.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sfvsk"]
 atlas = ExtResource("3_puwsk")
@@ -341,16 +341,8 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_kikdj"]
-radius = 225.18
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_n7gtl"]
-radius = 51.0882
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_ko4iw"]
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4l5a1"]
-size = Vector2(35, 49)
+size = Vector2(41.235, 55.355)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ynejq"]
 radius = 326.337
@@ -399,39 +391,10 @@ animation = &"run_holding"
 autoplay = "idle"
 metadata/_edit_lock_ = true
 
-[node name="ChaseRadius" type="Area2D" parent="."]
-visible = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ChaseRadius"]
-shape = SubResource("CircleShape2D_kikdj")
-debug_color = Color(0.994425, 0, 0.222291, 0.42)
-
-[node name="WakeTrigger" type="Area2D" parent="."]
-visible = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WakeTrigger"]
-shape = SubResource("CircleShape2D_n7gtl")
-
-[node name="WeaponTimer" type="Timer" parent="."]
-one_shot = true
-
-[node name="WeaponPivot" type="Node2D" parent="."]
-visible = false
-metadata/_edit_group_ = true
-
-[node name="WeaponTrigger" type="Area2D" parent="WeaponPivot"]
-position = Vector2(21, 1.06581e-14)
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WeaponPivot/WeaponTrigger"]
-shape = SubResource("CircleShape2D_ko4iw")
-debug_color = Color(0.830114, 0.393404, 3.85046e-07, 0.42)
-
 [node name="SelectionHoverArea" type="Area2D" parent="."]
-metadata/_edit_group_ = true
-metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectionHoverArea"]
+visible = false
 position = Vector2(0, -25)
 shape = SubResource("RectangleShape2D_4l5a1")
 
@@ -446,14 +409,16 @@ metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SearchAreaSmall"]
+visible = false
 shape = SubResource("CircleShape2D_ynejq")
-debug_color = Color(0, 0.6, 0.701961, 0)
+debug_color = Color(0, 0.6, 0.701961, 0.0470588)
 
 [node name="SearchAreaLarge" type="Area2D" parent="."]
 metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SearchAreaLarge"]
+visible = false
 shape = SubResource("CircleShape2D_4kigh")
 debug_color = Color(0, 0.6, 0.701961, 0)
 
@@ -466,6 +431,7 @@ volume_db = -2.039
 [node name="AttackArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+visible = false
 shape = SubResource("CircleShape2D_3t2kq")
 debug_color = Color(0.996078, 0, 0.172549, 0.113725)
 
@@ -480,12 +446,9 @@ show_percentage = false
 [node name="VisionArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VisionArea"]
+visible = false
+position = Vector2(83, 53)
 shape = SubResource("CircleShape2D_3ckoi")
 debug_color = Color(0.756863, 0.454902, 0, 0.0666667)
 
 [connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]
-[connection signal="body_exited" from="ChaseRadius" to="." method="_on_chase_radius_body_exited"]
-[connection signal="body_entered" from="WakeTrigger" to="." method="_on_wake_trigger_body_entered"]
-[connection signal="timeout" from="WeaponTimer" to="." method="_on_weapon_timer_timeout"]
-[connection signal="body_entered" from="WeaponPivot/WeaponTrigger" to="." method="_on_weapon_trigger_body_entered"]
-[connection signal="body_exited" from="WeaponPivot/WeaponTrigger" to="." method="_on_weapon_trigger_body_exited"]

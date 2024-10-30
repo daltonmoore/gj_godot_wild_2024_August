@@ -13,8 +13,6 @@ var _selection_box_start_pos
 var _select_box = Rect2()
 var _selection_grid : SelectionGrid
 
-@export var _debug_selection = false
-
 # debug vars
 var mouse_hovered_unit_label = Label.new()
 
@@ -65,7 +63,7 @@ func _handle_click_release():
 	var end = _select_box.end
 	
 	#region Debug Selection
-	if _debug_selection:
+	if Globals.debug:
 		# Axes
 		DebugDraw2d.line_vector(Vector2.ZERO,Vector2.UP*40, Color.BLACK, 1, INF)
 		DebugDraw2d.line_vector(Vector2.ZERO,Vector2.DOWN*40, Color.BLACK, 1, INF)

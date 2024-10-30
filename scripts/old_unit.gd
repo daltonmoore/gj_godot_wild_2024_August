@@ -137,7 +137,3 @@ func _on_weapon_timer_timeout() -> void:
 		$WeaponTimer.stop()
 	pass # Replace with function body.
 #endregion
-
-
-
-

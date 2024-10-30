@@ -4,7 +4,7 @@ extends Sprite2D
 @export var move_speed := 0.5
 @export var grid_size: Vector2 = Vector2(48,48)
 
-@onready var tile_map_layer: TileMapLayer = $"../TileMapLayer"
+@onready var tile_map_layer: TileMapLayer = %TileMapLayer
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var ray_cast_2d: RayCast2D = $RayCast2D
 @onready var collision_shape_2d: CollisionShape2D = $Area2D/CollisionShape2D
@@ -110,7 +110,8 @@ func move():
 		# try again
 		line_2d.default_color = Color.PURPLE
 		var pos_just_before_destination = _move_to.direction_to(global_position)*grid_size + _move_to
-		DebugDraw2d.rect(pos_just_before_destination, grid_size, Color.BLUE,1, 3)
+		if Globals.debug:
+			DebugDraw2d.rect(pos_just_before_destination, grid_size, Color.BLUE,1, 3)
 		var _just_before_tile_pos = tile_map_layer.local_to_map(pos_just_before_destination)
 		var temp = _get_path(pos_just_before_destination)
 		if temp.is_empty():

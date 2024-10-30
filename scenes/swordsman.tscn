@@ -443,6 +443,7 @@ metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectionHoverArea"]
+visible = false
 position = Vector2(0, -25)
 shape = SubResource("RectangleShape2D_4l5a1")
 
@@ -451,6 +452,7 @@ metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SearchAreaSmall"]
+visible = false
 shape = SubResource("CircleShape2D_ynejq")
 debug_color = Color(0, 0.6, 0.701961, 0)
 
@@ -459,12 +461,14 @@ metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SearchAreaLarge"]
+visible = false
 shape = SubResource("CircleShape2D_4kigh")
 debug_color = Color(0, 0.6, 0.701961, 0)
 
 [node name="AttackArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+visible = false
 shape = SubResource("CircleShape2D_gdwjf")
 debug_color = Color(1, 0, 0.109804, 0.113725)
 
@@ -479,6 +483,7 @@ show_percentage = false
 [node name="VisionArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VisionArea"]
+visible = false
 shape = SubResource("CircleShape2D_xfbis")
 debug_color = Color(0.756863, 0.454902, 0, 0.0666667)
 
