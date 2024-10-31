@@ -21,6 +21,7 @@ signal sig_dying(this)
 	enums.e_resource_type.supply: 1
 }
 @export var damage : float = 10.0
+@export var debug := false
 @export var engage_sounds : Array[AudioStream] = []
 @export var health : float = 50.0
 @export var hurt_sounds : Array[AudioStream] = []
@@ -31,13 +32,14 @@ signal sig_dying(this)
 #endregion
 
 #region Public Vars
-var details
-var group_guid
 var current_cell: SelectionGridCell:
 	get:
 		return current_cell
 	set(value):
 		current_cell = value
+var details
+var obstruction_index := -1
+var group_guid
 #endregion
 
 #region Private Vars
@@ -48,7 +50,9 @@ var _corpse_scene := load("res://scenes/corpse.tscn")
 var _current_cell_label : Label
 var _current_order_type : enums.e_order_type
 var _death_animated_sprite : AnimatedSprite2D # not used for death animation
+var _nav_mesh_block : Polygon2D
 var _is_attacking := false
+var _is_blocking_cell := false
 var _is_dying := false
 var _is_idle := true
 var _in_selection := false
@@ -60,53 +64,46 @@ var _targetted_enemy : Unit
 #region OnReady
 @onready var attack_area: Area2D = $AttackArea
 @onready var anim_sprite : AnimatedSprite2D = $AnimatedSprite2D
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 @onready var health_bar: ProgressBar = $HealthBar
 @onready var navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
+@onready var navigation_region_2d: NavigationRegion2D = $"../../NavigationRegion2D"
 @onready var selection_hover_area: Area2D = $SelectionHoverArea
+@onready var tile_map_layer: MyTileMap = $"../../TileMapLayer"
 @onready var vision_area: Area2D = $VisionArea
 #endregion
 
 func _ready() -> void:
-	for anim_name in anim_sprite.sprite_frames.get_animation_names():
-		if Globals.has_pattern("down.*attack", anim_name):
-			attack_animations["down"].append(anim_name)
-		elif Globals.has_pattern("front.*attack", anim_name):
-			attack_animations["front"].append(anim_name)
-		elif Globals.has_pattern("up.*attack", anim_name):
-			attack_animations["up"].append(anim_name)
-	
 	z_index = Globals.unit_z_index
 	ResourceManager._update_resource(cost[enums.e_resource_type.supply], enums.e_resource_type.supply)
-	navigation_agent.debug_enabled = Globals.debug
 	add_to_group(Globals.unit_group) # TODO: Is this used anymore?
+	
+	_setup_attack()
 	_setup_audio_streams()
 	_setup_health_bar()
 	_setup_signal_connections()
+	_setup_ui_detail()
 	
-	if Globals.debug:
+	if debug:
 		_setup_debug_labels()
-	
-	# setup attack area collision shape radius
-	var attack_area_collision_shape = attack_area.get_child(0) 
-	attack_area_collision_shape.shape.radius = attack_range
-	
-	# ui detail setup
-	var ui_detail_one = UI_Detail.new()
-	ui_detail_one.image_one_path = "res://art/icons/RPG Graphics Pack - Icons/Pack 1A-Renamed/boot/boot_03.png"
-	ui_detail_one.detail_one = movement_speed
-	var unit_picture_path = "res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Pawn/Blue/Pawn_Blue-still.png"
-	details = [ui_detail_one, unit_picture_path]
-	
-	_attack_timer = Timer.new()
-	_attack_timer.wait_time = attack_cooldown
-	_attack_timer.timeout.connect(_on_atack)
-	add_child(_attack_timer)
+		for c in get_children():
+			if c is Area2D:
+				var shape = c.get_child(0)
+				if shape is CollisionShape2D:
+					shape.visible = true
+	else:
+		for c in get_children():
+			if c is Area2D:
+				var shape = c.get_child(0)
+				if shape is CollisionShape2D:
+					shape.visible = false
+	call_deferred("_block_cell")
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if _is_dying:
 		return
 	
-	if current_cell != null:
+	if current_cell != null and debug:
 		DebugDraw2d.rect(current_cell.position)
 	
 	if (_targetted_enemy != null and 
@@ -155,6 +152,8 @@ func can_afford_to_build() -> bool:
 
 func order_move(in_goal, in_order_type : enums.e_order_type, silent := false) -> void:
 	_is_idle = false
+	if _is_blocking_cell:
+		_unblock_cell()
 	if in_order_type != enums.e_order_type.attack:
 		_disconnect_signals_on_target_change(_targetted_enemy)
 		_stop_attacking()
@@ -186,16 +185,16 @@ func stop_moving() -> void:
 func set_movement_target(movement_target: Vector2) -> void:
 	navigation_agent.set_target_position(movement_target)
 
-func set_selection_circle_visible(visible) -> void:
-	$"Selection Circle".visible = visible
+func set_selection_circle_visible(new_visible) -> void:
+	$"Selection Circle".visible = new_visible
 
-func take_damage(damage: float) -> void:
+func take_damage(incoming_damage: float) -> void:
 	if _is_dying:
 		return
 	
 	_create_one_shot_audio_stream("hurt_audio_stream", hurt_sounds)
 	
-	health -= damage
+	health -= incoming_damage
 	health_bar.value = health
 	if health <= 0:
 		_die()
@@ -214,6 +213,24 @@ func _acknowledge(silent: bool) -> void:
 func _begin_attacking() -> void:
 	_is_attacking = true
 	anim_sprite.animation = _select_attack_animation()
+
+func _block_cell() -> void:
+	_is_blocking_cell = true
+	var shape_size = Vector2(15, 10)
+	_nav_mesh_block = Polygon2D.new()
+	_nav_mesh_block.polygon = PackedVector2Array(
+		[
+			Vector2(-shape_size.x, -shape_size.y),
+			Vector2(-shape_size.x, shape_size.y),
+			Vector2(shape_size.x, shape_size.y),
+			Vector2(shape_size.x, -shape_size.y),
+		]
+	)
+	_nav_mesh_block.position = global_position
+	%NavHandler.update_obstacle(self, _nav_mesh_block, 
+		func():
+			print("I am callable")
+	)
 
 func _can_attack_body(body) -> bool:
 	return (_is_idle and
@@ -297,6 +314,16 @@ func _extract_sprite_frames(anims: Array[StringName],
 	
 	return sprite_frames_list
 
+func _find_close_in_group_units_and_stop_them() -> void:
+	for a in $SearchAreaSmall.get_overlapping_areas():
+		if a.owner == null:
+			continue
+		if a.owner.is_in_group(Globals.unit_group):
+			var unit = a.owner as Unit
+			if UnitManager.groups.has(group_guid) and unit.group_guid == group_guid:
+				unit.stop()
+	UnitManager.groups[group_guid].group_stopping = false
+
 func _select_attack_animation() -> StringName:
 	if len(attack_animations["up"]) == 0:
 		return &""
@@ -328,15 +355,13 @@ func _stop_attacking() -> void:
 	anim_sprite.animation = "idle"
 	stop_moving()
 
-func _find_close_in_group_units_and_stop_them() -> void:
-	for a in $SearchAreaSmall.get_overlapping_areas():
-		if a.owner == null:
-			continue
-		if a.owner.is_in_group(Globals.unit_group):
-			var unit = a.owner as Unit
-			if UnitManager.groups.has(group_guid) and unit.group_guid == group_guid:
-				unit.stop()
-	UnitManager.groups[group_guid].group_stopping = false
+func _unblock_cell() -> void:
+	_is_blocking_cell = false
+	_nav_mesh_block.polygon = PackedVector2Array([])
+	%NavHandler.update_obstacle(self, _nav_mesh_block, 
+	func():
+		print("I don't use this callable but i'll keep it for now")
+	)
 
 #region Listeners
 func _on_anim_frame_changed() -> void:
@@ -390,6 +415,7 @@ func _on_mouse_exit() -> void:
 		SelectionHandler.mouse_hovered_unit = null
 
 func _on_navigation_finished() -> void:
+	_block_cell()
 	_is_idle = true
 	anim_sprite.animation = "idle"
 	if _targetted_enemy == null and _auto_attack:
@@ -416,6 +442,24 @@ func _on_velocity_computed(safe_velocity: Vector2) -> void:
 #endregion
 
 #region Setup
+func _setup_attack() -> void:
+	for anim_name in anim_sprite.sprite_frames.get_animation_names():
+		if Globals.has_pattern("down.*attack", anim_name):
+			attack_animations["down"].append(anim_name)
+		elif Globals.has_pattern("front.*attack", anim_name):
+			attack_animations["front"].append(anim_name)
+		elif Globals.has_pattern("up.*attack", anim_name):
+			attack_animations["up"].append(anim_name)
+	
+	# setup attack area collision shape radius
+	var attack_area_collision_shape = attack_area.get_child(0) 
+	attack_area_collision_shape.shape.radius = attack_range
+	
+	_attack_timer = Timer.new()
+	_attack_timer.wait_time = attack_cooldown
+	_attack_timer.timeout.connect(_on_atack)
+	add_child(_attack_timer)
+
 func _setup_audio_streams() -> void:
 	add_child(_weapon_audio_stream)
 	weapon_sounds.append(load("res://sound/Minifantasy_Weapons_SFX/Slash_Attacks/Slash_Attack_Sword_1.wav"))
@@ -491,4 +535,11 @@ func _setup_signal_connections() -> void:
 	selection_hover_area.mouse_exited.connect(_on_mouse_exit)
 	vision_area.body_entered.connect(_on_vision_area_body_entered)
 	vision_area.body_exited.connect(_on_vision_area_body_exited)
+
+func _setup_ui_detail() -> void:
+	var ui_detail_one = UI_Detail.new()
+	ui_detail_one.image_one_path = "res://art/icons/RPG Graphics Pack - Icons/Pack 1A-Renamed/boot/boot_03.png"
+	ui_detail_one.detail_one = movement_speed
+	var unit_picture_path = "res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Pawn/Blue/Pawn_Blue-still.png"
+	details = [ui_detail_one, unit_picture_path]
 #endregion

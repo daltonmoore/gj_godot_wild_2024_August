@@ -1,6 +1,6 @@
 [gd_scene load_steps=66 format=3 uid="uid://dluhwbliivbp8"]
 
-[ext_resource type="Script" path="res://scripts/swordsman.gd" id="1_ptif3"]
+[ext_resource type="Script" path="res://scripts/units/swordsman.gd" id="1_ptif3"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_j6ccn"]
 [ext_resource type="AudioStream" uid="uid://cpabkbbf86kut" path="res://sound/LEOHPAZ_Command_Speech/Human/Human_Attack_1.wav" id="2_o5l57"]
 [ext_resource type="AudioStream" uid="uid://bcj1s3lkmleg1" path="res://sound/LEOHPAZ_Command_Speech/Human/Human_Attack_2.wav" id="3_2f4dy"]

@@ -22,7 +22,7 @@ func _ready() -> void:
 	InputManager.left_click_pressed.connect(_select)
 	InputManager.left_click_released.connect(_select)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	queue_redraw()
 
 func _draw():
@@ -65,12 +65,12 @@ func _handle_click_release():
 	#region Debug Selection
 	if Globals.debug:
 		# Axes
-		DebugDraw2d.line_vector(Vector2.ZERO,Vector2.UP*40, Color.BLACK, 1, INF)
-		DebugDraw2d.line_vector(Vector2.ZERO,Vector2.DOWN*40, Color.BLACK, 1, INF)
-		DebugDraw2d.line_vector(Vector2.ZERO,Vector2.RIGHT*40, Color.BLACK, 1, INF)
-		DebugDraw2d.line_vector(Vector2.ZERO,Vector2.LEFT*40, Color.BLACK, 1, INF)
+		DebugDraw2d.line_vector(Vector2.ZERO, Vector2.UP * 40, Color.BLACK, 1, INF)
+		DebugDraw2d.line_vector(Vector2.ZERO, Vector2.DOWN * 40, Color.BLACK, 1, INF)
+		DebugDraw2d.line_vector(Vector2.ZERO, Vector2.RIGHT * 40, Color.BLACK, 1, INF)
+		DebugDraw2d.line_vector(Vector2.ZERO, Vector2.LEFT * 40, Color.BLACK, 1, INF)
 	
-		var debug_box_lifetime = 3
+		var debug_box_lifetime := 3
 		# _________________________________________________________________
 		# Draw circles at the corners of the select box
 		#

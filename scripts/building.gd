@@ -94,8 +94,8 @@ func _process(delta: float) -> void:
 	if !_built:
 		$ProgressBar.value = _current_build_time / total_build_time
 
-func cancel_build_item(build_item) -> void:
-	var index = _build_queue.find(build_item)
+func cancel_build_item(item) -> void:
+	var index = _build_queue.find(item)
 	if index == 0:
 		$UnitBuildTimer.stop()
 	

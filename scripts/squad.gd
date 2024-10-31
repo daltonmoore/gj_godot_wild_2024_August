@@ -19,7 +19,7 @@ func _ready() -> void:
 	collision_shape.shape = CircleShape2D.new()
 	add_child(collision_shape)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	var next_path_position: Vector2 = nav_agent.get_next_path_position()
 	var new_velocity: Vector2 = global_position.direction_to(next_path_position) * movement_speed
 	

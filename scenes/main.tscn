@@ -1,8 +1,6 @@
-[gd_scene load_steps=19 format=3 uid="uid://cmw2100mkgw3c"]
+[gd_scene load_steps=18 format=3 uid="uid://cmw2100mkgw3c"]
 
-[ext_resource type="Script" path="res://scripts/2DNavigationRegionServer.gd" id="1_3w4ka"]
 [ext_resource type="PackedScene" uid="uid://cjh4kr7do3ddx" path="res://scenes/player.tscn" id="1_skd3a"]
-[ext_resource type="Script" path="res://scripts/nav_mesh_chunks_handler.gd" id="1_vpwjx"]
 [ext_resource type="Texture2D" uid="uid://ch32axtrmdsuk" path="res://art/craftland/48x48/CL_MainLev.png" id="1_vxu1n"]
 [ext_resource type="Script" path="res://scripts/MyTileMap.gd" id="2_hkppm"]
 [ext_resource type="PackedScene" uid="uid://50tod2hsjvde" path="res://scenes/rts_resource_wood.tscn" id="3_bksns"]
@@ -15,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://b6afaav2w8fko" path="res://scenes/grid_locked_unit.tscn" id="12_1qdsn"]
 [ext_resource type="Texture2D" uid="uid://cl3o1hnwx0edv" path="res://art/cursors/mmorpg-cursorpack-Narehop/blue-pointer/pointer_1.png" id="13_bxe7t"]
 [ext_resource type="Script" path="res://scripts/units/formation_manager.gd" id="14_7yv5r"]
+[ext_resource type="Script" path="res://scripts/nav_handler.gd" id="15_behio"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wtqwk"]
 texture = ExtResource("1_vxu1n")
@@ -3350,49 +3349,6 @@ source_geometry_group_name = &"navigation_polygon_source_group"
 [node name="main" type="Node2D"]
 metadata/_edit_lock_ = true
 
-[node name="NavMeshChunks" type="Node2D" parent="."]
-
-[node name="NavMeshChunksHandler" type="Node2D" parent="NavMeshChunks"]
-unique_name_in_owner = true
-script = ExtResource("1_vpwjx")
-
-[node name="ParseRootNode" type="Node2D" parent="NavMeshChunks"]
-unique_name_in_owner = true
-
-[node name="ParseStaticBody2D" type="StaticBody2D" parent="NavMeshChunks/ParseRootNode"]
-unique_name_in_owner = true
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="NavMeshChunks/ParseRootNode/ParseStaticBody2D"]
-position = Vector2(744, 888)
-polygon = PackedVector2Array(-96, -96, -96, 96, 96, 96, 96, -96)
-
-[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="NavMeshChunks/ParseRootNode/ParseStaticBody2D"]
-position = Vector2(1320, 360)
-polygon = PackedVector2Array(-96, -96, -96, 96, 96, 96, 96, -96)
-
-[node name="DebugPaths" type="Node2D" parent="NavMeshChunks"]
-unique_name_in_owner = true
-
-[node name="PathDebugCorridorFunnel" type="NavigationAgent2D" parent="NavMeshChunks/DebugPaths"]
-unique_name_in_owner = true
-debug_enabled = true
-debug_use_custom = true
-debug_path_custom_color = Color(1, 0, 1, 1)
-debug_path_custom_point_size = 10.0
-debug_path_custom_line_width = 4.0
-
-[node name="PathDebugEdgeCentered" type="NavigationAgent2D" parent="NavMeshChunks/DebugPaths"]
-unique_name_in_owner = true
-path_postprocessing = 1
-debug_enabled = true
-debug_use_custom = true
-debug_path_custom_color = Color(1, 1, 0, 1)
-debug_path_custom_point_size = 10.0
-debug_path_custom_line_width = 4.0
-
-[node name="ChunksContainer" type="Node2D" parent="NavMeshChunks"]
-unique_name_in_owner = true
-
 [node name="Player" parent="." instance=ExtResource("1_skd3a")]
 position = Vector2(2328, 1848)
 limit_left = 0
@@ -3403,6 +3359,7 @@ camera_bounds = Rect2(0, 0, 2000, 2000)
 
 [node name="FormationManager" type="Node2D" parent="."]
 script = ExtResource("14_7yv5r")
+debug = true
 metadata/_edit_lock_ = true
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
@@ -3416,12 +3373,10 @@ position = Vector2(-2, 0)
 energy = 0.53
 metadata/_edit_lock_ = true
 
-[node name="NavigationRegion2D" type="NavigationRegion2D" parent="." node_paths=PackedStringArray("line")]
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 visible = false
 navigation_polygon = SubResource("NavigationPolygon_60m1h")
 enabled = false
-script = ExtResource("1_3w4ka")
-line = NodePath("../Line2D")
 metadata/_edit_lock_ = true
 
 [node name="Ambient" type="CanvasModulate" parent="."]
@@ -3456,7 +3411,7 @@ metadata/_edit_lock_ = true
 
 [node name="Worker6" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(216, 264)
-metadata/_edit_lock_ = true
+debug = true
 
 [node name="Worker7" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(120, 360)
@@ -3563,5 +3518,9 @@ _built = true
 points = PackedVector2Array(480, 1206)
 width = 5.0
 default_color = Color(1, 1, 1, 0.447059)
+
+[node name="NavHandler" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("15_behio")
 
 [connection signal="path_changed" from="Units/Worker" to="NavigationRegion2D" method="_on_worker_path_changed"]

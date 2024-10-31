@@ -18,7 +18,7 @@ func _ready() -> void:
 	_update_resource(starting_meat, enums.e_resource_type.meat)
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if _supply_blocked and supply < supply_cap:
 		sig_supply_free.emit()
 		_supply_blocked = false
@@ -31,7 +31,7 @@ func _spend_resources(cost) -> void:
 func _peek_can_afford_supply(supply_cost) -> bool:
 	return supply + supply_cost <= supply_cap
 
-func _update_resource(amount : float, type : enums.e_resource_type):
+func _update_resource(amount : int, type : enums.e_resource_type):
 	if type == enums.e_resource_type.none:
 		return
 	

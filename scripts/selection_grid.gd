@@ -85,10 +85,10 @@ func get_units_in_select_box(select_box):
 			floori(top_left.y / size.x))
 	var bot_right_coord: Vector2 = Vector2(floori(bot_right.x / size.x), 
 			floori(bot_right.y / size.x))
-	var top_right_coord: Vector2 = Vector2(floori(top_right.x / size.x), 
-			floori(top_right.y / size.x))
-	var bot_left_coord: Vector2 = Vector2(floori(bot_left.x / size.x), 
-			floori(bot_left.y / size.x))
+	#var top_right_coord: Vector2 = Vector2(floori(top_right.x / size.x), 
+			#floori(top_right.y / size.x))
+	#var bot_left_coord: Vector2 = Vector2(floori(bot_left.x / size.x), 
+			#floori(bot_left.y / size.x))
 	
 	# TODO:make a function that will take a vector2 and flatten it into an array index
 	var start_index = top_left_coord.x + top_left_coord.y * grid_width
@@ -148,13 +148,11 @@ func get_units_in_select_box(select_box):
 	var selected_units = []
 	for u in unit_array:
 		var inside = true
-		var p_index = 0
 		for p in planes:
 			var distance = p.normal.dot(u.position) - p.d
 			if (distance > 0):
 				inside = false
 				break
-			p_index += 1
 		if inside:
 			#DebugDraw2d.circle(u.position, 10, 32, Color.GREEN, 1, 1)
 			selected_units.append(u)

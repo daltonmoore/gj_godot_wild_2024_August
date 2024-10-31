@@ -42,7 +42,7 @@ func _ready() -> void:
 			if tile_data == null or not tile_data.get_custom_data("walkable"):
 				astar_grid.set_point_solid(tile_position)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if is_moving:
 		sprite_2d.global_position = sprite_2d.global_position.move_toward(global_position, move_speed)
 		

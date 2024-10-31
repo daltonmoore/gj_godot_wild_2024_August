@@ -35,10 +35,10 @@ func _ready() -> void:
 	add_child(_gather_area)
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	amtlabel.text = str(resource_amount)
 
-func take(amount : float) -> float:
+func take(amount : int) -> float:
 	var given_amount := 0
 	if amount > resource_amount:
 		given_amount = resource_amount

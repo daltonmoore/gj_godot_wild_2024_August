@@ -15,8 +15,8 @@ var _current_resource_holding := 0
 var _current_resource_type := enums.e_resource_type.none
 var _holding_resource_bundle := false
 var _is_gathering := false
-var _wood_bundle_sprite := load("res://scenes/RTS_Resources/wood.tscn")
-var _gold_bundle_sprite := load("res://scenes/RTS_Resources/gold.tscn")
+var _wood_bundle_sprite := load("res://scenes/gathered_resources/wood.tscn")
+var _gold_bundle_sprite := load("res://scenes/gathered_resources/gold.tscn")
 var _bundle_instance: AnimatedSprite2D
 var _is_turning_in_resources := false
 # is the worker automatically turning after gathering?
@@ -44,7 +44,7 @@ func _ready() -> void:
 	$ResourceGatherTick.wait_time = collection_rate
 	super()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	#auto_label.text = "auto_gather?: %s" % _auto_gather
 	wood_label.text = "wood: %s" % _current_resource_holding
 	# Debug name text

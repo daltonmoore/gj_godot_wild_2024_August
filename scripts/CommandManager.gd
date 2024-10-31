@@ -15,7 +15,7 @@ func _ready() -> void:
 	$SelectedFlashTimer.wait_time = _flash_rate
 	InputManager.right_click_pressed.connect(_order)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	queue_redraw()
 
 func _draw() -> void:
@@ -27,7 +27,7 @@ func _draw() -> void:
 			false,
 			2)
 
-func _order(event) -> void:
+func _order(_event) -> void:
 	if SelectionHandler.selected_units != null and len(SelectionHandler.selected_units) > 0:
 		_order_units()
 
