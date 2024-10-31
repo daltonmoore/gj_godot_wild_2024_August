@@ -1,6 +1,7 @@
 extends Node2D
 
 #@export var __debug_test_grid_locked_units : Array[GridLockedUnit]
+@export var debug := false
 @export var grid_size := 48
 @export var max_formation_width = 6
 
@@ -10,12 +11,12 @@ func _ready() -> void:
 	z_index = Globals.top_z_index
 	InputManager.right_click_pressed.connect(get_formation_for_currently_selected_units)
 	
-	if !Globals.debug:
+	if !debug:
 		return
 	
-	for x in 20:
-		for y in 20:
-			DebugDraw2d.rect(tile_map_layer.map_to_local(Vector2i(x,y)), Vector2(grid_size, grid_size), Color.BLUE,1, INF)
+	#for x in 20:
+		#for y in 20:
+			#DebugDraw2d.rect(tile_map_layer.map_to_local(Vector2i(x,y)), Vector2(grid_size, grid_size), Color.BLUE,1, INF)
 
 func get_formation_for_currently_selected_units(_event) -> void:
 	# do not do a move formation if we are issuing an attack order on a single unit.
@@ -45,7 +46,8 @@ func get_formation_for_currently_selected_units(_event) -> void:
 			if !marked_positions.has(tile_pos):
 				marked_positions.append(tile_pos)
 				unit_destination_tile = tile_pos
-				DebugDraw2d.rect(tile_map_layer.map_to_local(tile_pos), Vector2(grid_size, grid_size), Color.GREEN,1, 10)
+				if debug:
+					DebugDraw2d.rect(tile_map_layer.map_to_local(tile_pos), Vector2(grid_size, grid_size), Color.GREEN,1, 10)
 				
 				# for testing grid_locked_unit.gd
 				#unit.set_move_to(tile_map_layer.map_to_local(tile_pos))

@@ -30,14 +30,14 @@ func get_ghost() -> Node2D:
 func set_real(real) -> void:
 	_current_real = real
 
-func _press(event) -> void:
+func _press(_event) -> void:
 	_press_time = Time.get_unix_time_from_system()
 	if _current_real != null:
 		real_instance = _current_real.instantiate()
 		can_afford_to_place_building = real_instance.can_afford_to_build()
 
 
-func _snap_ghost(event) -> void:
+func _snap_ghost(_event) -> void:
 	if _current_ghost == null:
 		return
 	
@@ -47,7 +47,7 @@ func _snap_ghost(event) -> void:
 	_current_ghost.position = snapped_local
 
 
-func place_building(event) -> void:
+func place_building(_event) -> void:
 	var _release_time = Time.get_unix_time_from_system()
 	if (_current_ghost == null or
 			_release_time - _press_time > .2 or
@@ -71,5 +71,5 @@ func place_building(event) -> void:
 func spend_resources() -> void:
 	ResourceManager._spend_resources(real_instance.cost)
 
-func cancel_building_placement(event) -> void:
+func cancel_building_placement(_event) -> void:
 	set_ghost(null)
