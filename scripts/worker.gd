@@ -1,48 +1,58 @@
 class_name Worker
 extends Unit
 
-signal stop_gathering(unit)
+#region Signals
 signal path_changed(path)
+signal stop_gathering(unit)
+#endregion
 
-@export var max_resource_holding := 5
+#region Exports
 @export_range(0.1, 2.0) var collection_rate := 1.1
+@export var max_resource_holding := 5
+#endregion
 
+#region Private Vars
+# is the worker automatically turning after gathering?
+# used to discern when the player orders the turn in or it happens automatically
+var _auto_gather := false
+var _bundle_instance: AnimatedSprite2D
 # just assuming any goal is a resource for now, could eventually be an enemy
-var _resource_goal : RTS_Resource_Base
 var _current_building
 var _current_resource_holding_type := enums.e_resource_type.none
 var _current_resource_holding := 0
 var _current_resource_type := enums.e_resource_type.none
 var _holding_resource_bundle := false
-var _is_gathering := false
-var _wood_bundle_sprite := load("res://scenes/gathered_resources/wood.tscn")
 var _gold_bundle_sprite := load("res://scenes/gathered_resources/gold.tscn")
-var _bundle_instance: AnimatedSprite2D
+var _is_gathering := false
 var _is_turning_in_resources := false
-# is the worker automatically turning after gathering?
-# used to discern when the player orders the turn in or it happens automatically
-var _auto_gather := false
+var _resource_goal : RTS_Resource_Base
+var _wood_bundle_sprite := load("res://scenes/gathered_resources/wood.tscn")
+#endregion
 
+#region Debug Vars
 # for debug resource holding
-var wood_label = Label.new()
-var deposit_label = Label.new()
 var auto_label = Label.new()
+var deposit_label = Label.new()
 var going_to_new_resource_label = Label.new()
+var wood_label = Label.new()
+#endregion
 
 func _ready() -> void:
+	super()
 	_auto_attack = false
 	add_child(wood_label)
-	# add_child(deposit_label)
-	# add_child(auto_label)
-	# add_child(going_to_new_resource_label)
-	wood_label.position = Vector2(0, -20) # is relative pos
-	deposit_label.position = Vector2(20, -40)
-	auto_label.position = Vector2(20, -60)
-	going_to_new_resource_label.position = Vector2(20, -80)
+	
+	if debug:
+		add_child(deposit_label)
+		add_child(auto_label)
+		add_child(going_to_new_resource_label)
+		auto_label.position = Vector2(20, -60)
+		deposit_label.position = Vector2(20, -40)
+		going_to_new_resource_label.position = Vector2(20, -80)
+		wood_label.position = Vector2(0, -20) # is relative pos
 	
 	$ResourceGatherTick.timeout.connect(_on_resource_gather_tick_timeout)
 	$ResourceGatherTick.wait_time = collection_rate
-	super()
 
 func _process(_delta: float) -> void:
 	#auto_label.text = "auto_gather?: %s" % _auto_gather

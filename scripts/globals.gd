@@ -5,8 +5,9 @@ const debug = false
 const unit_group = "units"
 
 const top_z_index = 10
-const foreground_z_index = 3
-const unit_z_index = 2
+const foreground_z_index = 4
+const unit_z_index = 3
+const building_z_index = 2
 const background_z_index = 1
 
 const tile_map_layer_background = 0

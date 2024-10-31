@@ -28,6 +28,7 @@ BuildManager="*res://scripts/BuildManager.gd"
 CommandManager="*res://scenes/command_manager.tscn"
 ResourceManager="*res://scripts/resource_manager.gd"
 UnitManager="*res://scripts/unit_manager.gd"
+NavHandler="*res://scripts/nav_handler.gd"
 
 [global_group]
 

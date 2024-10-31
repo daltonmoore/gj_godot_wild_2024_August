@@ -11,21 +11,21 @@ size = Vector2(285, 181)
 
 [node name="BuildingTownHall" type="Node2D"]
 script = ExtResource("1_fo44i")
-construction_sprite = ExtResource("2_bbbag")
-destroyed_sprite = ExtResource("3_2aioj")
-built_sprite = ExtResource("4_5xs6l")
-total_build_time = 10.0
 building_corners = PackedVector2Array(-140, -80, -140, 80, 140, 80, 140, -80)
+building_type = 1
+built_sprite = ExtResource("4_5xs6l")
+build_times = {
+1: 25.0
+}
+construction_sprite = ExtResource("2_bbbag")
 cost = {
 1: 100.0,
 2: 100.0,
 3: 0.0
 }
-building_type = 1
+destroyed_sprite = ExtResource("3_2aioj")
 supply_cap = 10
-build_times = {
-1: 25.0
-}
+total_build_time = 10.0
 
 [node name="Selection Circle" type="Sprite2D" parent="."]
 visible = false

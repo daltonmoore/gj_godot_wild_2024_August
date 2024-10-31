@@ -46,13 +46,12 @@ var group_guid
 var _attack_timer : Timer
 var _audio_streams := []
 var _auto_attack := true
+var _cell_block : CellBlock = CellBlock.new(self)
 var _corpse_scene := load("res://scenes/corpse.tscn")
 var _current_cell_label : Label
 var _current_order_type : enums.e_order_type
 var _death_animated_sprite : AnimatedSprite2D # not used for death animation
-var _nav_mesh_block : Polygon2D
 var _is_attacking := false
-var _is_blocking_cell := false
 var _is_dying := false
 var _is_idle := true
 var _in_selection := false
@@ -97,7 +96,8 @@ func _ready() -> void:
 				var shape = c.get_child(0)
 				if shape is CollisionShape2D:
 					shape.visible = false
-	call_deferred("_block_cell")
+	await get_tree().process_frame
+	_cell_block.block_cell()
 
 func _physics_process(_delta: float) -> void:
 	if _is_dying:
@@ -152,8 +152,8 @@ func can_afford_to_build() -> bool:
 
 func order_move(in_goal, in_order_type : enums.e_order_type, silent := false) -> void:
 	_is_idle = false
-	if _is_blocking_cell:
-		_unblock_cell()
+	if _cell_block._is_blocking_cell:
+		_cell_block.unblock_cell()
 	if in_order_type != enums.e_order_type.attack:
 		_disconnect_signals_on_target_change(_targetted_enemy)
 		_stop_attacking()
@@ -213,24 +213,6 @@ func _acknowledge(silent: bool) -> void:
 func _begin_attacking() -> void:
 	_is_attacking = true
 	anim_sprite.animation = _select_attack_animation()
-
-func _block_cell() -> void:
-	_is_blocking_cell = true
-	var shape_size = Vector2(15, 10)
-	_nav_mesh_block = Polygon2D.new()
-	_nav_mesh_block.polygon = PackedVector2Array(
-		[
-			Vector2(-shape_size.x, -shape_size.y),
-			Vector2(-shape_size.x, shape_size.y),
-			Vector2(shape_size.x, shape_size.y),
-			Vector2(shape_size.x, -shape_size.y),
-		]
-	)
-	_nav_mesh_block.position = global_position
-	%NavHandler.update_obstacle(self, _nav_mesh_block, 
-		func():
-			print("I am callable")
-	)
 
 func _can_attack_body(body) -> bool:
 	return (_is_idle and
@@ -355,14 +337,6 @@ func _stop_attacking() -> void:
 	anim_sprite.animation = "idle"
 	stop_moving()
 
-func _unblock_cell() -> void:
-	_is_blocking_cell = false
-	_nav_mesh_block.polygon = PackedVector2Array([])
-	%NavHandler.update_obstacle(self, _nav_mesh_block, 
-	func():
-		print("I don't use this callable but i'll keep it for now")
-	)
-
 #region Listeners
 func _on_anim_frame_changed() -> void:
 	if !_is_attacking:
@@ -415,7 +389,7 @@ func _on_mouse_exit() -> void:
 		SelectionHandler.mouse_hovered_unit = null
 
 func _on_navigation_finished() -> void:
-	_block_cell()
+	_cell_block.block_cell()
 	_is_idle = true
 	anim_sprite.animation = "idle"
 	if _targetted_enemy == null and _auto_attack:
