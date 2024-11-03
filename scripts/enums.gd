@@ -44,5 +44,6 @@ enum e_purchase_type {
 enum e_team {
 	none,
 	player,
+	neutral,
 	enemy
 }

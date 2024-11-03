@@ -9,6 +9,7 @@ signal exhausted
 
 var resource_type : enums.e_resource_type
 var amtlabel = Label.new()
+var _cell_block: CellBlock
 var _remaining_amount_progress_bar : ProgressBar = ProgressBar.new()
 var _gather_area = Area2D.new()
 var _gather_circle = CollisionShape2D.new()

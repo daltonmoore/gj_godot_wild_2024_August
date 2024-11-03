@@ -1,12 +1,8 @@
 class_name RTS_Resource_Base_Wood
 extends RTS_Resource_Base
 
-var _nav_mesh_blocker
-var _nav_region : NavigationRegion2D
-
 func _ready() -> void:
 	super()
-	_nav_region = get_tree().get_root().get_node("/root/main/NavigationRegion2D") as NavigationRegion2D
 	z_index = 0
 	$TopSprite.z_index = Globals.foreground_z_index
 	$BotSprite.z_index = Globals.background_z_index
@@ -21,6 +17,7 @@ func _ready() -> void:
 	cursor_texture = load("res://art/cursors/mmorpg-cursorpack-Narehop/gold-pointer/pointer_36.png")
 	resource_type = enums.e_resource_type.wood
 	visual_size = Vector2(50,50)
+	_cell_block = CellBlock.new(self, visual_size)
 	
 	var block = Polygon2D.new()
 	var rect_size = $NavMeshBlockerStaticBody/CollisionShape2D.shape.size
@@ -29,8 +26,9 @@ func _ready() -> void:
 			Vector2(rect_size.x/2, rect_size.y/2),
 			Vector2(-rect_size.x/2, rect_size.y/2)]
 	block.position = to_global($NavMeshBlockerStaticBody/CollisionShape2D.position)
-	_nav_mesh_blocker = block
-	_nav_region.add_child(block)
+	
+	await get_tree().process_frame
+	_cell_block.block_cell()
 
 
 func gather(worker : Worker) -> bool:
@@ -49,9 +47,10 @@ func _on_worker_stop_gathering(worker: Worker) -> void:
 	$DamagedTimer.stop()
 
 func _destroy() -> void:
-	_nav_mesh_blocker.queue_free()
-	await get_tree().process_frame # just wait for the free to happen by next frame
-	_nav_region.bake_navigation_polygon()
+	# TODO: fix this for procedural nav mesh stuff
+	#_nav_mesh_blocker.queue_free()
+	#await get_tree().process_frame # just wait for the free to happen by next frame
+	#_nav_region.bake_navigation_polygon()
 	super()
 
 func _on_damaged_timer_timeout():

@@ -10,6 +10,10 @@ func _ready() -> void:
 	cursor_texture = load("res://art/cursors/mmorpg-cursorpack-Narehop/gold-pointer/pointer_62.png")
 	resource_type = enums.e_resource_type.gold
 	visual_size = Vector2(150,100)
+	_cell_block = CellBlock.new(self, visual_size)
+	
+	await get_tree().process_frame
+	_cell_block.block_cell()
 
 
 #TODO: When a worker goes into the mine, they probably should be removed from selection list

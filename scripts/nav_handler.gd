@@ -11,6 +11,7 @@ var _node_to_obstruction_dict: Dictionary = {}
 var __debug_nav_polygons = [] # for debug drawing
 
 func _ready() -> void:
+	z_index = Globals.top_z_index
 	navigation_mesh = NavigationPolygon.new()
 	navigation_mesh.agent_radius = 10.0
 	source_geometry = NavigationMeshSourceGeometryData2D.new()

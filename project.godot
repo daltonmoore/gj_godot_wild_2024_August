@@ -21,13 +21,14 @@ config/icon="res://icon.svg"
 InputManager="*res://scripts/input_manager.gd"
 DebugDraw2d="*res://addons/debugdraw2d/DebugDraw2D.gd"
 Globals="*res://scripts/globals.gd"
+Util="*res://scripts/util.gd"
 CursorManager="*res://scripts/CursorManager.gd"
 SelectionHandler="*res://scripts/selection_handler.gd"
 Hud="*res://scenes/hud.tscn"
 BuildManager="*res://scripts/BuildManager.gd"
 CommandManager="*res://scenes/command_manager.tscn"
 ResourceManager="*res://scripts/resource_manager.gd"
-UnitManager="*res://scripts/unit_manager.gd"
+UnitManager="*res://scripts/units/unit_manager.gd"
 NavHandler="*res://scripts/nav_handler.gd"
 
 [global_group]
@@ -65,6 +66,11 @@ Down={
 "Mouse Scroll"={
 "deadzone": 0.5,
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":8,"position":Vector2(100, 10),"global_position":Vector2(104, 51),"factor":1.0,"button_index":4,"canceled":false,"pressed":true,"double_click":false,"script":null)
+]
+}
+"Add To Selection"={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194325,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ]
 }
 

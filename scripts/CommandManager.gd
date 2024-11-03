@@ -48,7 +48,7 @@ func _order_units() -> void:
 	):
 		return
 	
-	if CursorManager.cursor_over_selectable():
+	if CursorManager.cursor_over_neutral_or_friendly_selectable():
 		_handle_gather_build_deposit()
 	else:
 		_handle_move_attack()
@@ -60,8 +60,8 @@ func _handle_gather_build_deposit() -> void:
 	$SelectedFlashTimer.start()
 	_flash_on = true
 	_flashing_hovered_object = CursorManager.current_hovered_inanimate_object
-	var resource = CursorManager.current_hovered_inanimate_object as RTS_Resource_Base
-	var building = CursorManager.current_hovered_inanimate_object as Building
+	var resource := CursorManager.current_hovered_inanimate_object as RTS_Resource_Base
+	var building := CursorManager.current_hovered_inanimate_object as Building
 	
 	for unit in SelectionHandler.selected_units:
 		var worker = unit as Worker
@@ -72,30 +72,22 @@ func _handle_gather_build_deposit() -> void:
 		if resource != null:
 			worker.order_gather_resource(resource)
 		elif building != null:
-			if !building._built:
+			if !building.built:
 				worker.build(building)
 			else:
 				worker.order_deposit_resources(building)
 
 func _handle_move_attack() -> void:
-	#var group_guid = 0
-	#if len(SelectionHandler.selected_units) > 1:
-		#group_guid = UnitManager.add_group(SelectionHandler.selected_units.duplicate())
 	for u in SelectionHandler.selected_units:
 		if u == null:
 			continue
-		#if u.group_guid != null:
-			#UnitManager.leave_group(u)
-		#if len(SelectionHandler.selected_units) > 1:
-			#print()
-			#u.group_guid = group_guid
 		if CursorManager.cursor_over_enemy():
-			u.order_attack(SelectionHandler.mouse_hovered_unit)
-		# TODO: probably just let the formation manger handle move commands
-		#else:
-			#u.order_move(get_global_mouse_position(), enums.e_order_type.move)
-	#if group_guid != 0:
-		#DebugDraw2d.circle(UnitManager.get_group_average_position(group_guid), 10, 16, Color(1, 0, 1), 1, 5)
+			u.order_attack(CursorManager.current_attackable)
+			#if SelectionHandler.mouse_hovered_unit != null:
+				#u.order_attack(SelectionHandler.mouse_hovered_unit)
+			#else:
+				#print("Is a enemy building")
+				#u.order_attack(CursorManager.current_hovered_inanimate_object)
 
 func build(building) -> void:
 	for u in SelectionHandler.selected_units:

@@ -1,16 +1,15 @@
-[gd_scene load_steps=46 format=3 uid="uid://bgv3jfx46sn4t"]
+[gd_scene load_steps=45 format=3 uid="uid://bgv3jfx46sn4t"]
 
 [ext_resource type="Script" path="res://scripts/units/enemy/enemy.gd" id="1_pq78i"]
 [ext_resource type="AudioStream" uid="uid://cfi2l43wngyak" path="res://sound/Goblin/Goblin Attack Voice 1.mp3" id="2_d0bak"]
-[ext_resource type="AudioStream" uid="uid://discj5w3ukyhh" path="res://sound/Goblin/Goblin Wounded 1.mp3" id="2_u5q3k"]
-[ext_resource type="AudioStream" uid="uid://chojikkx1xecr" path="res://sound/Goblin/Goblin Wounded 2.mp3" id="3_cxkw3"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="3_oisd4"]
 [ext_resource type="AudioStream" uid="uid://c3te38574l7hl" path="res://sound/Goblin/Goblin Attack Voice 2.mp3" id="3_u3bl8"]
 [ext_resource type="AudioStream" uid="uid://cuxetebaig84w" path="res://sound/Goblin/Goblin Attack Voice 3.mp3" id="4_jg4eg"]
 [ext_resource type="Texture2D" uid="uid://ha20xrg7fvf2" path="res://art/Tiny Swords (Update 010)/Factions/Goblins/Troops/Torch/Red/Torch_Red.png" id="4_mqg2b"]
+[ext_resource type="Script" path="res://scripts/attackable.gd" id="7_f1uym"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]
-radius = 18.0278
+radius = 5.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ccr55"]
 atlas = ExtResource("4_mqg2b")
@@ -276,7 +275,6 @@ radius = 100.0
 y_sort_enabled = true
 script = ExtResource("1_pq78i")
 engage_sounds = Array[AudioStream]([ExtResource("2_d0bak"), ExtResource("3_u3bl8"), ExtResource("4_jg4eg")])
-hurt_sounds = Array[AudioStream]([ExtResource("2_u5q3k"), ExtResource("3_cxkw3")])
 movement_speed = 50.0
 team = 2
 
@@ -347,6 +345,9 @@ offset_right = 64.0
 offset_bottom = -139.0
 value = 53.13
 show_percentage = false
+
+[node name="Attackable" type="Node2D" parent="."]
+script = ExtResource("7_f1uym")
 
 [connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]
 [connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]

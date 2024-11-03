@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://cmw2100mkgw3c"]
+[gd_scene load_steps=18 format=4 uid="uid://cmw2100mkgw3c"]
 
 [ext_resource type="PackedScene" uid="uid://cjh4kr7do3ddx" path="res://scenes/player.tscn" id="1_skd3a"]
 [ext_resource type="Texture2D" uid="uid://ch32axtrmdsuk" path="res://art/craftland/48x48/CL_MainLev.png" id="1_vxu1n"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://b6afaav2w8fko" path="res://scenes/grid_locked_unit.tscn" id="12_1qdsn"]
 [ext_resource type="Texture2D" uid="uid://cl3o1hnwx0edv" path="res://art/cursors/mmorpg-cursorpack-Narehop/blue-pointer/pointer_1.png" id="13_bxe7t"]
 [ext_resource type="Script" path="res://scripts/units/formation_manager.gd" id="14_7yv5r"]
+[ext_resource type="PackedScene" uid="uid://bl5akcyrwyd00" path="res://scenes/buildings/building_enemy.tscn" id="14_ra2l4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wtqwk"]
 texture = ExtResource("1_vxu1n")
@@ -3391,55 +3392,45 @@ metadata/_edit_lock_ = true
 
 [node name="Worker" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(326, 371)
-metadata/_edit_lock_ = true
 
 [node name="Worker2" parent="Units" instance=ExtResource("5_gmj38")]
-position = Vector2(345, 474)
-metadata/_edit_lock_ = true
+position = Vector2(189, 553)
 
 [node name="Worker3" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(485, 474)
-metadata/_edit_lock_ = true
 
 [node name="Worker4" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(471, 378)
-metadata/_edit_lock_ = true
+debug = true
 
 [node name="Worker5" parent="Units" instance=ExtResource("5_gmj38")]
-position = Vector2(168, 456)
-metadata/_edit_lock_ = true
+position = Vector2(110, 469)
 
 [node name="Worker6" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(216, 264)
-debug = true
 
 [node name="Worker7" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(120, 360)
-metadata/_edit_lock_ = true
 
 [node name="Worker8" parent="Units" instance=ExtResource("5_gmj38")]
-position = Vector2(216, 360)
-metadata/_edit_lock_ = true
+position = Vector2(298, 504)
+debug = true
 
 [node name="Worker9" parent="Units" instance=ExtResource("5_gmj38")]
-position = Vector2(216, 600)
-metadata/_edit_lock_ = true
+position = Vector2(100, 548)
+debug = true
 
 [node name="Swordsman" parent="Units" instance=ExtResource("4_cdmta")]
 position = Vector2(598, 534)
-metadata/_edit_lock_ = true
 
 [node name="Swordsman2" parent="Units" instance=ExtResource("4_cdmta")]
 position = Vector2(695, 587)
-metadata/_edit_lock_ = true
 
 [node name="Swordsman3" parent="Units" instance=ExtResource("4_cdmta")]
 position = Vector2(504, 648)
-metadata/_edit_lock_ = true
 
 [node name="Swordsman4" parent="Units" instance=ExtResource("4_cdmta")]
 position = Vector2(312, 792)
-metadata/_edit_lock_ = true
 
 [node name="Swordsman5" parent="Units" instance=ExtResource("4_cdmta")]
 position = Vector2(360, 648)
@@ -3513,6 +3504,9 @@ metadata/_edit_lock_ = true
 [node name="BuildingTownHall" parent="." instance=ExtResource("7_jk4y1")]
 position = Vector2(557, 155)
 built = true
+
+[node name="BuildingEnemy" parent="." instance=ExtResource("14_ra2l4")]
+position = Vector2(425, 662)
 
 [node name="Line2D" type="Line2D" parent="."]
 points = PackedVector2Array(480, 1206)

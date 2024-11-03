@@ -10,6 +10,7 @@ enum cursor_type {
 	attack
 }
 
+var current_attackable : Attackable
 var current_hovered_tile : TileData
 var current_hovered_inanimate_object : Selectable
 
@@ -56,11 +57,20 @@ func cursor_over_anything() -> bool:
 func cursor_over_selectable() -> bool:
 	return current_hovered_inanimate_object != null
 
+func cursor_over_neutral_or_friendly_selectable() -> bool:
+	return (current_hovered_inanimate_object != null and 
+		(current_hovered_inanimate_object.team == enums.e_team.player or 
+		current_hovered_inanimate_object.team == enums.e_team.neutral))
+
 func cursor_over_enemy() -> bool:
-	return SelectionHandler.mouse_hovered_unit != null and SelectionHandler.mouse_hovered_unit.team == enums.e_team.enemy
+	return ((SelectionHandler.mouse_hovered_unit != null and SelectionHandler.mouse_hovered_unit.team == enums.e_team.enemy) or
+		current_attackable != null)
 
 func cursor_over_resource() -> bool:
 	return current_hovered_inanimate_object is RTS_Resource_Base
 
 func set_current_hovered_object(object):
 	current_hovered_inanimate_object = object
+
+func set_current_attackable(attackable):
+	current_attackable = attackable

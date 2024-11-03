@@ -58,13 +58,13 @@ func _process(_delta: float) -> void:
 	#auto_label.text = "auto_gather?: %s" % _auto_gather
 	wood_label.text = "wood: %s" % _current_resource_holding
 	# Debug name text
-	if Globals.debug:
+	if debug:
 		if current_cell != null:
 			_current_cell_label.text = "%s" % current_cell.grid_pos
 		else:
 			_current_cell_label.text = "none cell"
 	
-	if anim_sprite.animation == "chop":
+	if _anim_sprite.animation == "chop":
 		if !$WoodChop.playing:
 			$WoodChop.play()
 	elif $WoodChop.playing:
@@ -73,7 +73,7 @@ func _process(_delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	super(delta)
 	if _bundle_instance != null and !_bundle_instance.is_queued_for_deletion():
-		_bundle_instance.flip_h = anim_sprite.flip_h
+		_bundle_instance.flip_h = _anim_sprite.flip_h
 
 func order_move(in_goal, in_order_type : enums.e_order_type, silent := false):
 	super(in_goal, in_order_type, silent)
@@ -89,13 +89,13 @@ func order_move(in_goal, in_order_type : enums.e_order_type, silent := false):
 	
 	#TODO: this is difficult to understand
 	if (in_order_type != enums.e_order_type.build and _current_building != null and
-			(navigation_agent.navigation_finished.is_connected(_begin_construction) or
+			(_navigation_agent.navigation_finished.is_connected(_begin_construction) or
 			_current_building.finish_building.is_connected(_on_finish_construction))
 		):
 		_current_building.finish_building.disconnect(_on_finish_construction)
 		_current_building.stop_building()
 		_current_building = null
-		navigation_agent.navigation_finished.disconnect(_begin_construction)
+		_navigation_agent.navigation_finished.disconnect(_begin_construction)
 	
 	# clear resource goal if we issue new move order while on the way to gather
 	if (in_order_type != enums.e_order_type.gather and _resource_goal != null and !_auto_gather):
@@ -106,16 +106,16 @@ func order_move(in_goal, in_order_type : enums.e_order_type, silent := false):
 	
 	if (in_order_type != enums.e_order_type.deposit and
 			_is_turning_in_resources and
-			navigation_agent.navigation_finished.is_connected(_deposit_resources)):
-		navigation_agent.navigation_finished.disconnect(_deposit_resources)
+			_navigation_agent.navigation_finished.is_connected(_deposit_resources)):
+		_navigation_agent.navigation_finished.disconnect(_deposit_resources)
 	
 	if _holding_resource_bundle:
 		_set_bundle_anim("run")
 
 func order_deposit_resources(building: Building):
 	_is_turning_in_resources = true
-	if !navigation_agent.navigation_finished.is_connected(_deposit_resources):
-		navigation_agent.navigation_finished.connect(_deposit_resources)
+	if !_navigation_agent.navigation_finished.is_connected(_deposit_resources):
+		_navigation_agent.navigation_finished.connect(_deposit_resources)
 	order_move(building.get_random_point_along_perimeter(position), enums.e_order_type.deposit, _auto_gather)
 
 func order_gather_resource(resource: RTS_Resource_Base):
@@ -144,7 +144,7 @@ func build(building) -> void:
 	print(building)
 	_current_building = building
 	
-	navigation_agent.navigation_finished.connect(_begin_construction)
+	_navigation_agent.navigation_finished.connect(_begin_construction)
 	order_move(building.get_random_point_along_perimeter(position), enums.e_order_type.build)
 
 func _on_navigation_finished() -> void:
@@ -153,21 +153,21 @@ func _on_navigation_finished() -> void:
 	if (_current_order_type == enums.e_order_type.gather
 			and _resource_goal != null):
 		if _resource_goal.resource_type == enums.e_resource_type.wood:
-			anim_sprite.animation = "chop"
+			_anim_sprite.animation = "chop"
 		assert ($ResourceGatherTick.is_stopped())
 		var b_can_gather = _resource_goal.gather(self)
 		
 		if !b_can_gather:
-			anim_sprite.animation = "idle"
+			_anim_sprite.animation = "idle"
 			assert(_resource_goal.sig_can_gather.is_connected(_wait_for_can_gather) == false)
 			_resource_goal.sig_can_gather.connect(_wait_for_can_gather)
 		else:
 			_begin_gathering()
 	elif _holding_resource_bundle:
-		anim_sprite.animation = "idle_holding"
+		_anim_sprite.animation = "idle_holding"
 		_set_bundle_anim("idle")
 	else:
-		anim_sprite.animation = "idle"
+		_anim_sprite.animation = "idle"
 
 func _wait_for_can_gather(unit):
 	if _resource_goal.gather(self):
@@ -175,15 +175,15 @@ func _wait_for_can_gather(unit):
 		_begin_gathering()
 
 func _begin_construction() -> void:
-	navigation_agent.navigation_finished.disconnect(_begin_construction)
-	anim_sprite.animation = "mine"
+	_navigation_agent.navigation_finished.disconnect(_begin_construction)
+	_anim_sprite.animation = "mine"
 	_current_building.start_building()
 	_current_building.finish_building.connect(_on_finish_construction)
 
 func _on_finish_construction() -> void:
 	_current_building.finish_building.disconnect(_on_finish_construction)
 	_current_building = null
-	anim_sprite.animation = "idle"
+	_anim_sprite.animation = "idle"
 
 func _on_resource_exhausted() -> void:
 	_stop_gathering(false, true)
@@ -191,13 +191,13 @@ func _on_resource_exhausted() -> void:
 	if closest_resource != null:
 		order_gather_resource(closest_resource)
 	else:
-		anim_sprite.animation = "idle"
+		_anim_sprite.animation = "idle"
 
 func _deposit_resources():
 	ResourceManager._update_resource(_current_resource_holding, _current_resource_holding_type)
 	_current_resource_holding = 0
 	_holding_resource_bundle = false
-	anim_sprite.animation = "idle"
+	_anim_sprite.animation = "idle"
 	if _bundle_instance != null:
 		_bundle_instance.queue_free()
 	
@@ -280,10 +280,10 @@ func _set_bundle_anim(type: String):
 			amt = "three"
 	
 	if type == "idle":
-		anim_sprite.animation = "idle_holding"
+		_anim_sprite.animation = "idle_holding"
 		_bundle_instance.animation = "idle_"+amt+"_bob"
 	elif type == "run":
-		anim_sprite.animation = "run_holding"
+		_anim_sprite.animation = "run_holding"
 		_bundle_instance.animation = "walking_"+amt+"_bob"
 
 func _find_closest_townhall() -> Building:
@@ -327,4 +327,4 @@ func _find_closest_thing(thing : String, ignore = null, filter = null) -> Node2D
 	return closest_thing
 
 func _on_navigation_agent_2d_path_changed() -> void:
-	emit_signal("path_changed", navigation_agent.get_current_navigation_path())
+	emit_signal("path_changed", _navigation_agent.get_current_navigation_path())

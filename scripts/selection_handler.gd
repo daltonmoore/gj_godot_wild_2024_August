@@ -106,19 +106,22 @@ func _select_units():
 			newly_selected_units = [mouse_hovered_unit]
 		else:
 			newly_selected_units.push_back(mouse_hovered_unit)
-		
-	selection_changed.emit(newly_selected_units)
 	
-	# gotta turn off selection circle for old selected units
-	# TODO: could probably optimize this to leave units 
-	#		in both old and new selection alone
-	if selected_units != null:
-		for u in selected_units:
-			u.set_selection_circle_visible(false)
-			u._in_selection = false
-
+	if !Input.is_action_pressed("Add To Selection"):
+		# gotta turn off selection circle for old selected units
+		# TODO: could probably optimize this to leave units 
+		#		in both old and new selection alone
+		if selected_units != null:
+			for u in selected_units:
+				u.set_selection_circle_visible(false)
+				u._in_selection = false
+	else:
+		newly_selected_units.append_array(selected_units)
+	
 	# finished with old units, store new selected units
 	selected_units = newly_selected_units
+	
+	selection_changed.emit(newly_selected_units)
 	
 	for u in selected_units:
 		u.set_selection_circle_visible(true)
