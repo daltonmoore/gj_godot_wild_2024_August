@@ -271,7 +271,7 @@ size = Vector2(35, 49)
 [sub_resource type="CircleShape2D" id="CircleShape2D_m06k7"]
 radius = 100.0
 
-[node name="Goblin" type="CharacterBody2D" groups=["enemies"]]
+[node name="Goblin" type="CharacterBody2D" groups=["Attackable", "enemies"]]
 y_sort_enabled = true
 script = ExtResource("1_pq78i")
 engage_sounds = Array[AudioStream]([ExtResource("2_d0bak"), ExtResource("3_u3bl8"), ExtResource("4_jg4eg")])

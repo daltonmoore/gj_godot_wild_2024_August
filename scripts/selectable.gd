@@ -5,9 +5,12 @@ extends Node2D
 
 var cursor_texture
 var details
+var in_selection := false
 var object_type := enums.e_object_type.none
 var team:= enums.e_team.none
 var visual_size := Vector2.ZERO
+
+@onready var _attackable : Attackable = $Attackable
 
 func _on_mouse_entered() -> void:
 	CursorManager.set_current_hovered_object(self)

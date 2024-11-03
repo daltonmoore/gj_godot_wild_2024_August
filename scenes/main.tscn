@@ -1,16 +1,16 @@
 [gd_scene load_steps=18 format=4 uid="uid://cmw2100mkgw3c"]
 
-[ext_resource type="PackedScene" uid="uid://cjh4kr7do3ddx" path="res://scenes/player.tscn" id="1_skd3a"]
+[ext_resource type="PackedScene" uid="uid://cjh4kr7do3ddx" path="res://scenes/units/player.tscn" id="1_skd3a"]
 [ext_resource type="Texture2D" uid="uid://ch32axtrmdsuk" path="res://art/craftland/48x48/CL_MainLev.png" id="1_vxu1n"]
 [ext_resource type="Script" path="res://scripts/MyTileMap.gd" id="2_hkppm"]
-[ext_resource type="PackedScene" uid="uid://50tod2hsjvde" path="res://scenes/rts_resource_wood.tscn" id="3_bksns"]
-[ext_resource type="PackedScene" uid="uid://dluhwbliivbp8" path="res://scenes/swordsman.tscn" id="4_cdmta"]
-[ext_resource type="PackedScene" uid="uid://b7k5d3rclx1jf" path="res://scenes/rts_resource_gold.tscn" id="4_xu4uk"]
-[ext_resource type="PackedScene" uid="uid://bbqvgiqtvvj75" path="res://scenes/worker.tscn" id="5_gmj38"]
-[ext_resource type="PackedScene" uid="uid://bgv3jfx46sn4t" path="res://scenes/goblin.tscn" id="5_noj73"]
+[ext_resource type="PackedScene" uid="uid://50tod2hsjvde" path="res://scenes/gathered_resources/rts_resource_wood.tscn" id="3_bksns"]
+[ext_resource type="PackedScene" uid="uid://dluhwbliivbp8" path="res://scenes/units/swordsman.tscn" id="4_cdmta"]
+[ext_resource type="PackedScene" uid="uid://b7k5d3rclx1jf" path="res://scenes/gathered_resources/rts_resource_gold.tscn" id="4_xu4uk"]
+[ext_resource type="PackedScene" uid="uid://bbqvgiqtvvj75" path="res://scenes/units/worker.tscn" id="5_gmj38"]
+[ext_resource type="PackedScene" uid="uid://bgv3jfx46sn4t" path="res://scenes/units/goblin.tscn" id="5_noj73"]
 [ext_resource type="PackedScene" uid="uid://bg5jrjwfpc88n" path="res://scenes/selection_grid.tscn" id="6_fev7a"]
 [ext_resource type="PackedScene" uid="uid://blr4k6u27v7fn" path="res://scenes/buildings/building_townhall.tscn" id="7_jk4y1"]
-[ext_resource type="PackedScene" uid="uid://b6afaav2w8fko" path="res://scenes/grid_locked_unit.tscn" id="12_1qdsn"]
+[ext_resource type="PackedScene" uid="uid://b6afaav2w8fko" path="res://scenes/units/grid_locked_unit.tscn" id="12_1qdsn"]
 [ext_resource type="Texture2D" uid="uid://cl3o1hnwx0edv" path="res://art/cursors/mmorpg-cursorpack-Narehop/blue-pointer/pointer_1.png" id="13_bxe7t"]
 [ext_resource type="Script" path="res://scripts/units/formation_manager.gd" id="14_7yv5r"]
 [ext_resource type="PackedScene" uid="uid://bl5akcyrwyd00" path="res://scenes/buildings/building_enemy.tscn" id="14_ra2l4"]
@@ -3506,7 +3506,7 @@ position = Vector2(557, 155)
 built = true
 
 [node name="BuildingEnemy" parent="." instance=ExtResource("14_ra2l4")]
-position = Vector2(425, 662)
+position = Vector2(547, 834)
 
 [node name="Line2D" type="Line2D" parent="."]
 points = PackedVector2Array(480, 1206)

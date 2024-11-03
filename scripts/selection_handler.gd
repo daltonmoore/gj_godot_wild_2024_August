@@ -114,7 +114,7 @@ func _select_units():
 		if selected_units != null:
 			for u in selected_units:
 				u.set_selection_circle_visible(false)
-				u._in_selection = false
+				u.set_in_selection(false)
 	else:
 		newly_selected_units.append_array(selected_units)
 	
@@ -125,18 +125,20 @@ func _select_units():
 	
 	for u in selected_units:
 		u.set_selection_circle_visible(true)
-		u._in_selection = true
+		u.set_in_selection(true)
 
 func _select_selectable_objects():
 	if _current_selected_object != CursorManager.current_hovered_inanimate_object:
 		if _current_selected_object != null:
 			_current_selected_object.set_selection_circle_visible(false)
+			_current_selected_object.in_selection = false
 		_current_selected_object = CursorManager.current_hovered_inanimate_object
 	
 	if _current_selected_object == null:
 		return
 	
 	_current_selected_object.set_selection_circle_visible(true)
+	_current_selected_object.in_selection = true
 	Hud.update_selection([_current_selected_object])
 
 func has_units_selected() -> bool:

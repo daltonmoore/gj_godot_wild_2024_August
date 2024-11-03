@@ -357,7 +357,7 @@ radius = 40.1123
 [sub_resource type="CircleShape2D" id="CircleShape2D_3ckoi"]
 radius = 347.052
 
-[node name="Worker" type="CharacterBody2D"]
+[node name="Worker" type="CharacterBody2D" groups=["Attackable"]]
 y_sort_enabled = true
 script = ExtResource("1_ybqxx")
 max_resource_holding = 10

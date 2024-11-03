@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://bl5akcyrwyd00"]
 
-[ext_resource type="Script" path="res://scripts/selectable.gd" id="1_375qr"]
+[ext_resource type="Script" path="res://scripts/building/enemy_building.gd" id="1_6rwsv"]
 [ext_resource type="Script" path="res://scripts/attackable.gd" id="1_fgqfn"]
 [ext_resource type="Texture2D" uid="uid://dryrxxpun5n1b" path="res://art/Tiny Swords (Update 010)/Factions/Goblins/Buildings/Wood_House/Goblin_House.png" id="1_o2j7l"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_bp8ab"]
@@ -8,8 +8,8 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_584bl"]
 size = Vector2(114, 140)
 
-[node name="BuildingEnemy" type="Node2D"]
-script = ExtResource("1_375qr")
+[node name="BuildingEnemy" type="Node2D" groups=["Attackable"]]
+script = ExtResource("1_6rwsv")
 is_attackable = true
 
 [node name="Selection Circle" type="Sprite2D" parent="."]
@@ -20,11 +20,10 @@ scale = Vector2(1.48828, 1.44141)
 texture = ExtResource("2_bp8ab")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(64, 97)
 texture = ExtResource("1_o2j7l")
+metadata/_edit_group_ = true
 
 [node name="Area2D" type="Area2D" parent="Sprite2D" groups=["BlockConstruction", "TurnInPoint"]]
-metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/Area2D"]
 position = Vector2(0, 1)

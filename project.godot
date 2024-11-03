@@ -24,17 +24,18 @@ Globals="*res://scripts/globals.gd"
 Util="*res://scripts/util.gd"
 CursorManager="*res://scripts/CursorManager.gd"
 SelectionHandler="*res://scripts/selection_handler.gd"
-Hud="*res://scenes/hud.tscn"
 BuildManager="*res://scripts/BuildManager.gd"
-CommandManager="*res://scenes/command_manager.tscn"
 ResourceManager="*res://scripts/resource_manager.gd"
 UnitManager="*res://scripts/units/unit_manager.gd"
 NavHandler="*res://scripts/nav_handler.gd"
+Hud="*res://scenes/ui/hud.tscn"
+CommandManager="*res://scenes/managers/command_manager.tscn"
 
 [global_group]
 
 friendly_units=""
 enemies=""
+Attackable=""
 
 [input]
 

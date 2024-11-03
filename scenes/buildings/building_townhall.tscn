@@ -9,7 +9,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tafjs"]
 size = Vector2(285, 181)
 
-[node name="BuildingTownHall" type="Node2D"]
+[node name="BuildingTownHall" type="Node2D" groups=["Attackable"]]
 script = ExtResource("1_fo44i")
 building_corners = PackedVector2Array(-140, -80, -140, 80, 140, 80, 140, -80)
 building_type = 1
