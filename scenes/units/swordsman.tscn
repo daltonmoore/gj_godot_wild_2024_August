@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=3 uid="uid://dluhwbliivbp8"]
+[gd_scene load_steps=67 format=3 uid="uid://dluhwbliivbp8"]
 
 [ext_resource type="Script" path="res://scripts/units/swordsman.gd" id="1_ptif3"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_j6ccn"]
@@ -6,7 +6,11 @@
 [ext_resource type="AudioStream" uid="uid://bcj1s3lkmleg1" path="res://sound/LEOHPAZ_Command_Speech/Human/Human_Attack_2.wav" id="3_2f4dy"]
 [ext_resource type="Texture2D" uid="uid://cdwhvwbnka6tr" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue.png" id="3_h3cef"]
 [ext_resource type="AudioStream" uid="uid://brjkkw8usvui3" path="res://sound/LEOHPAZ_Command_Speech/Human/Human_Attack_3.wav" id="4_j7v37"]
+[ext_resource type="AudioStream" uid="uid://dj87lt4qasl84" path="res://sound/Gamemaster Audio - Footstep and Foley Sounds/voice_male_b_hurt_pain_set_1_04.wav" id="6_qgifu"]
+[ext_resource type="AudioStream" uid="uid://cm2u4uadq6som" path="res://sound/Gamemaster Audio - Footstep and Foley Sounds/voice_male_b_hurt_pain_set_1_05.wav" id="7_mu5m3"]
 [ext_resource type="Script" path="res://scripts/attackable.gd" id="7_vioah"]
+[ext_resource type="AudioStream" uid="uid://cyyjae6dkjpjt" path="res://sound/Gamemaster Audio - Footstep and Foley Sounds/voice_male_b_hurt_pain_set_2_08.wav" id="8_42shu"]
+[ext_resource type="AudioStream" uid="uid://bqtj2ks5lfxgt" path="res://sound/Gamemaster Audio - Footstep and Foley Sounds/voice_male_b_hurt_pain_set_2_09.wav" id="9_4fx2v"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]
 radius = 5.0
@@ -412,6 +416,10 @@ engage_sounds = Array[AudioStream]([ExtResource("2_o5l57"), ExtResource("3_2f4dy
 movement_speed = 175.0
 team = 1
 
+[node name="Attackable" type="Node2D" parent="."]
+script = ExtResource("7_vioah")
+hurt_sounds = Array[AudioStream]([ExtResource("6_qgifu"), ExtResource("7_mu5m3"), ExtResource("8_42shu"), ExtResource("9_4fx2v")])
+
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true
 max_speed = 1000.0
@@ -482,9 +490,6 @@ show_percentage = false
 visible = false
 shape = SubResource("CircleShape2D_xfbis")
 debug_color = Color(0.756863, 0.454902, 0, 0.0666667)
-
-[node name="Attackable" type="Node2D" parent="."]
-script = ExtResource("7_vioah")
 
 [connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]
 [connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]

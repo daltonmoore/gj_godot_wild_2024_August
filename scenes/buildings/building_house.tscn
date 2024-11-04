@@ -11,17 +11,18 @@ size = Vector2(100, 100)
 
 [node name="Building" type="Node2D"]
 script = ExtResource("1_mnky4")
-construction_sprite = ExtResource("2_q2feu")
-destroyed_sprite = ExtResource("3_ynhbv")
-built_sprite = ExtResource("4_tj5j3")
-total_build_time = 6.0
 building_corners = PackedVector2Array(50, -50, 50, 50, -50, 50, -50, -50)
+building_type = 2
+built_sprite = ExtResource("4_tj5j3")
+construction_sprite = ExtResource("2_q2feu")
 cost = {
 1: 25.0,
 2: 0.0,
 3: 0.0
 }
-building_type = 2
+destroyed_sprite = ExtResource("3_ynhbv")
+supply_cap = 5
+total_build_time = 6.0
 
 [node name="Selection Circle" type="Sprite2D" parent="."]
 visible = false

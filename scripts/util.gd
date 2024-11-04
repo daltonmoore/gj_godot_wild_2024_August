@@ -2,7 +2,7 @@ extends Node2D
 
 func create_one_shot_audio_stream(nombre: String, sound_array: Array[AudioStream], parent) -> void:
 	if sound_array.size() == 0:
-		push_warning("Cannot create one shot audio for empty array")
+		push_warning("Cannot create one shot audio for empty array on %s" % parent.owner.name)
 		return
 	
 	var audio_stream = AudioStreamPlayer2D.new()

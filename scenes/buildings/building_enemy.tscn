@@ -10,27 +10,26 @@ size = Vector2(114, 140)
 
 [node name="BuildingEnemy" type="Node2D" groups=["Attackable"]]
 script = ExtResource("1_6rwsv")
-is_attackable = true
+
+[node name="Attackable" type="Node2D" parent="."]
+script = ExtResource("1_fgqfn")
 
 [node name="Selection Circle" type="Sprite2D" parent="."]
 visible = false
 self_modulate = Color(0, 1, 0, 1)
-position = Vector2(64, 133)
+position = Vector2(1, 36)
 scale = Vector2(1.48828, 1.44141)
 texture = ExtResource("2_bp8ab")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Visual" type="Sprite2D" parent="."]
 texture = ExtResource("1_o2j7l")
 metadata/_edit_group_ = true
 
-[node name="Area2D" type="Area2D" parent="Sprite2D" groups=["BlockConstruction", "TurnInPoint"]]
+[node name="Area2D" type="Area2D" parent="Visual" groups=["BlockConstruction", "TurnInPoint"]]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visual/Area2D"]
 position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_584bl")
-
-[node name="Attackable" type="Node2D" parent="."]
-script = ExtResource("1_fgqfn")
 
 [node name="HealthBar" type="ProgressBar" parent="."]
 offset_left = -64.0
@@ -40,7 +39,7 @@ offset_bottom = -139.0
 value = 53.13
 show_percentage = false
 
-[connection signal="mouse_entered" from="Sprite2D/Area2D" to="." method="_on_mouse_entered"]
-[connection signal="mouse_entered" from="Sprite2D/Area2D" to="Attackable" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="Sprite2D/Area2D" to="." method="_on_mouse_exited"]
-[connection signal="mouse_exited" from="Sprite2D/Area2D" to="Attackable" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Visual/Area2D" to="." method="_on_mouse_entered"]
+[connection signal="mouse_entered" from="Visual/Area2D" to="Attackable" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Visual/Area2D" to="." method="_on_mouse_exited"]
+[connection signal="mouse_exited" from="Visual/Area2D" to="Attackable" method="_on_mouse_exited"]

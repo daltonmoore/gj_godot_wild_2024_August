@@ -45,10 +45,8 @@ func _ready() -> void:
 		x = 0
 		y+=size.x
 
-
 func get_cell_dict() -> Dictionary:
 	return cell_dict
-
 
 func cell_entered(cell, body):
 	if cell_to_units_dict.has(cell.grid_pos):
@@ -56,12 +54,10 @@ func cell_entered(cell, body):
 	else:
 		cell_to_units_dict[cell.grid_pos] = [body]
 
-
 func cell_exited(cell, body):
 	# could be slow since we shift everything after the item
 	if cell_to_units_dict[cell.grid_pos].has(body):
 		cell_to_units_dict[cell.grid_pos].erase(body)
-
 
 # Thought Process to not have to iterate through entire grid 
 # to find which cell we are trying to select units in
@@ -159,7 +155,13 @@ func get_units_in_select_box(select_box):
 		#else:
 			#DebugDraw2d.circle(u.position, 10, 32, Color.RED, 1, 1)
 	return selected_units
+
+func remove_unit_from_cell_dict(unit):
+	if !cell_to_units_dict.has(unit.current_cell.grid_pos):
+		push_warning("Unit not in Cell Dictionary")
+		return
 	
+	cell_to_units_dict[unit.current_cell.grid_pos].erase(unit)
 
 func _get_select_box_corners(select_box):
 	var top_left

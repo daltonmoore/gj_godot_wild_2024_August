@@ -16,32 +16,39 @@ var team:= enums.e_team.none
 #endregion
 
 #region Private Vars
+var _collision_area : Area2D # for enemies to detect attack range conditions
 var _corpse_scene := load("res://scenes/corpse.tscn")
 var _cursor_texture
 var _in_selection := false
 var _is_dying := false
 var _sprite = null
+var _selection_grid: SelectionGrid
 #endregion
 
 #region OnReady
-
 @onready var health_bar: ProgressBar = $"../HealthBar"
 #endregion
 
 func _ready() -> void:
+	_selection_grid = get_node("/root/main/SelectionGrid")
 	sig_dying.connect(_on_self_die)
 	_setup_health_bar()
-	# sword for attack
+	# sword cursor for attack
 	_cursor_texture = load("res://art/cursors/mmorpg-cursorpack-Narehop/gold-pointer/pointer_23.png")
 	
 	if owner is Building or owner is EnemyBuilding:
-		_sprite = owner.get_node("Sprite2D")
+		_collision_area = owner.get_node("Visual/Area2D")
+		_sprite = owner.get_node("Visual")
 		_corpse_scene = load("res://scenes/buildings/building_rubble.tscn")
 	else:
+		_collision_area = owner.get_node("SelectionHoverArea")
 		_sprite = owner.get_node("AnimatedSprite2D")
 
 func set_in_selection(val) -> void:
 	_in_selection = val
+
+func get_collision_area() -> Area2D:
+	return _collision_area
 
 func get_is_dying() -> bool:
 	return _is_dying
@@ -65,16 +72,19 @@ func _die() -> void:
 	sig_dying.emit(self)
 
 func _on_mouse_entered() -> void:
+	print("setting attackable to %s" % owner.name)
 	CursorManager.set_current_attackable(self)
 
 func _on_mouse_exited() -> void:
 	if CursorManager.current_attackable == self:
 		CursorManager.set_current_attackable(null)
 
-func _on_self_die(_me) -> void:
+func _on_self_die(_me: Attackable) -> void:
 	_sprite.visible = false
 	if _in_selection:
 		SelectionHandler.remove_from_selection(owner)
+	if owner is Unit:
+		_selection_grid.remove_unit_from_cell_dict(owner)
 	owner.queue_free()
 
 func _setup_health_bar() -> void:

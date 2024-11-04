@@ -3425,6 +3425,7 @@ position = Vector2(598, 534)
 
 [node name="Swordsman2" parent="Units" instance=ExtResource("4_cdmta")]
 position = Vector2(695, 587)
+debug = true
 
 [node name="Swordsman3" parent="Units" instance=ExtResource("4_cdmta")]
 position = Vector2(504, 648)
@@ -3434,19 +3435,18 @@ position = Vector2(312, 792)
 
 [node name="Swordsman5" parent="Units" instance=ExtResource("4_cdmta")]
 position = Vector2(360, 648)
-metadata/_edit_lock_ = true
 
 [node name="Goblin" parent="Units" instance=ExtResource("5_noj73")]
 position = Vector2(1073, 578)
-metadata/_edit_lock_ = true
+debug = true
 
 [node name="Goblin2" parent="Units" instance=ExtResource("5_noj73")]
 position = Vector2(1128, 696)
-metadata/_edit_lock_ = true
+debug = true
 
 [node name="Goblin3" parent="Units" instance=ExtResource("5_noj73")]
 position = Vector2(1032, 1080)
-metadata/_edit_lock_ = true
+debug = true
 
 [node name="GridLockedUnit" parent="Units" instance=ExtResource("12_1qdsn")]
 position = Vector2(72, 72)

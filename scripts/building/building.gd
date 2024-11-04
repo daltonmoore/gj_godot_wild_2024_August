@@ -44,6 +44,7 @@ var _current_unit_build_time := 0.0
 var _default_cursor = load("res://art/cursors/mmorpg-cursorpack-Narehop/gold-pointer/pointer_8.png")
 var _supply_blocked_audio_stream_player : AudioStreamPlayer2D
 var _supply_blocked_sound = load("res://sound/Jingles_Fanfares_SFX_Pack/Jingles_and_Fanfares/Puzzle_Minigame/Failure.wav")
+var _unit_build_timer = null
 #endregion
 
 #region Built-in Methods
@@ -60,7 +61,7 @@ func _ready() -> void:
 	_cell_block.block_cell()
 
 func _process(delta: float) -> void:
-	if !$UnitBuildTimer.is_stopped():
+	if _unit_build_timer != null and !_unit_build_timer.is_stopped():
 		_current_unit_build_time += delta
 		update_unit_build_progress.emit(
 			_current_unit_build_time, 
@@ -98,7 +99,7 @@ func can_afford_to_build() -> bool:
 func cancel_build_item(item) -> void:
 	var index = _build_queue.find(item)
 	if index == 0:
-		$UnitBuildTimer.stop()
+		_unit_build_timer.stop()
 	
 	_build_queue.remove_at(index)
 	sig_build_queue_updated.emit(_build_queue)
@@ -135,7 +136,7 @@ func queue_build_unit(purchase_type : enums.e_purchase_type, local_unit_scene) -
 	unit_to_build.supply_cost = local_unit_scene.cost[enums.e_resource_type.supply]
 	match purchase_type:
 		enums.e_purchase_type.worker:
-			unit_to_build.scene = load("res://scenes/worker.tscn")
+			unit_to_build.scene = load("res://scenes/units/worker.tscn")
 			unit_to_build.image_path = "res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Pawn/Blue/Pawn_Blue-still.png"
 	_build_queue.push_back(unit_to_build)
 	sig_build_queue_updated.emit(_build_queue)
@@ -147,10 +148,10 @@ func set_rally_point_position(_event) -> void:
 		rally_point.position = to_local(get_global_mouse_position())
 
 func start_building_unit(purchase_type : enums.e_purchase_type) -> void:
-	if $UnitBuildTimer.is_stopped():
+	if _unit_build_timer.is_stopped():
 		_current_unit_build_time = 0.0
-		$UnitBuildTimer.wait_time = build_times[purchase_type]
-		$UnitBuildTimer.start()
+		_unit_build_timer.wait_time = build_times[purchase_type]
+		_unit_build_timer.start()
 
 func start_building() -> void:
 	if $BuildTimer.is_stopped():
@@ -175,7 +176,7 @@ func _setup_audio_streams() -> void:
 	add_child(_building_audio_stream_player)
 
 func _finish_building_unit() -> void:
-	$UnitBuildTimer.stop()
+	_unit_build_timer.stop()
 	if !ResourceManager._peek_can_afford_supply(_build_queue[0].supply_cost):
 		print("cannot afford supply of this unit. build more houses!!")
 		Hud.supply_blocked()
@@ -200,6 +201,7 @@ func _finish_building() -> void:
 	built = true
 	$ProgressBar.visible = false
 	cursor_texture = _default_cursor
+	ResourceManager._update_resource(supply_cap, enums.e_resource_type.supply_cap)
 
 func _setup_rally_point() -> void:
 	InputManager.right_click_released.connect(set_rally_point_position)
@@ -211,7 +213,9 @@ func _setup_rally_point() -> void:
 func _setup_timers() -> void:
 	$BuildTimer.wait_time = total_build_time
 	$BuildTimer.timeout.connect(_finish_building)
-	$UnitBuildTimer.timeout.connect(_finish_building_unit)
+	if has_node("UnitBuildTimer"):
+		_unit_build_timer = $UnitBuildTimer
+		_unit_build_timer.timeout.connect(_finish_building_unit)
 
 func _setup_ui_details() -> void:
 	var ui_detail_one = UI_Detail.new()

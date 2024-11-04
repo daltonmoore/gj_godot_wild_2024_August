@@ -20,8 +20,8 @@ extends CharacterBody2D
 @export var debug := false
 @export var engage_sounds : Array[AudioStream] = []
 @export var movement_speed: float = 100.0
-@export var weapon_sounds : Array[AudioStream] = []
 @export var team : enums.e_team
+@export var weapon_sounds : Array[AudioStream] = []
 #endregion
 
 #region Public Vars
@@ -31,8 +31,8 @@ var current_cell: SelectionGridCell:
 	set(value):
 		current_cell = value
 var details
-var obstruction_index := -1
 var group_guid
+var obstruction_index := -1
 #endregion
 
 #region Private Vars
@@ -46,8 +46,8 @@ var _death_animated_sprite : AnimatedSprite2D # not used for death animation
 var _is_attacking := false
 var _is_idle := true
 var _strike_frame_index := 3 # the frame where the attack animation looks like it is connecting
-var _weapon_audio_stream := AudioStreamPlayer2D.new()
 var _targetted_enemy : Attackable
+var _weapon_audio_stream := AudioStreamPlayer2D.new()
 #endregion
 
 #region OnReady
@@ -96,6 +96,12 @@ func _physics_process(_delta: float) -> void:
 	if current_cell != null and debug:
 		DebugDraw2d.rect(current_cell.position)
 	
+	if _is_attacking:
+		if global_position.direction_to(_targetted_enemy.global_position).dot(Vector2.RIGHT) < 0:
+			_anim_sprite.flip_h = true
+		else:
+			_anim_sprite.flip_h = false
+	
 	if (_targetted_enemy != null and 
 			_vision_area.overlaps_area(_targetted_enemy) and
 			!_is_attacking):
@@ -116,6 +122,7 @@ func _physics_process(_delta: float) -> void:
 			_anim_sprite.flip_h = true
 		else:
 			_anim_sprite.flip_h = false
+	
 #endregion
 
 #region Public Functions
@@ -142,6 +149,9 @@ func can_afford_to_build() -> bool:
 	
 	return can_afford
 
+func should_attack_attackable(attackable) -> bool:
+	return _targetted_enemy == attackable
+
 func order_move(in_goal, in_order_type : enums.e_order_type, silent := false) -> void:
 	_is_idle = false
 	if _cell_block._is_blocking_cell:
@@ -161,12 +171,12 @@ func order_attack(enemy):
 		_targetted_enemy = enemy.get_node("Attackable")
 	else:
 		_targetted_enemy = enemy
-	print("Attacking enemy %s" % enemy.name)
+	if name == "Swordsman2": print("Attacking enemy %s" % enemy.name)
 	var result = _targetted_enemy.sig_dying.connect(_on_target_die)
 	if result == ERR_INVALID_PARAMETER:
-		print()
+		push_error("Invalid parameter!")
 	
-	if (_attack_area.overlaps_body(_targetted_enemy)):
+	if (_attack_area.overlaps_area(_targetted_enemy.get_collision_area())):
 		_begin_attacking()
 	else:
 		order_move(enemy.global_position, enums.e_order_type.attack, true)
@@ -197,6 +207,8 @@ func _acknowledge(silent: bool) -> void:
 			UnitManager.group_set_acknowledger(group_guid, self)
 
 func _begin_attacking() -> void:
+	stop_moving()
+	await _navigation_agent.navigation_finished
 	_is_attacking = true
 	var animation_name = _select_attack_animation()
 	if _anim_sprite.sprite_frames.has_animation(animation_name):
@@ -267,9 +279,9 @@ func _select_attack_animation() -> StringName:
 		return &""
 	
 	var attack_animation := &""
-	var _unit_to_enemy = position.direction_to(_targetted_enemy.position)
-	var _up_dot_unit_to_enemy = Vector2.UP.dot(_unit_to_enemy)
-	var _right_dot_unit_to_enemy = Vector2.RIGHT.dot(_unit_to_enemy)
+	var _unit_to_enemy = global_position.direction_to(_targetted_enemy.global_position)
+	var _up_dot_unit_to_enemy = _unit_to_enemy.dot(Vector2.UP)
+	var _right_dot_unit_to_enemy = _unit_to_enemy.dot(Vector2.RIGHT)
 	
 	# up or down takes over
 	if abs(_up_dot_unit_to_enemy) > abs(_right_dot_unit_to_enemy):
@@ -304,20 +316,20 @@ func _on_anim_frame_changed() -> void:
 		if _targetted_enemy == null or _targetted_enemy.is_queued_for_deletion():
 			_stop_attacking()
 	elif _anim_sprite.frame == _strike_frame_index:
-		_on_atack()
+		_on_attack()
 
 func _on_attack_area_entered(area: Area2D) -> void:
-	if area.owner == null or !area.owner.is_in_group("Attackable"):
-		if area.owner != null: print("area's owner is %s" % area.owner.name)
+	var attackable: Attackable = null
+	
+	if  area.owner != null and area.owner.has_node("Attackable"):
+		attackable = area.owner.get_node("Attackable")
+	else:
+		return
+		
+	if attackable.get_collision_area() != area:
 		return
 	
-	if name == "Swordsman": print("area %s entered attack area" % area.name)
-	var attackable: Attackable = area.owner._attackable
-	if attackable != _targetted_enemy:
-		if name == "Swordsman":
-			print("body is not target")
-			if _targetted_enemy!= null: print("targetted_enemy is %s " % _targetted_enemy.name)
-			else: print("targetted_enemy is null")
+	if !should_attack_attackable(attackable):
 		return
 	await get_tree().create_timer(.1).timeout
 	stop_moving()
@@ -325,12 +337,7 @@ func _on_attack_area_entered(area: Area2D) -> void:
 	_begin_attacking()
 
 func _on_attack_area_body_exited(body: Node2D) -> void:
-	if name == "Swordsman": print("body %s exited attack area" % body.name)
 	if body != _targetted_enemy or _targetted_enemy == null or _attackable.get_is_dying():
-		if name == "Swordsman":
-			print("body is not target")
-			if _targetted_enemy!= null: print("targetted_enemy is %s " % _targetted_enemy.name)
-			else: print("targetted_enemy is null")
 		return
 	
 	_is_attacking = false
@@ -338,7 +345,7 @@ func _on_attack_area_body_exited(body: Node2D) -> void:
 	if !_targetted_enemy._is_dying:
 		order_attack(_targetted_enemy)
 
-func _on_atack() -> void:
+func _on_attack() -> void:
 	_weapon_audio_stream.stream = weapon_sounds[randi_range(0, weapon_sounds.size() - 1)]
 	_weapon_audio_stream.play()
 	_targetted_enemy.take_damage(damage)
@@ -393,7 +400,7 @@ func _setup_attack() -> void:
 	
 	_attack_timer = Timer.new()
 	_attack_timer.wait_time = attack_cooldown
-	_attack_timer.timeout.connect(_on_atack)
+	_attack_timer.timeout.connect(_on_attack)
 	add_child(_attack_timer)
 
 func _setup_audio_streams() -> void:

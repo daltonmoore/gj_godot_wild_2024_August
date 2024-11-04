@@ -16,6 +16,7 @@ var _gather_circle = CollisionShape2D.new()
 
 
 func _ready() -> void:
+	team = enums.e_team.neutral
 	add_child(amtlabel)
 	amtlabel.position = Vector2(0, -20) # is relative pos
 	z_index = Globals.foreground_z_index

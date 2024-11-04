@@ -10,12 +10,15 @@ func _ready() -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	var u = body as Unit
+	if u == null:
+		return
 	
-	if u != null and u.team == enums.e_team.player:
+	if u.team == enums.e_team.player:
 		if u.current_cell != null:
 			_selection_grid.cell_exited(u.current_cell, body)
 		_selection_grid.cell_entered(self, body)
-		u.current_cell = self
+	
+	u.current_cell = self
 
 
 #func _on_body_exited(body: Node2D) -> void:

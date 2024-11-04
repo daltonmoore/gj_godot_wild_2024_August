@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://bgv3jfx46sn4t"]
+[gd_scene load_steps=47 format=3 uid="uid://bgv3jfx46sn4t"]
 
 [ext_resource type="Script" path="res://scripts/units/enemy/enemy.gd" id="1_pq78i"]
 [ext_resource type="AudioStream" uid="uid://cfi2l43wngyak" path="res://sound/Goblin/Goblin Attack Voice 1.mp3" id="2_d0bak"]
@@ -6,7 +6,9 @@
 [ext_resource type="AudioStream" uid="uid://c3te38574l7hl" path="res://sound/Goblin/Goblin Attack Voice 2.mp3" id="3_u3bl8"]
 [ext_resource type="AudioStream" uid="uid://cuxetebaig84w" path="res://sound/Goblin/Goblin Attack Voice 3.mp3" id="4_jg4eg"]
 [ext_resource type="Texture2D" uid="uid://ha20xrg7fvf2" path="res://art/Tiny Swords (Update 010)/Factions/Goblins/Troops/Torch/Red/Torch_Red.png" id="4_mqg2b"]
+[ext_resource type="AudioStream" uid="uid://discj5w3ukyhh" path="res://sound/Goblin/Goblin Wounded 1.mp3" id="6_ljq68"]
 [ext_resource type="Script" path="res://scripts/attackable.gd" id="7_f1uym"]
+[ext_resource type="AudioStream" uid="uid://chojikkx1xecr" path="res://sound/Goblin/Goblin Wounded 2.mp3" id="7_sh3m0"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]
 radius = 5.0
@@ -278,6 +280,10 @@ engage_sounds = Array[AudioStream]([ExtResource("2_d0bak"), ExtResource("3_u3bl8
 movement_speed = 50.0
 team = 2
 
+[node name="Attackable" type="Node2D" parent="."]
+script = ExtResource("7_f1uym")
+hurt_sounds = Array[AudioStream]([ExtResource("6_ljq68"), ExtResource("7_sh3m0")])
+
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 target_desired_distance = 21.2
 avoidance_enabled = true
@@ -321,8 +327,6 @@ shape = SubResource("CircleShape2D_n7gtl")
 debug_color = Color(0.756863, 0.454902, 0, 0.0666667)
 
 [node name="SelectionHoverArea" type="Area2D" parent="."]
-collision_layer = 2
-collision_mask = 2
 metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
@@ -346,10 +350,9 @@ offset_bottom = -139.0
 value = 53.13
 show_percentage = false
 
-[node name="Attackable" type="Node2D" parent="."]
-script = ExtResource("7_f1uym")
-
 [connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]
 [connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="body_exited" from="ChaseRadius" to="." method="_on_chase_radius_body_exited"]
+[connection signal="mouse_entered" from="SelectionHoverArea" to="Attackable" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="SelectionHoverArea" to="Attackable" method="_on_mouse_exited"]
