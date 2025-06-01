@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b92f5516-ff6e-4d8d-9481-b3f9053fd55b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/addons/debugdraw2d/demo/DebugDraw2DDemo.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/addons/debugdraw2d/demo/DebugDraw2DDemo.tscn" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project.godot" beforeDir="false" afterPath="$PROJECT_DIR$/project.godot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/buildings/building_barracks.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/buildings/building_barracks.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/buildings/building_enemy.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/buildings/building_enemy.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/buildings/building_ghost_barracks.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/buildings/building_ghost_barracks.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/buildings/building_ghost_house.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/buildings/building_ghost_house.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/buildings/building_house.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/buildings/building_house.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/buildings/building_townhall.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/buildings/building_townhall.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/corpse.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/corpse.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_gold.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_gold.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_wood.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_wood.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/main.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/main.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/managers/command_manager.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/managers/command_manager.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/managers/cursor_manager.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/managers/cursor_manager.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/managers/selection_handler.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/managers/selection_handler.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/selection_grid.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/selection_grid.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/selection_grid_cell.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/selection_grid_cell.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/ui/hud.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/ui/hud.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/units/goblin.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/units/goblin.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/units/grid_locked_unit.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/units/grid_locked_unit.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/units/player.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/units/player.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/units/swordsman.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/units/swordsman.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/units/worker.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/units/worker.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/attackable.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/attackable.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/build_button.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/build_button.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/enums.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/enums.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/hud.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/hud.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/nav_handler.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/nav_handler.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/player.gd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/player_camera.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/player_camera.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/selection_grid.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/selection_grid.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/unit_button.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/unit_button.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/units/unit.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/units/unit.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shader/enemy.gdshader" beforeDir="false" afterPath="$PROJECT_DIR$/shader/enemy.gdshader" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DpaMonitoringSettings">
+    <option name="firstShow" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;daltonmoore&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/daltonmoore/gj_godot_wild_2024_August.git&quot;,
+    &quot;accountId&quot;: &quot;3f6aacf1-c09e-411a-81e5-553a91dc5b42&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2xltcpQMg4nj6B7zps4gB9QjdNZ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "GdScript Start and Debug.Player GDScript.executor": "Debug",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "gdscript.promo.shown": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.build.godotPlugin",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CidrLocalAttachDebugger.recentlyUsed">
+      <recent name="com.jetbrains.rider.cpp.debugger.RiderCppLLDBDriverConfiguration" />
+    </key>
+  </component>
+  <component name="RunManager" selected="GdScript Start and Debug.Player GDScript">
+    <configuration name="Player GDScript" type="GDSCRIPT_DEBUG_RUN_CONFIGURATION" factoryName="GdScriptRunFactory" show_console_on_std_err="false" show_console_on_std_out="false" port="6006">
+      <option name="address" value="127.0.0.1" />
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <method v="2" />
+    </configuration>
+    <configuration name="Editor" type="RunNativeExe" factoryName="Native Executable">
+      <option name="EXE_PATH" value="$PROJECT_DIR$/../../../../Godot/4.x/4.4/Godot_v4.4.1-stable_win64.exe" />
+      <option name="PROGRAM_PARAMETERS" value="--path &quot;./&quot; --editor" />
+      <option name="WORKING_DIRECTORY" value="D:\source\repos\game-jams\gj_godot_wild_2024_August" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="ENV_FILE_PATHS" value="" />
+      <option name="REDIRECT_INPUT_PATH" value="" />
+      <option name="PTY_MODE" value="Auto" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b92f5516-ff6e-4d8d-9481-b3f9053fd55b" name="Changes" comment="" />
+      <created>1748524570505</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1748524570505</updated>
+      <workItem from="1748524571958" duration="163000" />
+      <workItem from="1748524759963" duration="249000" />
+      <workItem from="1748525034977" duration="198000" />
+      <workItem from="1748525251556" duration="101000" />
+      <workItem from="1748790171167" duration="3064000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="System.OperationCanceledException" breakIfHandledByOtherCode="false" displayValue="System.OperationCanceledException" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="System.Threading.Tasks.TaskCanceledException" breakIfHandledByOtherCode="false" displayValue="System.Threading.Tasks.TaskCanceledException" />
+          <option name="timeStamp" value="2" />
+        </breakpoint>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
+          <option name="timeStamp" value="3" />
+        </breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint enabled="true" type="GDSCRIPT_EXCEPTION_BP_TYPE" />
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

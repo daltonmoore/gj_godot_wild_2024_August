@@ -1,28 +1,28 @@
 class_name SelectionGrid
 extends Node
 
-var selection_grid_cell = preload("res://scenes/selection_grid_cell.tscn")
+var selection_grid_cell: PackedScene = preload("res://scenes/selection_grid_cell.tscn")
 # Key: Vector2
 # Value: SelectionGridCell
-var cell_dict = {}
+var cell_dict: Dictionary = {}
 # Key: Vector2
 # Value: Unit Array
-var cell_to_units_dict = {}
-var debug = true
+var cell_to_units_dict: Dictionary = {}
+var debug: bool                    = true
 
-@export var size = Vector2(100,100)
+@export var size: Vector2 = Vector2(100, 100)
 @export_range(1, 100) var grid_width := 5
 @export_range(1, 100) var grid_height := 5
 
 func _ready() -> void:
-	var x = 0 
-	var y = 0
-	var grid_start_offset = Vector2(50,50)
+	var x: int                     = 0
+	var y: int                     = 0
+	var grid_start_offset: Vector2 = Vector2(50, 50)
 	for i in grid_height:
 		for k in grid_width:
-			var pos = Vector2(x, y) + grid_start_offset
-			var cell = selection_grid_cell.instantiate()
-			var cell_collision_shape = (cell.get_child(0) as CollisionShape2D)
+			var pos: Vector2                           = Vector2(x, y) + grid_start_offset
+			var cell: Node                             = selection_grid_cell.instantiate()
+			var cell_collision_shape: CollisionShape2D = (cell.get_child(0) as CollisionShape2D)
 			cell.position = pos
 			cell_collision_shape.shape.size = size
 			cell.grid_pos = Vector2(x/size.x, y/size.x) 
@@ -31,7 +31,7 @@ func _ready() -> void:
 			
 			if debug:
 				cell_collision_shape.debug_color = Color(1,0,1,.1)
-				DebugDraw2d.rect(pos, size, Color(1, 0, 1), 1, INF)
+				DebugDraw2d.rect(pos, size, Color(1.0, 0.0, 1.0), 1.0, INF)
 				# Debug coordinate text
 				var label = Label.new()
 				label.text = "%.v" % cell.grid_pos
@@ -69,7 +69,7 @@ func cell_exited(cell, body):
 # so instead of starting at cell (0, 0), we will just start at (2, 2) 
 # because it is the lesser of the two points. And we can iterate
 # TODO: this function is too big, also why did i move this to selection_grid?
-func get_units_in_select_box(select_box):
+func get_units_in_select_box(select_box) -> Array[Variant]:
 	var corners = _get_select_box_corners(select_box)
 	assert (len(corners) == 4)
 	var top_left = corners["tl"]
@@ -87,8 +87,8 @@ func get_units_in_select_box(select_box):
 			#floori(bot_left.y / size.x))
 	
 	# TODO:make a function that will take a vector2 and flatten it into an array index
-	var start_index = top_left_coord.x + top_left_coord.y * grid_width
-	var end_index = bot_right_coord.x + bot_right_coord.y * grid_width
+	var start_index: float = top_left_coord.x + top_left_coord.y * grid_width
+	var end_index: float   = bot_right_coord.x + bot_right_coord.y * grid_width
 	
 	# Get selected cells
 	var cells = cell_dict.values()

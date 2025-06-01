@@ -1,11 +1,11 @@
 [gd_scene load_steps=56 format=3 uid="uid://bbqvgiqtvvj75"]
 
-[ext_resource type="Script" path="res://scripts/units/worker.gd" id="1_ybqxx"]
+[ext_resource type="Script" uid="uid://4hm4hev80moy" path="res://scripts/units/worker.gd" id="1_ybqxx"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_smnw2"]
 [ext_resource type="Texture2D" uid="uid://bqph6mpriwflb" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Pawn/Blue/Pawn_Blue.png" id="3_puwsk"]
 [ext_resource type="Texture2D" uid="uid://dfgscgffwj1uk" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Pawn/Blue/Pawn_Blue-hammer-sheet.png" id="4_htvr8"]
 [ext_resource type="AudioStream" uid="uid://e237u06bp3sc" path="res://sound/536736__egomassive__chop.ogg" id="5_vhbtc"]
-[ext_resource type="Script" path="res://scripts/attackable.gd" id="6_0v272"]
+[ext_resource type="Script" uid="uid://dx3d1p5c3wxrs" path="res://scripts/attackable.gd" id="6_0v272"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]
 radius = 3.0

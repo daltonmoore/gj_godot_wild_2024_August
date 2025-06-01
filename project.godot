@@ -10,10 +10,10 @@ config_version=5
 
 [application]
 
-config/name="Game Jam - Godot Wild 2024 August"
+config/name="Age of Tiny Knights"
 config/tags=PackedStringArray("2d", "dalton", "rts", "topdown")
 run/main_scene="res://scenes/main.tscn"
-config/features=PackedStringArray("4.3", "GL Compatibility")
+config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
@@ -30,6 +30,21 @@ UnitManager="*res://scripts/units/unit_manager.gd"
 NavHandler="*res://scripts/nav_handler.gd"
 Hud="*res://scenes/ui/hud.tscn"
 CommandManager="*res://scenes/managers/command_manager.tscn"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=3
+window/size/resizable=false
+
+[dotnet]
+
+project/assembly_name="Game Jam - Godot Wild 2024 August"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/fancy_editor_sounds/plugin.cfg")
 
 [global_group]
 

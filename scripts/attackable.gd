@@ -65,7 +65,7 @@ func take_damage(incoming_damage: float) -> void:
 		_die()
 
 func _die() -> void:
-	var instance = _corpse_scene.instantiate()
+	var instance: Node = _corpse_scene.instantiate()
 	get_tree().get_root().add_child(instance)
 	instance.position = global_position
 	_is_dying = true

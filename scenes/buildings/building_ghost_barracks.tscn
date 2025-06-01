@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bgdk7aq3pnvep"]
 
-[ext_resource type="Script" path="res://scripts/building/building_ghost.gd" id="1_bmi0j"]
+[ext_resource type="Script" uid="uid://bgeo0k5hth6kf" path="res://scripts/building/building_ghost.gd" id="1_bmi0j"]
 [ext_resource type="Texture2D" uid="uid://iwqikkqyenrh" path="res://art/open game art/barracks.png" id="2_4v3y4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kbjjq"]

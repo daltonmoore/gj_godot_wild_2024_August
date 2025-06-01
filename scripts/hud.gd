@@ -3,6 +3,9 @@ extends CanvasLayer
 @onready var unit_pic = $Root/SelectedUnitInfo/UnitPicture
 @onready var info_box = $Root/SelectedUnitInfo/InfoBox
 @onready var supply_texture_rect = $Root/ResourceContainer/SupplyTextureRect
+@onready var meat_texture_rect = $Root/ResourceContainer/MeatTextureRect
+@onready var gold_texture_rect = $Root/ResourceContainer/GoldTextureRect
+@onready var wood_texture_rect = $Root/ResourceContainer/WoodTextureRect
 
 var unit_current_build_h_box : HBoxContainer
 var unit_build_progress_bar : ProgressBar
@@ -72,6 +75,24 @@ func update_selection(new_selection : Array) -> void:
 		$Root/SelectedUnitInfo/SelectedObjectName.text = "None"
 		$Root/BuilderMenu.visible = false
 		$Root/BuildingMenu.visible = false
+
+
+
+func show_cannot_afford(can_afford_response: structs.can_afford_response) -> void:
+	match can_afford_response.reason:
+		enums.e_cannot_build_reason.insufficient_gold:
+			_flash_ui_element(gold_texture_rect)
+		enums.e_cannot_build_reason.insufficient_wood:
+			_flash_ui_element(wood_texture_rect)
+		enums.e_cannot_build_reason.insufficient_meat:
+			_flash_ui_element(meat_texture_rect)
+		enums.e_cannot_build_reason.insufficient_supply:
+			_flash_ui_element(supply_texture_rect)
+		enums.e_cannot_build_reason.blocked_location:
+			pass
+		_:
+			pass
+
 
 func supply_blocked() -> void:
 	_flash_ui_element(supply_texture_rect)

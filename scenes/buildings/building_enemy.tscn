@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://bl5akcyrwyd00"]
 
-[ext_resource type="Script" path="res://scripts/building/enemy_building.gd" id="1_6rwsv"]
-[ext_resource type="Script" path="res://scripts/attackable.gd" id="1_fgqfn"]
+[ext_resource type="Script" uid="uid://dl8f7wsa7fdpm" path="res://scripts/building/enemy_building.gd" id="1_6rwsv"]
+[ext_resource type="Script" uid="uid://dx3d1p5c3wxrs" path="res://scripts/attackable.gd" id="1_fgqfn"]
 [ext_resource type="Texture2D" uid="uid://dryrxxpun5n1b" path="res://art/Tiny Swords (Update 010)/Factions/Goblins/Buildings/Wood_House/Goblin_House.png" id="1_o2j7l"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_bp8ab"]
 

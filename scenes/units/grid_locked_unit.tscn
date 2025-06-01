@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://b6afaav2w8fko"]
 
 [ext_resource type="Texture2D" uid="uid://bao6i8x4ppt4o" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Archer/Arrow/Arrow.png" id="1_6r00v"]
-[ext_resource type="Script" path="res://scripts/units/grid_locked_unit.gd" id="2_oyx2a"]
+[ext_resource type="Script" uid="uid://c2b4r1dpbf07d" path="res://scripts/units/grid_locked_unit.gd" id="2_oyx2a"]
 [ext_resource type="Texture2D" uid="uid://bgc0ik3fkd4di" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Archer/Blue/Archer_Blue.png" id="3_bgqpq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4yi2e"]

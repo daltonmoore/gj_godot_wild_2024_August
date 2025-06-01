@@ -1,6 +1,6 @@
 [gd_scene load_steps=67 format=3 uid="uid://dluhwbliivbp8"]
 
-[ext_resource type="Script" path="res://scripts/units/swordsman.gd" id="1_ptif3"]
+[ext_resource type="Script" uid="uid://bf303vsa0bwnq" path="res://scripts/units/swordsman.gd" id="1_ptif3"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_j6ccn"]
 [ext_resource type="AudioStream" uid="uid://cpabkbbf86kut" path="res://sound/LEOHPAZ_Command_Speech/Human/Human_Attack_1.wav" id="2_o5l57"]
 [ext_resource type="AudioStream" uid="uid://bcj1s3lkmleg1" path="res://sound/LEOHPAZ_Command_Speech/Human/Human_Attack_2.wav" id="3_2f4dy"]
@@ -8,7 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://brjkkw8usvui3" path="res://sound/LEOHPAZ_Command_Speech/Human/Human_Attack_3.wav" id="4_j7v37"]
 [ext_resource type="AudioStream" uid="uid://dj87lt4qasl84" path="res://sound/Gamemaster Audio - Footstep and Foley Sounds/voice_male_b_hurt_pain_set_1_04.wav" id="6_qgifu"]
 [ext_resource type="AudioStream" uid="uid://cm2u4uadq6som" path="res://sound/Gamemaster Audio - Footstep and Foley Sounds/voice_male_b_hurt_pain_set_1_05.wav" id="7_mu5m3"]
-[ext_resource type="Script" path="res://scripts/attackable.gd" id="7_vioah"]
+[ext_resource type="Script" uid="uid://dx3d1p5c3wxrs" path="res://scripts/attackable.gd" id="7_vioah"]
 [ext_resource type="AudioStream" uid="uid://cyyjae6dkjpjt" path="res://sound/Gamemaster Audio - Footstep and Foley Sounds/voice_male_b_hurt_pain_set_2_08.wav" id="8_42shu"]
 [ext_resource type="AudioStream" uid="uid://bqtj2ks5lfxgt" path="res://sound/Gamemaster Audio - Footstep and Foley Sounds/voice_male_b_hurt_pain_set_2_09.wav" id="9_4fx2v"]
 

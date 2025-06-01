@@ -34,7 +34,7 @@ func _draw() -> void:
 		#draw_polygon(polygon, PackedColorArray([Color(0, 1, .5, .3)]))
 	
 	for obstacle in _node_to_obstruction_dict.values():
-		if obstacle.size() >= 3:
+		if obstacle.size() >= 3 and Globals.debug:
 			draw_polygon(obstacle, PackedColorArray([Color.RED]))
 	
 	#draw_circle(point, 4, Color.BLACK)

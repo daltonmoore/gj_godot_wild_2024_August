@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://y481t143guwj"]
 
-[ext_resource type="Script" path="res://scripts/CommandManager.gd" id="1_mrf6c"]
+[ext_resource type="Script" uid="uid://dj3w7eerwhp00" path="res://scripts/CommandManager.gd" id="1_mrf6c"]
 [ext_resource type="Texture2D" uid="uid://mqg4oguv43cc" path="res://art/shapes/square.png" id="2_xlucj"]
 
 [node name="CommandManager" type="Node2D"]

@@ -9,7 +9,7 @@ void vertex() {
 void fragment() {
 	vec4 color = texture(TEXTURE, UV);
 	color.a *= texture(mask_texture, UV).a;
-	
+
 	COLOR = color;
 }
 

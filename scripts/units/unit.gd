@@ -97,6 +97,7 @@ func _physics_process(_delta: float) -> void:
 		DebugDraw2d.rect(current_cell.position)
 	
 	if _is_attacking:
+		# TODO: null here on targetted_enemy
 		if global_position.direction_to(_targetted_enemy.global_position).dot(Vector2.RIGHT) < 0:
 			_anim_sprite.flip_h = true
 		else:
@@ -126,27 +127,27 @@ func _physics_process(_delta: float) -> void:
 #endregion
 
 #region Public Functions
-func can_afford_to_build() -> bool:
-	var can_afford = true
+func can_afford_to_build() -> structs.can_afford_response:
+	var can_afford = structs.can_afford_response.new()
 	for r in cost:
 		match r:
 			enums.e_resource_type.gold:
 				if ResourceManager.gold < cost[r]:
-					can_afford = false
+					can_afford.reason = enums.e_cannot_build_reason.insufficient_gold
 					break
 			enums.e_resource_type.wood:
 				if ResourceManager.wood < cost[r]:
-					can_afford = false
+					can_afford.reason = enums.e_cannot_build_reason.insufficient_wood
 					break
 			enums.e_resource_type.meat:
 				if ResourceManager.meat < cost[r]:
-					can_afford = false
+					can_afford.reason = enums.e_cannot_build_reason.insufficient_meat
 					break
 			enums.e_resource_type.supply:
 				if ResourceManager.supply_cap < cost[r] + ResourceManager.supply:
-					can_afford = false
+					can_afford.reason = enums.e_cannot_build_reason.insufficient_supply
 					break
-	
+	can_afford.result = can_afford.reason == enums.e_cannot_build_reason.none
 	return can_afford
 
 func should_attack_attackable(attackable) -> bool:

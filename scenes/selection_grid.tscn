@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bg5jrjwfpc88n"]
 
-[ext_resource type="Script" path="res://scripts/selection_grid.gd" id="1_h5638"]
+[ext_resource type="Script" uid="uid://cypfwh25uqsph" path="res://scripts/selection_grid.gd" id="1_h5638"]
 
 [node name="SelectionGrid" type="Node2D"]
 script = ExtResource("1_h5638")

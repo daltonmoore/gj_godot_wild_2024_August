@@ -47,3 +47,12 @@ enum e_team {
 	neutral,
 	enemy
 }
+
+enum e_cannot_build_reason {
+	none,
+	insufficient_gold,
+	insufficient_wood,
+	insufficient_meat,
+	insufficient_supply,
+	blocked_location
+}

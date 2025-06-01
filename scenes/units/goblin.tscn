@@ -1,13 +1,13 @@
 [gd_scene load_steps=47 format=3 uid="uid://bgv3jfx46sn4t"]
 
-[ext_resource type="Script" path="res://scripts/units/enemy/enemy.gd" id="1_pq78i"]
+[ext_resource type="Script" uid="uid://b46naja48kody" path="res://scripts/units/enemy/enemy.gd" id="1_pq78i"]
 [ext_resource type="AudioStream" uid="uid://cfi2l43wngyak" path="res://sound/Goblin/Goblin Attack Voice 1.mp3" id="2_d0bak"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="3_oisd4"]
 [ext_resource type="AudioStream" uid="uid://c3te38574l7hl" path="res://sound/Goblin/Goblin Attack Voice 2.mp3" id="3_u3bl8"]
 [ext_resource type="AudioStream" uid="uid://cuxetebaig84w" path="res://sound/Goblin/Goblin Attack Voice 3.mp3" id="4_jg4eg"]
 [ext_resource type="Texture2D" uid="uid://ha20xrg7fvf2" path="res://art/Tiny Swords (Update 010)/Factions/Goblins/Troops/Torch/Red/Torch_Red.png" id="4_mqg2b"]
 [ext_resource type="AudioStream" uid="uid://discj5w3ukyhh" path="res://sound/Goblin/Goblin Wounded 1.mp3" id="6_ljq68"]
-[ext_resource type="Script" path="res://scripts/attackable.gd" id="7_f1uym"]
+[ext_resource type="Script" uid="uid://dx3d1p5c3wxrs" path="res://scripts/attackable.gd" id="7_f1uym"]
 [ext_resource type="AudioStream" uid="uid://chojikkx1xecr" path="res://sound/Goblin/Goblin Wounded 2.mp3" id="7_sh3m0"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]

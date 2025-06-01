@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://s7vspcp2kfa4"]
 
-[ext_resource type="Script" path="res://scripts/building/building.gd" id="1_hioce"]
+[ext_resource type="Script" uid="uid://nmfh1ed7blsd" path="res://scripts/building/building.gd" id="1_hioce"]
 [ext_resource type="Texture2D" uid="uid://bnvxnqv1u48xg" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/Tower/Tower_Construction.png" id="2_wbwiq"]
 [ext_resource type="Texture2D" uid="uid://bix5k51bgrr7b" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/Castle/Castle_Destroyed.png" id="3_ono4h"]
 [ext_resource type="Texture2D" uid="uid://iwqikkqyenrh" path="res://art/open game art/barracks.png" id="4_fj23l"]
