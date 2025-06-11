@@ -21,7 +21,7 @@ var _current_cursor_type = cursor_type.default
 
 
 func _ready() -> void:
-	Input.mouse_mode = Input.MOUSE_MODE_CONFINED
+	#Input.mouse_mode = Input.MOUSE_MODE_CONFINED
 	InputManager.mouse_move.connect(_mouse_move)
 
 func _mouse_move(event) -> void:

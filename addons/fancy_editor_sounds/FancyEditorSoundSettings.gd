@@ -9,6 +9,7 @@ const SETTINGS_ANIMATION   = SETTINGS_ROOT + "animation/"
 const SETTINGS_INTERFACE   = SETTINGS_ROOT + "editor_interface/"
 # Editor
 var editor_settings: EditorSettings
+
 # Animation
 var initial_max_deleted_characters: int      = 25
 var max_deleted_characters: int              = initial_max_deleted_characters
@@ -41,7 +42,6 @@ var sound_player_settings: Dictionary          = {}
 func _init(p_editor_settings: EditorSettings) -> void:
 	editor_settings = p_editor_settings
 
-
 func initialize() -> void:
 	if should_reset_settings():
 		print_rich("[color=#FF79B8][b][Fancy Editor Sounds][/b][/color] [color=#FFFFFF]Welcome! To adjust settings go to:[/color]")
@@ -51,7 +51,6 @@ func initialize() -> void:
 
 	setup_settings_structure()
 	load_settings_values()
-
 
 func should_reset_settings() -> bool:
 	# 
@@ -70,13 +69,11 @@ func should_reset_settings() -> bool:
 
 	return false
 
-
 func clean_all_settings() -> void:
 	var property_list = editor_settings.get_property_list()
 	for property in property_list:
 		if "name" in property and property.name.begins_with(SETTINGS_ROOT):
 			editor_settings.erase(property.name)
-
 
 func setup_settings_structure() -> void:
 	# Root settings
@@ -140,6 +137,7 @@ func setup_settings_structure() -> void:
 	register_setting(SETTINGS_INTERFACE + "select_item", true, TYPE_BOOL)
 
 
+
 func register_setting(path: String, default_value, type: int = TYPE_BOOL,
 hint: int = PROPERTY_HINT_NONE, hint_string: String = "",
 display_name: String = "") -> void:
@@ -168,7 +166,6 @@ display_name: String = "") -> void:
 		property_info["usage"] = PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_CATEGORY
 
 	editor_settings.add_property_info(property_info)
-
 
 func load_settings_values() -> void:
 	# Load master volume
@@ -233,7 +230,6 @@ func get_player_enabled(action_type_name: String) -> bool:
 		return editor_settings.get_setting(category_path + setting_name)
 
 	return true
-
 
 func on_settings_changed() -> void:
 	load_settings_values()

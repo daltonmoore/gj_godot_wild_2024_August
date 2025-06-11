@@ -6,7 +6,6 @@ signal sig_dying(this)
 #endregion
 
 #region Export
-@export var health : float = 50.0
 @export var hurt_sounds : Array[AudioStream] = []
 @export var max_health : float = 50.0
 #endregion
@@ -19,6 +18,7 @@ var team:= enums.e_team.none
 var _collision_area : Area2D # for enemies to detect attack range conditions
 var _corpse_scene := load("res://scenes/corpse.tscn")
 var _cursor_texture
+var _health: float
 var _in_selection := false
 var _is_dying := false
 var _sprite = null
@@ -30,6 +30,7 @@ var _selection_grid: SelectionGrid
 #endregion
 
 func _ready() -> void:
+	_health = max_health
 	_selection_grid = get_node("/root/main/SelectionGrid")
 	sig_dying.connect(_on_self_die)
 	_setup_health_bar()
@@ -58,10 +59,10 @@ func take_damage(incoming_damage: float) -> void:
 		return
 	
 	Util.create_one_shot_audio_stream("hurt_audio_stream", hurt_sounds, self)
-	
-	health -= incoming_damage
-	health_bar.value = health
-	if health <= 0:
+
+	_health -= incoming_damage
+	health_bar.value = _health
+	if _health <= 0:
 		_die()
 
 func _die() -> void:
@@ -72,7 +73,6 @@ func _die() -> void:
 	sig_dying.emit(self)
 
 func _on_mouse_entered() -> void:
-	print("setting attackable to %s" % owner.name)
 	CursorManager.set_current_attackable(self)
 
 func _on_mouse_exited() -> void:

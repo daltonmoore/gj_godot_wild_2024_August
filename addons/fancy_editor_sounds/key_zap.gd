@@ -3,7 +3,6 @@ class_name KeyZap
 extends Node2D
 
 @export var key_label: Label
-
 var initial_pos: Vector2
 var current_pos: Vector2
 var current_velocity: Vector2
@@ -20,12 +19,10 @@ var horizontal_drag: float = 0.98
 var vertical_drag: float   = 0.99
 var rotation_speed: float  = 0.0
 
-
 func _ready() -> void:
 	set_process(false)
 	if not Engine.is_editor_hint() && not was_set:
 		return
-
 
 func set_key(key: String, font_size: int, sounds_plugin: FancyEditorSounds = null) -> void:
 	editor_sounds = sounds_plugin
@@ -51,7 +48,6 @@ func set_key(key: String, font_size: int, sounds_plugin: FancyEditorSounds = nul
 
 	set_process(true)
 	was_set = true
-
 
 func move_towards_cursor(delta: float) -> void:
 	current_pos = global_position
@@ -84,7 +80,6 @@ func move_towards_cursor(delta: float) -> void:
 	if distance <= 10:
 		queue_free()
 
-
 func apply_gravity(delta: float) -> void:
 	# Apply gravity
 	current_velocity.y += editor_sounds.settings.gravity_keys_gravity * delta * 60.0
@@ -106,7 +101,6 @@ func apply_gravity(delta: float) -> void:
 	if lifetime > max_lifetime:
 		queue_free()
 
-
 func _process(delta: float) -> void:
 	if not Engine.is_editor_hint() && not was_set:
 		return
@@ -115,7 +109,6 @@ func _process(delta: float) -> void:
 		apply_gravity(delta)
 	else:
 		move_towards_cursor(delta)
-
 
 func _on_timer_timeout() -> void:
 	if not Engine.is_editor_hint() && not was_set:

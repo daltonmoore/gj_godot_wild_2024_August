@@ -1,10 +1,7 @@
-[gd_scene load_steps=47 format=3 uid="uid://bgv3jfx46sn4t"]
+[gd_scene load_steps=44 format=3 uid="uid://bgv3jfx46sn4t"]
 
-[ext_resource type="Script" uid="uid://b46naja48kody" path="res://scripts/units/enemy/enemy.gd" id="1_pq78i"]
-[ext_resource type="AudioStream" uid="uid://cfi2l43wngyak" path="res://sound/Goblin/Goblin Attack Voice 1.mp3" id="2_d0bak"]
+[ext_resource type="Script" uid="uid://dcvcu61e3b4ot" path="res://scripts/units/unit.gd" id="1_ncftm"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="3_oisd4"]
-[ext_resource type="AudioStream" uid="uid://c3te38574l7hl" path="res://sound/Goblin/Goblin Attack Voice 2.mp3" id="3_u3bl8"]
-[ext_resource type="AudioStream" uid="uid://cuxetebaig84w" path="res://sound/Goblin/Goblin Attack Voice 3.mp3" id="4_jg4eg"]
 [ext_resource type="Texture2D" uid="uid://ha20xrg7fvf2" path="res://art/Tiny Swords (Update 010)/Factions/Goblins/Troops/Torch/Red/Torch_Red.png" id="4_mqg2b"]
 [ext_resource type="AudioStream" uid="uid://discj5w3ukyhh" path="res://sound/Goblin/Goblin Wounded 1.mp3" id="6_ljq68"]
 [ext_resource type="Script" uid="uid://dx3d1p5c3wxrs" path="res://scripts/attackable.gd" id="7_f1uym"]
@@ -275,10 +272,7 @@ radius = 100.0
 
 [node name="Goblin" type="CharacterBody2D" groups=["Attackable", "enemies"]]
 y_sort_enabled = true
-script = ExtResource("1_pq78i")
-engage_sounds = Array[AudioStream]([ExtResource("2_d0bak"), ExtResource("3_u3bl8"), ExtResource("4_jg4eg")])
-movement_speed = 50.0
-team = 2
+script = ExtResource("1_ncftm")
 
 [node name="Attackable" type="Node2D" parent="."]
 script = ExtResource("7_f1uym")
@@ -322,7 +316,6 @@ debug_color = Color(0.994425, 0, 0.222291, 0.42)
 [node name="VisionArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VisionArea"]
-visible = false
 shape = SubResource("CircleShape2D_n7gtl")
 debug_color = Color(0.756863, 0.454902, 0, 0.0666667)
 
@@ -338,7 +331,6 @@ shape = SubResource("RectangleShape2D_4l5a1")
 [node name="AttackArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
-visible = false
 shape = SubResource("CircleShape2D_m06k7")
 debug_color = Color(0.996078, 0, 0.172549, 0.113725)
 

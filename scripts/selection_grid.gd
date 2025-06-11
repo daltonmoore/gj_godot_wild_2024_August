@@ -8,7 +8,7 @@ var cell_dict: Dictionary = {}
 # Key: Vector2
 # Value: Unit Array
 var cell_to_units_dict: Dictionary = {}
-var debug: bool                    = true
+var debug: bool                    = false
 
 @export var size: Vector2 = Vector2(100, 100)
 @export_range(1, 100) var grid_width := 5
@@ -69,8 +69,8 @@ func cell_exited(cell, body):
 # so instead of starting at cell (0, 0), we will just start at (2, 2) 
 # because it is the lesser of the two points. And we can iterate
 # TODO: this function is too big, also why did i move this to selection_grid?
-func get_units_in_select_box(select_box) -> Array[Variant]:
-	var corners = _get_select_box_corners(select_box)
+func get_units_in_select_box(select_box) -> Array[Unit]:
+	var corners: Dictionary = _get_select_box_corners(select_box)
 	assert (len(corners) == 4)
 	var top_left = corners["tl"]
 	var top_right = corners["tr"]
@@ -91,8 +91,8 @@ func get_units_in_select_box(select_box) -> Array[Variant]:
 	var end_index: float   = bot_right_coord.x + bot_right_coord.y * grid_width
 	
 	# Get selected cells
-	var cells = cell_dict.values()
-	var selected_cells = []
+	var cells: Array                   = cell_dict.values()
+	var selected_cells: Array[Variant] = []
 	for i in cells.size():
 		if(i + start_index >= cells.size()):
 			break
@@ -117,17 +117,17 @@ func get_units_in_select_box(select_box) -> Array[Variant]:
 	var bot_plane = Plane2D.new(bot_right, bot_left)
 	var left_plane = Plane2D.new(bot_left, top_left)
 
-	var planes = [top_plane, right_plane, bot_plane, left_plane]
+	var planes: Array[Variant] = [top_plane, right_plane, bot_plane, left_plane]
 	
 	# get units within selected cells
-	var unit_array = []
+	var unit_array: Array[Variant] = []
 	for i in selected_cells:
 		if (cell_to_units_dict.has(i.grid_pos)):
 			unit_array.append_array(cell_to_units_dict[i.grid_pos])
 	
 	# debug plane placement
 	if debug:
-		var debug_i = 0
+		var debug_i: int = 0
 		for p in planes:
 			match debug_i:
 				0:
@@ -141,9 +141,9 @@ func get_units_in_select_box(select_box) -> Array[Variant]:
 			debug_i += 1
 	
 	# check if units are in select box
-	var selected_units = []
+	var selected_units: Array[Unit] = []
 	for u in unit_array:
-		var inside = true
+		var inside: bool = true
 		for p in planes:
 			var distance = p.normal.dot(u.position) - p.d
 			if (distance > 0):
@@ -156,14 +156,18 @@ func get_units_in_select_box(select_box) -> Array[Variant]:
 			#DebugDraw2d.circle(u.position, 10, 32, Color.RED, 1, 1)
 	return selected_units
 
-func remove_unit_from_cell_dict(unit):
+
+
+func remove_unit_from_cell_dict(unit) -> void:
 	if !cell_to_units_dict.has(unit.current_cell.grid_pos):
 		push_warning("Unit not in Cell Dictionary")
 		return
 	
 	cell_to_units_dict[unit.current_cell.grid_pos].erase(unit)
 
-func _get_select_box_corners(select_box):
+
+
+func _get_select_box_corners(select_box) -> Dictionary:
 	var top_left
 	var top_right
 	var bot_right
@@ -223,7 +227,9 @@ class Plane2D:
 		d = normal.dot(mid_point)
 		
 		assert(normal == self.normal)
-	
-	func _to_string():
-		var format_string = "Point A = %v \nPoint B = %v \nNormal = %v \nD = %d"
+
+
+
+	func _to_string() -> String:
+		var format_string: String = "Point A = %v \nPoint B = %v \nNormal = %v \nD = %d"
 		return format_string % [point_a, point_b, normal, d]

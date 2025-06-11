@@ -1,11 +1,8 @@
 # Godot Fancy Editor Sounds!
-
 Brings audio into the typing experience to the Godot Editor and more!
 
 ## What does it do?
-
 Adds sounds based on the Users actions inside the **Script Editor and Shader Editor** for:
-
 - Typing
 - Deleting
 - Caret Movement
@@ -16,7 +13,6 @@ Adds sounds based on the Users actions inside the **Script Editor and Shader Edi
 - Extra Animations when deleting text.
 
 ## Adjustable in Editor Settings!
-
 - The **Volume** can be adjusted.
 - Each **Sound and Animations** can be **turned on/off** seperately.
 

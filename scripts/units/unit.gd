@@ -1,65 +1,86 @@
 class_name Unit
 extends CharacterBody2D
 
-#region Export
+#region Combat Properties
+@export var attack_range := 100.0
+@export var attack_cooldown := 0.5
+@export var damage: float = 10.0
+@export var team: enums.e_team
+
+var _is_attacking       := false
+var _auto_attack        := true
+var _targeted_enemy: Attackable
+var _strike_frame_index := 3 # the frame where the attack animation looks like it is connecting
+
+#endregion
+
+#region Movement Properties
+@export var movement_speed: float =  100.0
+
+var _is_idle                      := true
+var _current_order_type: enums.e_order_type
+
+#endregion
+
+#region Visual Properties
 @export var attack_animations : Dictionary = {
 	"front": [],
 	"up": [],
 	"down": [],
 }
-@export var attack_range := 100.0
-@export var attack_cooldown := 0.5
-@export var confirm_acks : Array[AudioStream] = []
+
+@export var debug := false
+
+var _death_animated_sprite: AnimatedSprite2D
+
+#endregion
+
+#region Resource Properties
 @export var cost : Dictionary = {
 	enums.e_resource_type.gold: 0.0,
 	enums.e_resource_type.wood: 0.0,
 	enums.e_resource_type.meat: 0.0,
 	enums.e_resource_type.supply: 1
 }
-@export var damage : float = 10.0
-@export var debug := false
+
+#endregion
+
+#region Audio Properties
+@export var confirm_acks: Array[AudioStream] = []
 @export var engage_sounds : Array[AudioStream] = []
-@export var movement_speed: float = 100.0
-@export var team : enums.e_team
 @export var weapon_sounds : Array[AudioStream] = []
+
+var _audio_streams                             := []
+var _weapon_audio_stream                       := AudioStreamPlayer2D.new()
 #endregion
 
-#region Public Vars
+#region Grid and Navigation Properties
 var current_cell: SelectionGridCell:
-	get:
-		return current_cell
-	set(value):
-		current_cell = value
-var details
-var group_guid
+	get: return current_cell
+	set(value): current_cell = value
 var obstruction_index := -1
-#endregion
-
-#region Private Vars
-var _attack_timer : Timer
-var _audio_streams := []
-var _auto_attack := true
 var _cell_block : CellBlock = CellBlock.new(self)
-var _current_cell_label : Label
-var _current_order_type : enums.e_order_type
-var _death_animated_sprite : AnimatedSprite2D # not used for death animation
-var _is_attacking := false
-var _is_idle := true
-var _strike_frame_index := 3 # the frame where the attack animation looks like it is connecting
-var _targetted_enemy : Attackable
-var _weapon_audio_stream := AudioStreamPlayer2D.new()
 #endregion
 
-#region OnReady
+#region Selection and Group Properties
+var group_guid
+var details
+var _current_cell_label : Label
+#endregion
+
+#region Node References
 @onready var _attack_area: Area2D = $AttackArea
 @onready var _attackable : Attackable = $Attackable
 @onready var _anim_sprite : AnimatedSprite2D = $AnimatedSprite2D
-@onready var _collision_shape_2d: CollisionShape2D = $CollisionShape2D
 @onready var _navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
-@onready var _navigation_region_2d: NavigationRegion2D = $"../../NavigationRegion2D"
 @onready var _selection_hover_area: Area2D = $SelectionHoverArea
-@onready var _tile_map_layer: MyTileMap = $"../../TileMapLayer"
 @onready var _vision_area: Area2D = $VisionArea
+#endregion
+
+#region Internal References
+var _attack_timer: Timer
+
+
 #endregion
 
 #region Built-in Functions
@@ -77,53 +98,67 @@ func _ready() -> void:
 		_setup_debug_labels()
 		for c in get_children():
 			if c is Area2D:
-				var shape = c.get_child(0)
+				var shape: Node = c.get_child(0)
 				if shape is CollisionShape2D:
 					shape.visible = true
 	else:
 		for c in get_children():
 			if c is Area2D:
-				var shape = c.get_child(0)
+				var shape: Node = c.get_child(0)
 				if shape is CollisionShape2D:
 					shape.visible = false
 	await get_tree().process_frame
 	_cell_block.block_cell()
 
+
+
 func _physics_process(_delta: float) -> void:
-	if _attackable._is_dying: # i am dying
+
+	if Input.is_key_pressed(KEY_T):
+		_stop_attacking()
+
+	_handle_debug_drawing()
+	_handle_movement()
+
+	if _attackable._is_dying:
 		return
-	
+
+	_handle_combat()
+
+
+func _handle_debug_drawing() -> void:
 	if current_cell != null and debug:
 		DebugDraw2d.rect(current_cell.position)
-	
+
+
+func _handle_combat() -> void:
+	if _targeted_enemy == null:
+		return
+
 	if _is_attacking:
-		# TODO: null here on targetted_enemy
-		if global_position.direction_to(_targetted_enemy.global_position).dot(Vector2.RIGHT) < 0:
-			_anim_sprite.flip_h = true
-		else:
-			_anim_sprite.flip_h = false
-	
-	if (_targetted_enemy != null and 
-			_vision_area.overlaps_area(_targetted_enemy) and
-			!_is_attacking):
-		set_movement_target(_targetted_enemy.global_position)
-	
+		_update_sprite_direction(_targeted_enemy.global_position)
+		return
+
+	if _should_move_to_enemy(_targeted_enemy):
+		set_movement_target(_targeted_enemy.global_position)
+
+
+func _handle_movement() -> void:
 	if _navigation_agent.is_navigation_finished():
 		return
 
-	var next_path_position: Vector2 = _navigation_agent.get_next_path_position()
-	var new_velocity: Vector2 = global_position.direction_to(next_path_position) * movement_speed
+	var next_path_position := _navigation_agent.get_next_path_position()
+	var new_velocity       := global_position.direction_to(next_path_position) * movement_speed
+
 	if _navigation_agent.avoidance_enabled:
 		_navigation_agent.set_velocity(new_velocity)
 	else:
 		_on_velocity_computed(new_velocity)
-	
-	if !_is_attacking:
-		if new_velocity.dot(Vector2.RIGHT) < 0:
-			_anim_sprite.flip_h = true
-		else:
-			_anim_sprite.flip_h = false
-	
+
+	if not _is_attacking:
+		_update_sprite_direction(next_path_position)
+
+
 #endregion
 
 #region Public Functions
@@ -150,15 +185,17 @@ func can_afford_to_build() -> structs.can_afford_response:
 	can_afford.result = can_afford.reason == enums.e_cannot_build_reason.none
 	return can_afford
 
-func should_attack_attackable(attackable) -> bool:
-	return _targetted_enemy == attackable
+
+
+func get_attackable() -> Attackable:
+	return _attackable
 
 func order_move(in_goal, in_order_type : enums.e_order_type, silent := false) -> void:
 	_is_idle = false
 	if _cell_block._is_blocking_cell:
 		_cell_block.unblock_cell()
 	if in_order_type != enums.e_order_type.attack:
-		_disconnect_signals_on_target_change(_targetted_enemy)
+	_disconnect_signals_on_target_change(_targeted_enemy)
 		_stop_attacking()
 	
 	_acknowledge(silent)
@@ -168,16 +205,18 @@ func order_move(in_goal, in_order_type : enums.e_order_type, silent := false) ->
 func order_attack(enemy):
 	_disconnect_signals_on_target_change(enemy)
 	Util.create_one_shot_audio_stream("attacking_audio_stream", engage_sounds, self)
+
 	if enemy is CharacterBody2D:
-		_targetted_enemy = enemy.get_node("Attackable")
+		_targeted_enemy = enemy.get_node("Attackable")
 	else:
-		_targetted_enemy = enemy
-	if name == "Swordsman2": print("Attacking enemy %s" % enemy.name)
-	var result = _targetted_enemy.sig_dying.connect(_on_target_die)
+		_targeted_enemy = enemy
+
+	var result: int = _targeted_enemy.sig_dying.connect(_on_target_die)
+
 	if result == ERR_INVALID_PARAMETER:
 		push_error("Invalid parameter!")
-	
-	if (_attack_area.overlaps_area(_targetted_enemy.get_collision_area())):
+
+	if (_attack_area.overlaps_area(_targeted_enemy.get_collision_area())):
 		_begin_attacking()
 	else:
 		order_move(enemy.global_position, enums.e_order_type.attack, true)
@@ -207,37 +246,47 @@ func _acknowledge(silent: bool) -> void:
 		if group_guid != null:
 			UnitManager.group_set_acknowledger(group_guid, self)
 
+
 func _begin_attacking() -> void:
 	stop_moving()
 	await _navigation_agent.navigation_finished
 	_is_attacking = true
-	var animation_name = _select_attack_animation()
+	var animation_name: StringName = _select_attack_animation()
 	if _anim_sprite.sprite_frames.has_animation(animation_name):
 		_anim_sprite.animation = animation_name
 
+
+
+## This assumes a lot and is not very useful in any other situation.
 func _can_attack_body(body) -> bool:
 	return (_is_idle and
 			body is CharacterBody2D and 
 			body.team != team)
 
+
 func _check_vision_for_enemy_to_attack() -> void:
-	print("_check_vision_for_enemy_to_attack")
 	for body in _vision_area.get_overlapping_bodies():
 		if (_can_attack_body(body)):
 			order_attack(body)
 			return
 
+
 func _disconnect_signals_on_target_change(enemy) -> void:
-	if _targetted_enemy == null:
-		if name == "Swordsman": print("targetted enemy is null so not disconnecting anything")
+	if _targeted_enemy == null:
 		return
-	
-	if _targetted_enemy == enemy:
-		print("enemy and _targetted_enemy are the same!")
-	
-	if _targetted_enemy.sig_dying.is_connected(_on_target_die):
-		print("disconnect from %s" % _targetted_enemy.name)
-		_targetted_enemy.sig_dying.disconnect(_on_target_die)
+
+	if _targeted_enemy.sig_dying.is_connected(_on_target_die):
+		_targeted_enemy.sig_dying.disconnect(_on_target_die)
+
+
+func _should_move_to_enemy(enemy) -> bool:
+	return enemy != null and _vision_area.overlaps_area(enemy) and !_is_attacking
+
+
+func _update_sprite_direction(target_position: Vector2) -> void:
+	var is_facing_left := global_position.direction_to(target_position).dot(Vector2.RIGHT) < 0
+	_anim_sprite.flip_h = is_facing_left
+
 
 ## You have to pass in the correct amount of StringNames in the anims array
 ## i.e. if the amount of rows in the full spritesheet is 2 then you need to pass
@@ -265,6 +314,7 @@ func _extract_sprite_frames(anims: Array[StringName],
 	
 	return sprite_frames_list
 
+
 func _find_close_in_group_units_and_stop_them() -> void:
 	for a in $SearchAreaSmall.get_overlapping_areas():
 		if a.owner == null:
@@ -275,12 +325,13 @@ func _find_close_in_group_units_and_stop_them() -> void:
 				unit.stop()
 	UnitManager.groups[group_guid].group_stopping = false
 
+
 func _select_attack_animation() -> StringName:
-	if len(attack_animations["up"]) == 0 or _targetted_enemy == null:
+	if len(attack_animations["up"]) == 0 or _targeted_enemy == null:
 		return &""
 	
 	var attack_animation := &""
-	var _unit_to_enemy = global_position.direction_to(_targetted_enemy.global_position)
+	var _unit_to_enemy   =  global_position.direction_to(_targeted_enemy.global_position)
 	var _up_dot_unit_to_enemy = _unit_to_enemy.dot(Vector2.UP)
 	var _right_dot_unit_to_enemy = _unit_to_enemy.dot(Vector2.RIGHT)
 	
@@ -299,8 +350,9 @@ func _select_attack_animation() -> StringName:
 	
 	return attack_animation
 
+
 func _stop_attacking() -> void:
-	_targetted_enemy = null
+	_targeted_enemy = null
 	_is_attacking = false
 	_attack_timer.stop()
 	_anim_sprite.animation = "idle"
@@ -314,42 +366,48 @@ func _on_anim_frame_changed() -> void:
 	
 	#check when we are rearing back if the target is dead
 	if _anim_sprite.frame < _strike_frame_index:
-		if _targetted_enemy == null or _targetted_enemy.is_queued_for_deletion():
+		if _targeted_enemy == null or _targeted_enemy.is_queued_for_deletion():
 			_stop_attacking()
 	elif _anim_sprite.frame == _strike_frame_index:
 		_on_attack()
 
-func _on_attack_area_entered(area: Area2D) -> void:
-	var attackable: Attackable = null
-	
-	if  area.owner != null and area.owner.has_node("Attackable"):
-		attackable = area.owner.get_node("Attackable")
-	else:
+
+
+func _on_attack_area_body_entered(body: Node2D) -> void:
+	print("_on_attack_area_body_entered - I, a giga chad, {me}\t have seen {target} enter my attack area".format(
+			{"me": name, "target": body.name}))
+	if  !body.has_node("Attackable") or body.team == team:
+		print("cannot attack them though")
 		return
-		
-	if attackable.get_collision_area() != area:
-		return
-	
-	if !should_attack_attackable(attackable):
-		return
-	await get_tree().create_timer(.1).timeout
+
 	stop_moving()
 	await _navigation_agent.navigation_finished
+
+	print("_on_attack_area_body_entered - I, a giga chad, {me}\t\t am beginning to attack {target}".format(
+			{"me": name, "target": body.name}))
 	_begin_attacking()
 
+
+
 func _on_attack_area_body_exited(body: Node2D) -> void:
-	if body != _targetted_enemy or _targetted_enemy == null or _attackable.get_is_dying():
+	var unit: Unit = body as Unit
+	if unit == null:
 		return
-	
-	_is_attacking = false
-	_attack_timer.stop()
-	if !_targetted_enemy._is_dying:
-		order_attack(_targetted_enemy)
+
+	if unit.get_attackable() != _targeted_enemy or _targeted_enemy == null or _attackable.get_is_dying():
+		return
+
+	var target_cache: Attackable = _targeted_enemy
+	_stop_attacking()
+
+
+#if !target_cache._is_dying:
+#order_attack(target_cache)
 
 func _on_attack() -> void:
 	_weapon_audio_stream.stream = weapon_sounds[randi_range(0, weapon_sounds.size() - 1)]
 	_weapon_audio_stream.play()
-	_targetted_enemy.take_damage(damage)
+	_targeted_enemy.take_damage(damage)
 
 func _on_mouse_overlap() -> void:
 	SelectionHandler.mouse_hovered_unit = self #TODO: stop directly setting this
@@ -362,12 +420,12 @@ func _on_navigation_finished() -> void:
 	_cell_block.block_cell()
 	_is_idle = true
 	_anim_sprite.animation = "idle"
-	if _targetted_enemy == null and _auto_attack:
+	if _targeted_enemy == null and _auto_attack:
 		_check_vision_for_enemy_to_attack()
 
 func _on_target_die(target) -> void:
-	assert (target == _targetted_enemy)
-	_targetted_enemy.sig_dying.disconnect(_on_target_die)
+	assert (target == _targeted_enemy)
+	_targeted_enemy.sig_dying.disconnect(_on_target_die)
 	_stop_attacking()
 
 func _on_vision_area_body_entered(body) -> void:
@@ -375,7 +433,7 @@ func _on_vision_area_body_entered(body) -> void:
 		order_attack(body)
 
 func _on_vision_area_body_exited(body) -> void:
-	if body == _targetted_enemy:
+	if body == _targeted_enemy:
 		assert(!(self is Worker))
 		_stop_attacking()
 		_check_vision_for_enemy_to_attack()
@@ -456,9 +514,8 @@ func _setup_debug_labels() -> void:
 
 func _setup_signal_connections() -> void:
 	_anim_sprite.frame_changed.connect(_on_anim_frame_changed)
-	#_attack_area.body_entered.connect(_on_attack_area_body_entered)
-	#_attack_area.body_exited.connect(_on_attack_area_body_exited)
-	_attack_area.area_entered.connect(_on_attack_area_entered)
+	_attack_area.body_entered.connect(_on_attack_area_body_entered)
+	_attack_area.body_exited.connect(_on_attack_area_body_exited)
 	_navigation_agent.navigation_finished.connect(_on_navigation_finished)
 	_navigation_agent.velocity_computed.connect(Callable(_on_velocity_computed))
 	_selection_hover_area.mouse_entered.connect(_on_mouse_overlap)

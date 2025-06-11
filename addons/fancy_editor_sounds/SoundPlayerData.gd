@@ -6,7 +6,6 @@ var player: AudioStreamPlayer
 var enabled: bool
 var action_name: String
 
-
 func _init(_volume_multiplier: float, _action_name: String) -> void:
 	player = AudioStreamPlayer.new()
 	volume_multiplier = _volume_multiplier

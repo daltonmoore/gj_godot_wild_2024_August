@@ -5,7 +5,7 @@ signal selection_changed(selection)
 
 var mouse_hovered_unit
 var mouse_hovered_ui_element
-var selected_units = []
+var selected_units: Array[Unit] = []
 
 var _current_selected_object
 var _stop_drawing_dude = true
@@ -97,7 +97,7 @@ func _handle_click_release():
 	_select_selectable_objects()
 
 func _select_units():
-	var newly_selected_units = []
+	var newly_selected_units: Array[Unit] = []
 	if _select_box.size != Vector2.ZERO:
 		newly_selected_units = _selection_grid.get_units_in_select_box(_select_box)
 		
@@ -124,8 +124,11 @@ func _select_units():
 	selection_changed.emit(newly_selected_units)
 	
 	for u in selected_units:
-		u.set_selection_circle_visible(true)
-		u.set_in_selection(true)
+		if not u is Unit:
+			continue
+		var unit: Unit = u as Unit
+		unit.set_selection_circle_visible(true)
+		unit.set_in_selection(true)
 
 func _select_selectable_objects():
 	if _current_selected_object != CursorManager.current_hovered_inanimate_object:

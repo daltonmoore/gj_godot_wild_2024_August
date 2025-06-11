@@ -412,9 +412,9 @@ radius = 347.052
 [node name="Swordsman" type="CharacterBody2D" groups=["Attackable"]]
 y_sort_enabled = true
 script = ExtResource("1_ptif3")
-engage_sounds = Array[AudioStream]([ExtResource("2_o5l57"), ExtResource("3_2f4dy"), ExtResource("4_j7v37")])
-movement_speed = 175.0
 team = 1
+movement_speed = 175.0
+engage_sounds = Array[AudioStream]([ExtResource("2_o5l57"), ExtResource("3_2f4dy"), ExtResource("4_j7v37")])
 
 [node name="Attackable" type="Node2D" parent="."]
 script = ExtResource("7_vioah")
@@ -447,7 +447,6 @@ metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SelectionHoverArea"]
-visible = false
 position = Vector2(0, -25)
 shape = SubResource("RectangleShape2D_4l5a1")
 
@@ -456,7 +455,6 @@ metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SearchAreaSmall"]
-visible = false
 shape = SubResource("CircleShape2D_ynejq")
 debug_color = Color(0, 0.6, 0.701961, 0)
 
@@ -465,14 +463,12 @@ metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SearchAreaLarge"]
-visible = false
 shape = SubResource("CircleShape2D_4kigh")
 debug_color = Color(0, 0.6, 0.701961, 0)
 
 [node name="AttackArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
-visible = false
 shape = SubResource("CircleShape2D_gdwjf")
 debug_color = Color(1, 0, 0.109804, 0.113725)
 
