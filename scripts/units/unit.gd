@@ -7,11 +7,10 @@ extends CharacterBody2D
 @export var damage: float = 10.0
 @export var team: enums.e_team
 
-var _is_attacking       := false
-var _auto_attack        := true
+var _is_attacking := false
+var _auto_attack  := true
 var _targeted_enemy: Attackable
 var _strike_frame_index := 3 # the frame where the attack animation looks like it is connecting
-
 #endregion
 
 #region Movement Properties
@@ -19,7 +18,6 @@ var _strike_frame_index := 3 # the frame where the attack animation looks like i
 
 var _is_idle                      := true
 var _current_order_type: enums.e_order_type
-
 #endregion
 
 #region Visual Properties
@@ -28,11 +26,9 @@ var _current_order_type: enums.e_order_type
 	"up": [],
 	"down": [],
 }
-
 @export var debug := false
 
 var _death_animated_sprite: AnimatedSprite2D
-
 #endregion
 
 #region Resource Properties
@@ -42,7 +38,6 @@ var _death_animated_sprite: AnimatedSprite2D
 	enums.e_resource_type.meat: 0.0,
 	enums.e_resource_type.supply: 1
 }
-
 #endregion
 
 #region Audio Properties
@@ -79,8 +74,6 @@ var _current_cell_label : Label
 
 #region Internal References
 var _attack_timer: Timer
-
-
 #endregion
 
 #region Built-in Functions
@@ -158,7 +151,6 @@ func _handle_movement() -> void:
 	if not _is_attacking:
 		_update_sprite_direction(next_path_position)
 
-
 #endregion
 
 #region Public Functions
@@ -186,7 +178,6 @@ func can_afford_to_build() -> structs.can_afford_response:
 	return can_afford
 
 
-
 func get_attackable() -> Attackable:
 	return _attackable
 
@@ -195,7 +186,7 @@ func order_move(in_goal, in_order_type : enums.e_order_type, silent := false) ->
 	if _cell_block._is_blocking_cell:
 		_cell_block.unblock_cell()
 	if in_order_type != enums.e_order_type.attack:
-	_disconnect_signals_on_target_change(_targeted_enemy)
+		_disconnect_signals_on_target_change(_targeted_enemy)
 		_stop_attacking()
 	
 	_acknowledge(silent)
@@ -254,8 +245,6 @@ func _begin_attacking() -> void:
 	var animation_name: StringName = _select_attack_animation()
 	if _anim_sprite.sprite_frames.has_animation(animation_name):
 		_anim_sprite.animation = animation_name
-
-
 
 ## This assumes a lot and is not very useful in any other situation.
 func _can_attack_body(body) -> bool:
@@ -372,19 +361,12 @@ func _on_anim_frame_changed() -> void:
 		_on_attack()
 
 
-
 func _on_attack_area_body_entered(body: Node2D) -> void:
-	print("_on_attack_area_body_entered - I, a giga chad, {me}\t have seen {target} enter my attack area".format(
-			{"me": name, "target": body.name}))
 	if  !body.has_node("Attackable") or body.team == team:
-		print("cannot attack them though")
+		#print("cannot attack them though")
 		return
-
 	stop_moving()
 	await _navigation_agent.navigation_finished
-
-	print("_on_attack_area_body_entered - I, a giga chad, {me}\t\t am beginning to attack {target}".format(
-			{"me": name, "target": body.name}))
 	_begin_attacking()
 
 

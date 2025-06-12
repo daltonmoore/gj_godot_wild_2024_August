@@ -17,8 +17,9 @@ func _ready() -> void:
 	info_box.mouse_entered.connect(_mouse_entered_ui_element.bind(info_box))
 
 func ___debug_button_pressed(button, zero) -> void:
-	print("button pressed %s" % button.name)
-	print(zero)
+	#print("button pressed %s" % button.name)
+	#print(zero)
+	pass
 
 func update_resource(resource_type : enums.e_resource_type, amount : int) -> void:
 	match resource_type:
@@ -153,13 +154,13 @@ func _on_build_queue_updated(build_queue) -> void:
 	if unit_build_queue_container != null:
 		for child in unit_build_queue_container.get_children():
 			unit_build_queue_container.remove_child(child)
-			print("freeing %s" % child.name)
+			#print("freeing %s" % child.name)
 			child.queue_free()
-	print("_____________________________________________________")
+	#print("_____________________________________________________")
 	for child in unit_current_build_h_box.get_children():
 		if child is TextureButton:
 			unit_current_build_h_box.remove_child(child)
-			print("freeing %s" % child.name)
+			#print("freeing %s" % child.name)
 			child.queue_free()
 	
 	_update_build_queue(build_queue)

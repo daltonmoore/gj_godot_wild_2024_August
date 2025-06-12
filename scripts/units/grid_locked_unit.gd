@@ -80,7 +80,7 @@ func move_old(direction: Vector2):
 		var shape_id = ray_cast_2d.get_collider_shape() # The shape index in the collider.
 		var owner_id = target.shape_find_owner(shape_id) # The owner ID in the collider.
 		var shape = target.shape_owner_get_owner(owner_id)
-		print(shape.get_parent().get_parent().name)
+	#print(shape.get_parent().get_parent().name)
 	
 	if ray_cast_2d.is_colliding() and ray_cast_2d.get_collider() != collision_shape_2d:
 		return
@@ -100,12 +100,12 @@ func move():
 	while current_path.is_empty() and _try_count < _max_try_count:
 		if global_position == _move_to:
 			line_2d.default_color = Color.GREEN
-			print("Reached destination")
+			#print("Reached destination")
 			_try_count = 0
 			return
 		_try_count += 1
 		line_2d.default_color = Color.RED
-		print("can't find path")
+		#print("can't find path")
 		await get_tree().create_timer(.1).timeout
 		# try again
 		line_2d.default_color = Color.PURPLE

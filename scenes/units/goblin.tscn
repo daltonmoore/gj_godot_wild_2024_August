@@ -277,6 +277,7 @@ script = ExtResource("1_ncftm")
 [node name="Attackable" type="Node2D" parent="."]
 script = ExtResource("7_f1uym")
 hurt_sounds = Array[AudioStream]([ExtResource("6_ljq68"), ExtResource("7_sh3m0")])
+max_health = null
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 target_desired_distance = 21.2

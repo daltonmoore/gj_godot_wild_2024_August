@@ -103,7 +103,10 @@ func _select_units():
 		
 	if mouse_hovered_unit != null:
 		if _select_box.size == Vector2.ZERO:
-			newly_selected_units = [mouse_hovered_unit]
+			if selected_units != null and selected_units.size()>0 and selected_units[0] == mouse_hovered_unit: #TODO: Add a type field to unit
+				newly_selected_units = _selection_grid.get_units_in_select_box(get_viewport().get_visible_rect())
+			else:
+				newly_selected_units = [mouse_hovered_unit]
 		else:
 			newly_selected_units.push_back(mouse_hovered_unit)
 	

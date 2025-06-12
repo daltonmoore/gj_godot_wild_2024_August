@@ -3500,6 +3500,7 @@ position = Vector2(908, 101)
 [node name="SelectionGrid" parent="." instance=ExtResource("6_fev7a")]
 grid_width = 20
 grid_height = 20
+size = null
 metadata/_edit_lock_ = true
 
 [node name="BuildingTownHall" parent="." instance=ExtResource("7_jk4y1")]

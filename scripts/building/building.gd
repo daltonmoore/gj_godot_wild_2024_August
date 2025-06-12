@@ -178,7 +178,7 @@ func _setup_audio_streams() -> void:
 func _finish_building_unit() -> void:
 	_unit_build_timer.stop()
 	if !ResourceManager._peek_can_afford_supply(_build_queue[0].supply_cost):
-		print("cannot afford supply of this unit. build more houses!!")
+		#print("cannot afford supply of this unit. build more houses!!")
 		Hud.supply_blocked()
 		_supply_blocked_audio_stream_player.play()
 		await ResourceManager.sig_supply_free

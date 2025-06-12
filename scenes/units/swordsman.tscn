@@ -419,6 +419,7 @@ engage_sounds = Array[AudioStream]([ExtResource("2_o5l57"), ExtResource("3_2f4dy
 [node name="Attackable" type="Node2D" parent="."]
 script = ExtResource("7_vioah")
 hurt_sounds = Array[AudioStream]([ExtResource("6_qgifu"), ExtResource("7_mu5m3"), ExtResource("8_42shu"), ExtResource("9_4fx2v")])
+max_health = null
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true

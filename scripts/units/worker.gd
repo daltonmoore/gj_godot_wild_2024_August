@@ -77,7 +77,7 @@ func _physics_process(delta: float) -> void:
 
 func order_move(in_goal, in_order_type : enums.e_order_type, silent := false):
 	super(in_goal, in_order_type, silent)
-	print(enums.e_order_type.keys()[in_order_type])
+	#print(enums.e_order_type.keys()[in_order_type])
 	_current_order_type = in_order_type
 	
 	if in_order_type == enums.e_order_type.move:
@@ -120,7 +120,7 @@ func order_deposit_resources(building: Building):
 
 func order_gather_resource(resource: RTS_Resource_Base):
 	if _current_resource_holding >= max_resource_holding:
-		print("Not gathering anymore because holding max resources already")
+		#print("Not gathering anymore because holding max resources already")
 		return
 	
 	# we stop gathering if this is a new resource node
@@ -141,7 +141,7 @@ func order_gather_resource(resource: RTS_Resource_Base):
 	#		AOE2 clears it out when they start collecting a different resource
 
 func build(building) -> void:
-	print(building)
+	#print(building)
 	_current_building = building
 	
 	_navigation_agent.navigation_finished.connect(_begin_construction)
@@ -206,7 +206,7 @@ func _deposit_resources():
 			order_gather_resource(_resource_goal)
 		else:
 			var closest_resource = _find_next_closest_resource()
-			print("Resource Goal is Null! finding closest resource")
+			#print("Resource Goal is Null! finding closest resource")
 			if closest_resource != null:
 				order_gather_resource(closest_resource)
 
@@ -265,7 +265,7 @@ func _handle_resource_bundle():
 func _set_bundle_anim(type: String):
 	
 	if !is_instance_valid(_bundle_instance):
-		print("bundle is not valid, returning early")
+		#print("bundle is not valid, returning early")
 		return
 	
 	var amt
@@ -307,7 +307,7 @@ func _find_closest_thing(thing : String, ignore = null, filter = null) -> Node2D
 				if res != null:
 					if res.resource_type != filter:
 						continue
-			print("found closest thing = %s" % a.owner.name)
+			#print("found closest thing = %s" % a.owner.name)
 			if position.distance_to(a.owner.position) < position.distance_to(closest_pos):
 				closest_thing = a.owner
 				closest_pos = a.owner.position
@@ -319,7 +319,7 @@ func _find_closest_thing(thing : String, ignore = null, filter = null) -> Node2D
 			if (a.is_in_group(thing) and 
 					(filter == null or (filter != null and is_instance_of(a.owner, filter)))
 				):
-				print(a.owner.name)
+			#print(a.owner.name)
 				if position.distance_to(a.owner.position) < position.distance_to(closest_pos):
 					closest_thing = a.owner
 					closest_pos = a.owner.position

@@ -50,7 +50,7 @@ func _update_resource(amount : int, type : enums.e_resource_type):
 			supply += amount
 			changed_value = supply
 			if supply >= supply_cap:
-				print("Supply blocked!! Supply Cap is %s" % supply_cap)
+				#print("Supply blocked!! Supply Cap is %s" % supply_cap)
 				_supply_blocked = true
 		enums.e_resource_type.supply_cap:
 			supply_cap += amount

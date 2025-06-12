@@ -11,7 +11,7 @@ func leave_group(unit) -> void:
 		unit.group_guid = null
 		groups[guid].units.erase(unit)
 		if len(groups[guid].units) == 0:
-			print("deleting group %s " % guid)
+			#print("deleting group %s " % guid)
 			delete_group(guid)
 
 func add_group(units) -> int:

@@ -8,7 +8,7 @@ var cell_dict: Dictionary = {}
 # Key: Vector2
 # Value: Unit Array
 var cell_to_units_dict: Dictionary = {}
-var debug: bool                    = false
+var debug: bool                    = true
 
 @export var size: Vector2 = Vector2(100, 100)
 @export_range(1, 100) var grid_width := 5

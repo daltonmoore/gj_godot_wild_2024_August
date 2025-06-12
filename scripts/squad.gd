@@ -36,4 +36,5 @@ func _on_velocity_computed(safe_velocity: Vector2) -> void:
 	move_and_slide()
 
 func _on_navigation_finished() -> void:
-	print("Squad nav finished")
+	#print("Squad nav finished")
+	pass

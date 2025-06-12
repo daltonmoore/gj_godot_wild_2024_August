@@ -8,7 +8,8 @@ func _ready() -> void:
 	button_up.connect(_on_button_up.bind())
 
 func _on_button_down() -> void:
-	print()
+	#print()
+	pass
 	
 func _on_button_up() -> void:
 	var _local_building_scene: Node = scene_building_ghost.instantiate()
