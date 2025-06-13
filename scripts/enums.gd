@@ -56,3 +56,10 @@ enum e_cannot_build_reason {
 	insufficient_supply,
 	blocked_location
 }
+enum E_UnitType {
+	NONE = -1,
+	WORKER,
+	WARRIOR,
+	ARCHER,
+	SIEGE
+}

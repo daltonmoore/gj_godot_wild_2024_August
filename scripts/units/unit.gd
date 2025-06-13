@@ -1,67 +1,57 @@
 class_name Unit
 extends CharacterBody2D
 
-#region Combat Properties
+@export_category("Combat")
 @export var attack_range := 100.0
 @export var attack_cooldown := 0.5
 @export var damage: float = 10.0
 @export var team: enums.e_team
-
-var _is_attacking := false
-var _auto_attack  := true
-var _targeted_enemy: Attackable
-var _strike_frame_index := 3 # the frame where the attack animation looks like it is connecting
-#endregion
-
-#region Movement Properties
 @export var movement_speed: float =  100.0
 
-var _is_idle                      := true
-var _current_order_type: enums.e_order_type
-#endregion
 
-#region Visual Properties
+@export_category("Animations")
 @export var attack_animations : Dictionary = {
 	"front": [],
 	"up": [],
 	"down": [],
 }
-@export var debug := false
 
-var _death_animated_sprite: AnimatedSprite2D
-#endregion
+@export var debug_individual := false
 
-#region Resource Properties
+@export_category("Misc")
 @export var cost : Dictionary = {
 	enums.e_resource_type.gold: 0.0,
 	enums.e_resource_type.wood: 0.0,
 	enums.e_resource_type.meat: 0.0,
 	enums.e_resource_type.supply: 1
 }
-#endregion
 
-#region Audio Properties
+@export var unit_type: enums.E_UnitType
+@export_category("Audio")
 @export var confirm_acks: Array[AudioStream] = []
 @export var engage_sounds : Array[AudioStream] = []
 @export var weapon_sounds : Array[AudioStream] = []
 
-var _audio_streams                             := []
-var _weapon_audio_stream                       := AudioStreamPlayer2D.new()
-#endregion
 
-#region Grid and Navigation Properties
-var current_cell: SelectionGridCell:
-	get: return current_cell
-	set(value): current_cell = value
-var obstruction_index := -1
-var _cell_block : CellBlock = CellBlock.new(self)
-#endregion
+var _audio_streams         := []
+var _attack_timer: Timer
+var _auto_attack           := true
+var _cell_block: CellBlock =  CellBlock.new(self)
 
-#region Selection and Group Properties
-var group_guid
-var details
-var _current_cell_label : Label
-#endregion
+var _current_cell: SelectionGridCell:
+	get: return _current_cell
+	set(value): _current_cell = value
+
+var _current_cell_label: Label
+var _current_order_type: enums.e_order_type
+var _death_animated_sprite: AnimatedSprite2D
+var _details
+var _group_guid
+var _is_attacking          := false
+var _is_idle               := true
+var _strike_frame_index    := 3 # the frame where the attack animation looks like it is connecting
+var _targeted_enemy: Attackable
+var _weapon_audio_stream   := AudioStreamPlayer2D.new()
 
 #region Node References
 @onready var _attack_area: Area2D = $AttackArea
@@ -70,10 +60,6 @@ var _current_cell_label : Label
 @onready var _navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 @onready var _selection_hover_area: Area2D = $SelectionHoverArea
 @onready var _vision_area: Area2D = $VisionArea
-#endregion
-
-#region Internal References
-var _attack_timer: Timer
 #endregion
 
 #region Built-in Functions
@@ -86,14 +72,20 @@ func _ready() -> void:
 	_setup_audio_streams()
 	_setup_signal_connections()
 	_setup_ui_detail()
-	
-	if debug:
+
+	if debug_individual or Globals.debug:
 		_setup_debug_labels()
 		for c in get_children():
 			if c is Area2D:
 				var shape: Node = c.get_child(0)
 				if shape is CollisionShape2D:
-					shape.visible = true
+				shape.visible = true
+		_navigation_agent.set_debug_enabled(true)
+		_navigation_agent.set_debug_use_custom(true)
+		_navigation_agent.set_debug_path_custom_color(Color.MAGENTA)
+		_navigation_agent.set_debug_path_custom_point_size(10)
+		_navigation_agent.set_debug_path_custom_line_width(4)
+
 	else:
 		for c in get_children():
 			if c is Area2D:
@@ -120,8 +112,8 @@ func _physics_process(_delta: float) -> void:
 
 
 func _handle_debug_drawing() -> void:
-	if current_cell != null and debug:
-		DebugDraw2d.rect(current_cell.position)
+	if _current_cell != null and debug_individual:
+		DebugDraw2d.rect(_current_cell.position)
 
 
 func _handle_combat() -> void:
@@ -227,15 +219,15 @@ func set_selection_circle_visible(new_visible) -> void:
 
 #region Private Functions
 func _acknowledge(silent: bool) -> void:
-	var acknowledger = UnitManager.group_get_acknowledger(group_guid)
+	var acknowledger = UnitManager.group_get_acknowledger(_group_guid)
 	if !silent and acknowledger == null or acknowledger == self:
 		var temp_stream = AudioStreamPlayer2D.new()
 		temp_stream.stream = confirm_acks[randi_range(0, len(confirm_acks) - 1)]
 		_audio_streams.push_back(temp_stream)
 		add_child(temp_stream)
 		temp_stream.play()
-		if group_guid != null:
-			UnitManager.group_set_acknowledger(group_guid, self)
+		if _group_guid != null:
+			UnitManager.group_set_acknowledger(_group_guid, self)
 
 
 func _begin_attacking() -> void:
@@ -310,9 +302,9 @@ func _find_close_in_group_units_and_stop_them() -> void:
 			continue
 		if a.owner.is_in_group(Globals.unit_group):
 			var unit = a.owner as Unit
-			if UnitManager.groups.has(group_guid) and unit.group_guid == group_guid:
+		if UnitManager.groups.has(_group_guid) and unit._group_guid == _group_guid:
 				unit.stop()
-	UnitManager.groups[group_guid].group_stopping = false
+	UnitManager.groups[_group_guid].group_stopping = false
 
 
 func _select_attack_animation() -> StringName:
@@ -510,5 +502,5 @@ func _setup_ui_detail() -> void:
 	ui_detail_one.image_one_path = "res://art/icons/RPG Graphics Pack - Icons/Pack 1A-Renamed/boot/boot_03.png"
 	ui_detail_one.detail_one = movement_speed
 	var unit_picture_path = "res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Pawn/Blue/Pawn_Blue-still.png"
-	details = [ui_detail_one, unit_picture_path]
+	_details = [ui_detail_one, unit_picture_path]
 #endregion

@@ -3,20 +3,25 @@ extends Node2D
 
 signal selection_changed(selection)
 
-var mouse_hovered_unit
+var mouse_hovered_unit: Unit
 var mouse_hovered_ui_element
 var selected_units: Array[Unit] = []
 
 var _current_selected_object
+var _double_click_timer = Timer.new()
 var _stop_drawing_dude = true
 var _selection_box_start_pos
-var _select_box = Rect2()
+var _select_box         = Rect2()
 var _selection_grid : SelectionGrid
+
 
 # debug vars
 var mouse_hovered_unit_label = Label.new()
 
 func _ready() -> void:
+	_double_click_timer.wait_time = 0.25
+	_double_click_timer.one_shot = true
+	add_child(_double_click_timer)
 	get_tree().create_timer(.2).timeout.connect(timer_timeout)
 	z_index = Globals.top_z_index # this keeps the select box on top of everything
 	InputManager.left_click_pressed.connect(_select)
@@ -96,40 +101,72 @@ func _handle_click_release():
 	_select_units()
 	_select_selectable_objects()
 
-func _select_units():
-	var newly_selected_units: Array[Unit] = []
-	if _select_box.size != Vector2.ZERO:
-		newly_selected_units = _selection_grid.get_units_in_select_box(_select_box)
-		
-	if mouse_hovered_unit != null:
-		if _select_box.size == Vector2.ZERO:
-			if selected_units != null and selected_units.size()>0 and selected_units[0] == mouse_hovered_unit: #TODO: Add a type field to unit
-				newly_selected_units = _selection_grid.get_units_in_select_box(get_viewport().get_visible_rect())
-			else:
-				newly_selected_units = [mouse_hovered_unit]
-		else:
-			newly_selected_units.push_back(mouse_hovered_unit)
-	
-	if !Input.is_action_pressed("Add To Selection"):
-		# gotta turn off selection circle for old selected units
-		# TODO: could probably optimize this to leave units 
-		#		in both old and new selection alone
-		if selected_units != null:
-			for u in selected_units:
-				u.set_selection_circle_visible(false)
-				u.set_in_selection(false)
+
+
+func _select_units() -> void:
+	var newly_selected_units: Array[Unit] = _get_newly_selected_units()
+
+	if not Input.is_action_pressed("Add To Selection"):
+		_clear_old_selection()
 	else:
 		newly_selected_units.append_array(selected_units)
-	
-	# finished with old units, store new selected units
+
+	_apply_new_selection(newly_selected_units)
+
+
+func _get_newly_selected_units() -> Array[Unit]:
+	if _select_box.size != Vector2.ZERO:
+		var units_in_box := _selection_grid.get_units_in_select_box(_select_box)
+		return _handle_box_selection(units_in_box)
+
+	return _handle_single_unit_selection()
+
+
+func _handle_box_selection(units_in_box: Array[Unit]) -> Array[Unit]:
+	var result := units_in_box
+	if mouse_hovered_unit:
+		result.push_back(mouse_hovered_unit)
+	return result
+
+
+func _handle_single_unit_selection() -> Array[Unit]:
+	if not mouse_hovered_unit:
+		return []
+
+	if _is_double_clicking_selected_unit():
+		return _selection_grid.get_units_in_select_box(get_viewport().get_visible_rect(), mouse_hovered_unit.unit_type)
+
+	if _double_click_timer.is_stopped():
+		_double_click_timer.start()
+
+	return [mouse_hovered_unit]
+
+
+func _is_double_clicking_selected_unit() -> bool:
+	return selected_units != null \
+	and !_double_click_timer.is_stopped() \
+	and selected_units.size() > 0 \
+	and selected_units[0] == mouse_hovered_unit
+
+
+func _clear_old_selection() -> void:
+	if not selected_units:
+		return
+
+	for unit in selected_units:
+		unit.set_selection_circle_visible(false)
+		unit.set_in_selection(false)
+
+
+func _apply_new_selection(newly_selected_units: Array[Unit]) -> void:
 	selected_units = newly_selected_units
-	
 	selection_changed.emit(newly_selected_units)
-	
-	for u in selected_units:
-		if not u is Unit:
+
+	for unit_node in selected_units:
+		if not unit_node is Unit:
 			continue
-		var unit: Unit = u as Unit
+
+		var unit := unit_node as Unit
 		unit.set_selection_circle_visible(true)
 		unit.set_in_selection(true)
 

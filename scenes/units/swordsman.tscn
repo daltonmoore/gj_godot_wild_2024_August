@@ -414,6 +414,7 @@ y_sort_enabled = true
 script = ExtResource("1_ptif3")
 team = 1
 movement_speed = 175.0
+unit_type = 1
 engage_sounds = Array[AudioStream]([ExtResource("2_o5l57"), ExtResource("3_2f4dy"), ExtResource("4_j7v37")])
 
 [node name="Attackable" type="Node2D" parent="."]

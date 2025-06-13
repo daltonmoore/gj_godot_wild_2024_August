@@ -3359,7 +3359,6 @@ camera_bounds = Rect2(0, 0, 2000, 2000)
 
 [node name="FormationManager" type="Node2D" parent="."]
 script = ExtResource("14_7yv5r")
-debug = true
 metadata/_edit_lock_ = true
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
@@ -3401,7 +3400,6 @@ position = Vector2(485, 474)
 
 [node name="Worker4" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(471, 378)
-debug = true
 
 [node name="Worker5" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(110, 469)
@@ -3414,18 +3412,15 @@ position = Vector2(120, 360)
 
 [node name="Worker8" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(298, 504)
-debug = true
 
 [node name="Worker9" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(100, 548)
-debug = true
 
 [node name="Swordsman" parent="Units" instance=ExtResource("4_cdmta")]
 position = Vector2(598, 534)
 
 [node name="Swordsman2" parent="Units" instance=ExtResource("4_cdmta")]
 position = Vector2(695, 587)
-debug = true
 
 [node name="Swordsman3" parent="Units" instance=ExtResource("4_cdmta")]
 position = Vector2(504, 648)
@@ -3438,15 +3433,12 @@ position = Vector2(360, 648)
 
 [node name="Goblin" parent="Units" instance=ExtResource("5_noj73")]
 position = Vector2(1073, 578)
-debug = true
 
 [node name="Goblin2" parent="Units" instance=ExtResource("5_noj73")]
 position = Vector2(1128, 696)
-debug = true
 
 [node name="Goblin3" parent="Units" instance=ExtResource("5_noj73")]
 position = Vector2(1032, 1080)
-debug = true
 
 [node name="GridLockedUnit" parent="Units" instance=ExtResource("12_1qdsn")]
 position = Vector2(72, 72)
@@ -3473,34 +3465,12 @@ position = Vector2(840, 359)
 [node name="RTS_Resource_Wood2" parent="Resources" instance=ExtResource("3_bksns")]
 position = Vector2(882, 367)
 
-[node name="RTS_Resource_Wood3" parent="Resources" instance=ExtResource("3_bksns")]
-position = Vector2(838, 399)
-
-[node name="RTS_Resource_Wood4" parent="Resources" instance=ExtResource("3_bksns")]
-position = Vector2(884, 409)
-
-[node name="RTS_Resource_Wood5" parent="Resources" instance=ExtResource("3_bksns")]
-position = Vector2(774, 395)
-
-[node name="RTS_Resource_Wood6" parent="Resources" instance=ExtResource("3_bksns")]
-position = Vector2(850, 439)
-
-[node name="RTS_Resource_Wood7" parent="Resources" instance=ExtResource("3_bksns")]
-position = Vector2(792, 453)
-
-[node name="RTS_Resource_Wood8" parent="Resources" instance=ExtResource("3_bksns")]
-position = Vector2(902, 465)
-
-[node name="RTS_Resource_Wood9" parent="Resources" instance=ExtResource("3_bksns")]
-position = Vector2(720, 451)
-
 [node name="RTS_Resource_Gold" parent="Resources" instance=ExtResource("4_xu4uk")]
 position = Vector2(908, 101)
 
 [node name="SelectionGrid" parent="." instance=ExtResource("6_fev7a")]
 grid_width = 20
 grid_height = 20
-size = null
 metadata/_edit_lock_ = true
 
 [node name="BuildingTownHall" parent="." instance=ExtResource("7_jk4y1")]
@@ -3514,5 +3484,3 @@ position = Vector2(547, 834)
 points = PackedVector2Array(480, 1206)
 width = 5.0
 default_color = Color(1, 1, 1, 0.447059)
-
-[connection signal="path_changed" from="Units/Worker" to="NavigationRegion2D" method="_on_worker_path_changed"]

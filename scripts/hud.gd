@@ -106,10 +106,10 @@ func _flash_ui_element(ui_element) -> void:
 		await get_tree().create_timer(.2).timeout
 
 func _handle_details(new_selection) -> void:
-	if new_selection[0].details == null:
+	if new_selection[0]._details == null:
 		return
-	
-	for detail in new_selection[0].details:
+
+	for detail in new_selection[0]._details:
 		if detail is String:
 			unit_pic.texture = load(detail)
 			unit_pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE

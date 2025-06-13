@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://i31scrgufbm7" path="res://art/craftland/48x48/tree-bot-half.png" id="5_2cwhe"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sjpuy"]
-size = Vector2(29, 77)
+size = Vector2(29, 45.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8o2w2"]
 size = Vector2(64, 160)
@@ -48,7 +48,7 @@ texture = ExtResource("5_2cwhe")
 [node name="NavMeshBlockerStaticBody" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NavMeshBlockerStaticBody"]
-position = Vector2(-3, -21)
+position = Vector2(-3, -5.25)
 shape = SubResource("RectangleShape2D_sjpuy")
 debug_color = Color(0.805249, 0.416272, 0, 0.42)
 

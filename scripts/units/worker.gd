@@ -41,8 +41,8 @@ func _ready() -> void:
 	super()
 	_auto_attack = false
 	add_child(wood_label)
-	
-	if debug:
+
+	if debug_individual:
 		add_child(deposit_label)
 		add_child(auto_label)
 		add_child(going_to_new_resource_label)
@@ -58,9 +58,9 @@ func _process(_delta: float) -> void:
 	#auto_label.text = "auto_gather?: %s" % _auto_gather
 	wood_label.text = "wood: %s" % _current_resource_holding
 	# Debug name text
-	if debug:
-		if current_cell != null:
-			_current_cell_label.text = "%s" % current_cell.grid_pos
+	if debug_individual:
+		if _current_cell != null:
+			_current_cell_label.text = "%s" % _current_cell.grid_pos
 		else:
 			_current_cell_label.text = "none cell"
 	
@@ -325,6 +325,3 @@ func _find_closest_thing(thing : String, ignore = null, filter = null) -> Node2D
 					closest_pos = a.owner.position
 	
 	return closest_thing
-
-func _on_navigation_agent_2d_path_changed() -> void:
-	emit_signal("path_changed", _navigation_agent.get_current_navigation_path())

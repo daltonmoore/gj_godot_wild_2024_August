@@ -8,7 +8,7 @@ var cell_dict: Dictionary = {}
 # Key: Vector2
 # Value: Unit Array
 var cell_to_units_dict: Dictionary = {}
-var debug: bool                    = true
+var debug: bool                    = Globals.debug
 
 @export var size: Vector2 = Vector2(100, 100)
 @export_range(1, 100) var grid_width := 5
@@ -31,7 +31,7 @@ func _ready() -> void:
 			
 			if debug:
 				cell_collision_shape.debug_color = Color(1,0,1,.1)
-				DebugDraw2d.rect(pos, size, Color(1.0, 0.0, 1.0), 1.0, INF)
+				DebugDraw2d.rect(pos, size, Color(1, 0, 1), 1, INF)
 				# Debug coordinate text
 				var label = Label.new()
 				label.text = "%.v" % cell.grid_pos
@@ -68,103 +68,121 @@ func cell_exited(cell, body):
 # we'll have start cell = (5,3) and end cell = (2, 2)
 # so instead of starting at cell (0, 0), we will just start at (2, 2) 
 # because it is the lesser of the two points. And we can iterate
-# TODO: this function is too big, also why did i move this to selection_grid?
-func get_units_in_select_box(select_box) -> Array[Unit]:
+func get_units_in_select_box(select_box: Rect2, unit_type := enums.E_UnitType.NONE) -> Array[Unit]:
 	var corners: Dictionary = _get_select_box_corners(select_box)
-	assert (len(corners) == 4)
-	var top_left = corners["tl"]
-	var top_right = corners["tr"]
-	var bot_right = corners["br"]
-	var bot_left = corners["bl"]
-	
-	var top_left_coord: Vector2 = Vector2(floori(top_left.x / size.x), 
-			floori(top_left.y / size.x))
-	var bot_right_coord: Vector2 = Vector2(floori(bot_right.x / size.x), 
-			floori(bot_right.y / size.x))
-	#var top_right_coord: Vector2 = Vector2(floori(top_right.x / size.x), 
-			#floori(top_right.y / size.x))
-	#var bot_left_coord: Vector2 = Vector2(floori(bot_left.x / size.x), 
-			#floori(bot_left.y / size.x))
-	
-	# TODO:make a function that will take a vector2 and flatten it into an array index
-	var start_index: float = top_left_coord.x + top_left_coord.y * grid_width
-	var end_index: float   = bot_right_coord.x + bot_right_coord.y * grid_width
-	
-	# Get selected cells
-	var cells: Array                   = cell_dict.values()
+	var grid_coords         := _calculate_grid_coordinates(corners)
+	var selected_cells      := _get_cells_in_range(grid_coords)
+	var planes              := _create_boundary_planes(corners)
+	var units               := _get_units_from_cells(selected_cells)
+
+	return _filter_units_in_box(units, planes, unit_type)
+
+
+func _calculate_grid_coordinates(corners: Dictionary) -> Dictionary:
+	var top_left_coord  := Vector2(floori(corners["tl"].x / size.x),
+	floori(corners["tl"].y / size.x))
+	var bot_right_coord := Vector2(floori(corners["br"].x / size.x),
+	floori(corners["br"].y / size.x))
+
+	return {
+		"top_left": top_left_coord,
+		"bot_right": bot_right_coord,
+		"start_index": top_left_coord.x + top_left_coord.y * grid_width,
+		"end_index": bot_right_coord.x + bot_right_coord.y * grid_width
+	}
+
+
+func _get_cells_in_range(grid_coords: Dictionary) -> Array[Variant]:
+	var cells: Array = cell_dict.values()
 	var selected_cells: Array[Variant] = []
+
 	for i in cells.size():
-		if(i + start_index >= cells.size()):
+		if i + grid_coords["start_index"] >= cells.size() or \
+		i + grid_coords["start_index"] > grid_coords["end_index"]:
 			break
-		
-		if (i + start_index > end_index):
-			break
-		
-		var item = cells[start_index + i]
-		if item.grid_pos.x > bot_right_coord.x:
+
+		var item = cells[grid_coords["start_index"] + i]
+		if item.grid_pos.x > grid_coords["bot_right"].x or \
+		item.grid_pos.x < grid_coords["top_left"].x:
 			continue
-			
-		if item.grid_pos.x < top_left_coord.x:
-			continue
-		
+
 		if debug:
 			DebugDraw2d.rect(item.position, size, Color(0, 1, 0), 1, 2)
 		selected_cells.append(item)
-	
-	# Storing everything in Plane2Ds
-	var top_plane = Plane2D.new(top_left, top_right)
-	var right_plane = Plane2D.new(top_right, bot_right)
-	var bot_plane = Plane2D.new(bot_right, bot_left)
-	var left_plane = Plane2D.new(bot_left, top_left)
 
-	var planes: Array[Variant] = [top_plane, right_plane, bot_plane, left_plane]
-	
-	# get units within selected cells
-	var unit_array: Array[Variant] = []
-	for i in selected_cells:
-		if (cell_to_units_dict.has(i.grid_pos)):
-			unit_array.append_array(cell_to_units_dict[i.grid_pos])
-	
-	# debug plane placement
+	return selected_cells
+
+
+func _create_boundary_planes(corners: Dictionary) -> Array[Variant]:
+	var planes := [
+				  Plane2D.new(corners["tl"], corners["tr"]), # top
+				  Plane2D.new(corners["tr"], corners["br"]), # right
+				  Plane2D.new(corners["br"], corners["bl"]), # bottom
+				  Plane2D.new(corners["bl"], corners["tl"])   # left
+				  ]
+
 	if debug:
-		var debug_i: int = 0
-		for p in planes:
-			match debug_i:
-				0:
-					DebugDraw2d.line(p.point_a, p.point_b, Color.BLUE, 1, 3)
-				1:
-					DebugDraw2d.line(p.point_a, p.point_b, Color.RED, 1, 3)
-				2:
-					DebugDraw2d.line(p.point_a, p.point_b, Color.GREEN, 1, 3)
-				3:
-					DebugDraw2d.line(p.point_a, p.point_b, Color.YELLOW, 1, 3)
-			debug_i += 1
-	
-	# check if units are in select box
+		_debug_draw_planes(planes)
+
+	return planes
+
+
+func _get_units_from_cells(cells: Array) -> Array[Unit]:
+	var unit_array: Array[Unit] = []
+	for cell in cells:
+		if cell_to_units_dict.has(cell.grid_pos):
+			unit_array.append_array(cell_to_units_dict[cell.grid_pos])
+	return unit_array
+
+
+func _filter_units_in_box(units: Array[Unit], planes: Array, unit_type: int) -> Array[Unit]:
 	var selected_units: Array[Unit] = []
-	for u in unit_array:
-		var inside: bool = true
-		for p in planes:
-			var distance = p.normal.dot(u.position) - p.d
-			if (distance > 0):
-				inside = false
-				break
-		if inside:
-			#DebugDraw2d.circle(u.position, 10, 32, Color.GREEN, 1, 1)
-			selected_units.append(u)
-		#else:
-			#DebugDraw2d.circle(u.position, 10, 32, Color.RED, 1, 1)
+
+	for unit in units:
+		if not _is_valid_unit_type(unit, unit_type):
+			continue
+
+		if _is_unit_inside_planes(unit, planes):
+			selected_units.append(unit)
+			if debug:
+				DebugDraw2d.circle(unit.position, 10, 32, Color.GREEN, 1, 1)
+		elif debug:
+			DebugDraw2d.circle(unit.position, 10, 32, Color.RED, 1, 1)
+
 	return selected_units
 
 
 
+func _is_valid_unit_type(unit: Unit, unit_type: int) -> bool:
+	if unit_type != enums.E_UnitType.NONE and unit.unit_type != unit_type:
+		if debug:
+			print("Unit %s's Unit Type is %d and the passed Unit Type selector is %d" % [unit.name, unit.unit_type, unit_type])
+			DebugDraw2d.circle(unit.position, 10, 32, Color.RED, 1, 1)
+		return false
+	return true
+
+
+func _is_unit_inside_planes(unit: Unit, planes: Array) -> bool:
+	for plane in planes:
+		var distance = plane.normal.dot(unit.position) - plane.d
+		if distance > 0:
+			return false
+	return true
+
+
+func _debug_draw_planes(planes: Array) -> void:
+	var colors := [Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW]
+	for i in planes.size():
+		var plane = planes[i]
+		DebugDraw2d.line(plane.point_a, plane.point_b, colors[i], 1, 3)
+
+
 func remove_unit_from_cell_dict(unit) -> void:
-	if !cell_to_units_dict.has(unit.current_cell.grid_pos):
+	if !cell_to_units_dict.has(unit._current_cell.grid_pos):
 		push_warning("Unit not in Cell Dictionary")
 		return
-	
-	cell_to_units_dict[unit.current_cell.grid_pos].erase(unit)
 
+	cell_to_units_dict[unit._current_cell.grid_pos].erase(unit)
 
 
 func _get_select_box_corners(select_box) -> Dictionary:

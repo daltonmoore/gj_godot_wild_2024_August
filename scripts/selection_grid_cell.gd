@@ -14,11 +14,11 @@ func _on_body_entered(body: Node2D) -> void:
 		return
 	
 	if u.team == enums.e_team.player:
-		if u.current_cell != null:
-			_selection_grid.cell_exited(u.current_cell, body)
+		if u._current_cell != null:
+			_selection_grid.cell_exited(u._current_cell, body)
 		_selection_grid.cell_entered(self, body)
-	
-	u.current_cell = self
+
+	u._current_cell = self
 
 
 #func _on_body_exited(body: Node2D) -> void:
