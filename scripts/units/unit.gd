@@ -80,7 +80,7 @@ func _ready() -> void:
 			if c is Area2D:
 				var shape: Node = c.get_child(0)
 				if shape is CollisionShape2D:
-				shape.visible = true
+					shape.visible = true
 		_navigation_agent.set_debug_enabled(true)
 		_navigation_agent.set_debug_use_custom(true)
 		_navigation_agent.set_debug_path_custom_color(Color.MAGENTA)
@@ -312,8 +312,8 @@ func _find_close_in_group_units_and_stop_them() -> void:
 		if a.owner == null:
 			continue
 		if a.owner.is_in_group(Globals.unit_group):
-		var unit: Unit = a.owner as Unit
-		if UnitManager.groups.has(_group_guid) and unit._group_guid == _group_guid:
+			var unit: Unit = a.owner as Unit
+			if UnitManager.groups.has(_group_guid) and unit._group_guid == _group_guid:
 				unit.stop()
 	UnitManager.groups[_group_guid].group_stopping = false
 
