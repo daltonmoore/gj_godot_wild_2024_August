@@ -4,19 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b92f5516-ff6e-4d8d-9481-b3f9053fd55b" name="Changes" comment="">
+    <list default="true" id="b92f5516-ff6e-4d8d-9481-b3f9053fd55b" name="Changes" comment="Refactor unit script: adjust z-index assignment, fix indentation, add attack state check, and streamline movement logic.">
       <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project.godot" beforeDir="false" afterPath="$PROJECT_DIR$/project.godot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_wood.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_wood.tscn" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scenes/main.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/main.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/units/goblin.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/units/goblin.tscn" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scenes/units/swordsman.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/units/swordsman.tscn" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scenes/units/worker.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/units/worker.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/enums.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/enums.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/hud.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/hud.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/selection_grid.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/selection_grid.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/selection_grid_cell.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/selection_grid_cell.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/selection_handler.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/selection_handler.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/attackable.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/attackable.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/globals.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/globals.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/rts_resource_base.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/rts_resource_base.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/rts_resource_wood.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/rts_resource_wood.gd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/units/unit.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/units/unit.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/units/worker.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/units/worker.gd" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,24 +61,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "GdScript Start and Debug.Player GDScript.executor": "Debug",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "gdscript.promo.shown": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.grazie",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;GdScript Start and Debug.Player GDScript.executor&quot;: &quot;Debug&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;gdscript.promo.shown&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CidrLocalAttachDebugger.recentlyUsed">
       <recent name="com.jetbrains.rider.cpp.debugger.RiderCppLLDBDriverConfiguration" />
@@ -124,7 +125,9 @@
       <workItem from="1749032184898" duration="4652000" />
       <workItem from="1749473903624" duration="788000" />
       <workItem from="1749650992333" duration="10312000" />
-      <workItem from="1749817279813" duration="1697000" />
+      <workItem from="1749817279813" duration="2662000" />
+      <workItem from="1749918197853" duration="65000" />
+      <workItem from="1749919102946" duration="15482000" />
     </task>
     <task id="LOCAL-00001" summary="Remove unused demos, scripts, and assets. Add FancyEditorSoundsSettings with configurable sound and animation options for the editor.">
       <option name="closed" value="true" />
@@ -150,7 +153,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749727407984</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Introduce unit type categorization and refine selection grid logic&#10;&#10;Updated `selection_grid.gd` to modularize and simplify unit selection logic. Added `E_UnitType` enum to categorize units. Refactored debug logic; replaced redundant variables and ensured consistency in debug statements across scripts. Removed unnecessary debug flags and cleaned up scenes.">
+      <option name="closed" value="true" />
+      <created>1749820429695</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1749820429695</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -174,7 +185,9 @@
     <MESSAGE value="Remove unused demos, scripts, and assets. Add FancyEditorSoundsSettings with configurable sound and animation options for the editor." />
     <MESSAGE value="Fixed attack bug where the goblins could attack you from any distance once they got close enough one time." />
     <MESSAGE value="Commented out debug print statements across multiple scripts and adjusted spacing/formatting inconsistencies. Add double click selection for all units on viewport." />
-    <option name="LAST_COMMIT_MESSAGE" value="Commented out debug print statements across multiple scripts and adjusted spacing/formatting inconsistencies. Add double click selection for all units on viewport." />
+    <MESSAGE value="Introduce unit type categorization and refine selection grid logic&#10;&#10;Updated `selection_grid.gd` to modularize and simplify unit selection logic. Added `E_UnitType` enum to categorize units. Refactored debug logic; replaced redundant variables and ensured consistency in debug statements across scripts. Removed unnecessary debug flags and cleaned up scenes." />
+    <MESSAGE value="Refactor unit script: adjust z-index assignment, fix indentation, add attack state check, and streamline movement logic." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor unit script: adjust z-index assignment, fix indentation, add attack state check, and streamline movement logic." />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -198,6 +211,11 @@
         <breakpoint enabled="true" type="GDSCRIPT_EXCEPTION_BP_TYPE" />
       </default-breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="GDSCRIPT_DEBUG_RUN_CONFIGURATION">
+        <watch expression="name" language="GdScript" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

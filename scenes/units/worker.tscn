@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://bbqvgiqtvvj75"]
+[gd_scene load_steps=57 format=3 uid="uid://bbqvgiqtvvj75"]
 
 [ext_resource type="Script" uid="uid://4hm4hev80moy" path="res://scripts/units/worker.gd" id="1_ybqxx"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_smnw2"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dfgscgffwj1uk" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Pawn/Blue/Pawn_Blue-hammer-sheet.png" id="4_htvr8"]
 [ext_resource type="AudioStream" uid="uid://e237u06bp3sc" path="res://sound/536736__egomassive__chop.ogg" id="5_vhbtc"]
 [ext_resource type="Script" uid="uid://dx3d1p5c3wxrs" path="res://scripts/attackable.gd" id="6_0v272"]
+[ext_resource type="PackedScene" uid="uid://vmpaix73ewbf" path="res://scenes/ui/health_bar.tscn" id="7_tts6a"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]
 radius = 3.0
@@ -358,7 +359,6 @@ radius = 40.1123
 radius = 347.052
 
 [node name="Worker" type="CharacterBody2D" groups=["Attackable"]]
-y_sort_enabled = true
 script = ExtResource("1_ybqxx")
 max_resource_holding = 10
 team = 1
@@ -369,6 +369,7 @@ cost = {
 3: 50.0,
 4: 1
 }
+metadata/_edit_group_ = true
 
 [node name="Attackable" type="Node2D" parent="."]
 script = ExtResource("6_0v272")
@@ -439,13 +440,11 @@ visible = false
 shape = SubResource("CircleShape2D_3t2kq")
 debug_color = Color(0.996078, 0, 0.172549, 0.113725)
 
-[node name="HealthBar" type="ProgressBar" parent="."]
-offset_left = -64.0
-offset_top = -149.0
-offset_right = 64.0
-offset_bottom = -139.0
-value = 53.13
-show_percentage = false
+[node name="HealthBar" parent="." instance=ExtResource("7_tts6a")]
+offset_left = -33.0
+offset_top = -81.0
+offset_right = 30.0
+offset_bottom = -71.0
 
 [node name="VisionArea" type="Area2D" parent="."]
 

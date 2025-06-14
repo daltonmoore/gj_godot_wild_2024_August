@@ -31,6 +31,10 @@ NavHandler="*res://scripts/nav_handler.gd"
 Hud="*res://scenes/ui/hud.tscn"
 CommandManager="*res://scenes/managers/command_manager.tscn"
 
+[debug]
+
+settings/stdout/print_fps=true
+
 [display]
 
 window/size/resizable=false
@@ -41,7 +45,7 @@ project/assembly_name="Game Jam - Godot Wild 2024 August"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/fancy_editor_sounds/plugin.cfg")
+enabled=PackedStringArray()
 
 [global_group]
 

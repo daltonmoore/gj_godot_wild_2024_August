@@ -3,9 +3,10 @@ extends RTS_Resource_Base
 
 func _ready() -> void:
 	super()
-	z_index = 0
-	$TopSprite.z_index = Globals.foreground_z_index
-	$BotSprite.z_index = Globals.background_z_index
+	var animatedSprite = ($Sprite as AnimatedSprite2D)
+	_random_idle_anim_start_frame = randi_range(0, animatedSprite.sprite_frames.get_frame_count("default"))
+	animatedSprite.frame = _random_idle_anim_start_frame
+
 	$DamagedTimer.timeout.connect(_on_damaged_timer_timeout)
 	
 	var ui_detail_one = UI_Detail.new()
@@ -38,9 +39,6 @@ func gather(worker : Worker) -> bool:
 	
 	return true
 
-func _input(event: InputEvent) -> void:
-	if event.is_action("ui_accept") and event.is_pressed():
-		$TopSprite.visible = !$TopSprite.visible
 
 func _on_worker_stop_gathering(worker: Worker) -> void:
 	super(worker)
@@ -54,9 +52,8 @@ func _destroy() -> void:
 	super()
 
 func _on_damaged_timer_timeout():
-	if $BotSprite.visible:
-		$TopSprite.visible = false
-		$BotSprite.visible = false
+	if $Sprite.visible:
+		$Sprite.visible = false
 		$DamagedSprite.visible = true
 		$Area2D/DefaultCollisionShape2D.set_deferred("disabled", true)
 		$Area2D/DamagedCollisionShape2D.set_deferred("disabled", false)

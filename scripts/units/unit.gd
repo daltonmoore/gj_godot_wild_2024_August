@@ -57,6 +57,7 @@ var _weapon_audio_stream   := AudioStreamPlayer2D.new()
 @onready var _attack_area: Area2D = $AttackArea
 @onready var _attackable : Attackable = $Attackable
 @onready var _anim_sprite : AnimatedSprite2D = $AnimatedSprite2D
+@onready var _debug_label: Label = $DebugLabel
 @onready var _navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 @onready var _selection_hover_area: Area2D = $SelectionHoverArea
 @onready var _vision_area: Area2D = $VisionArea
@@ -64,7 +65,7 @@ var _weapon_audio_stream   := AudioStreamPlayer2D.new()
 
 #region Built-in Functions
 func _ready() -> void:
-	z_index = Globals.unit_z_index
+	z_index = Globals.default_z_index
 	ResourceManager._update_resource(cost[enums.e_resource_type.supply], enums.e_resource_type.supply)
 	add_to_group(Globals.unit_group) # TODO: Is this used anymore?
 	
@@ -98,6 +99,10 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	if (_debug_label != null and _targeted_enemy != null):
+		_debug_label.text = "Target: %s" % [_targeted_enemy.name]
+	elif _debug_label != null:
+		_debug_label.text = "No Target"
 
 	if Input.is_key_pressed(KEY_T):
 		_stop_attacking()
@@ -125,7 +130,7 @@ func _handle_combat() -> void:
 		return
 
 	if _should_move_to_enemy(_targeted_enemy):
-		set_movement_target(_targeted_enemy.global_position)
+		order_move(_targeted_enemy.global_position, enums.e_order_type.move, true)
 
 
 func _handle_movement() -> void:
@@ -142,6 +147,7 @@ func _handle_movement() -> void:
 
 	if not _is_attacking:
 		_update_sprite_direction(next_path_position)
+	_anim_sprite.animation = "run"
 
 #endregion
 
@@ -173,12 +179,15 @@ func can_afford_to_build() -> structs.can_afford_response:
 func get_attackable() -> Attackable:
 	return _attackable
 
+
+
 func order_move(in_goal, in_order_type : enums.e_order_type, silent := false) -> void:
 	_is_idle = false
 	if _cell_block._is_blocking_cell:
 		_cell_block.unblock_cell()
 	if in_order_type != enums.e_order_type.attack:
 		_disconnect_signals_on_target_change(_targeted_enemy)
+	if _is_attacking:
 		_stop_attacking()
 	
 	_acknowledge(silent)
@@ -238,6 +247,7 @@ func _begin_attacking() -> void:
 	if _anim_sprite.sprite_frames.has_animation(animation_name):
 		_anim_sprite.animation = animation_name
 
+
 ## This assumes a lot and is not very useful in any other situation.
 func _can_attack_body(body) -> bool:
 	return (_is_idle and
@@ -260,8 +270,9 @@ func _disconnect_signals_on_target_change(enemy) -> void:
 		_targeted_enemy.sig_dying.disconnect(_on_target_die)
 
 
-func _should_move_to_enemy(enemy) -> bool:
-	return enemy != null and _vision_area.overlaps_area(enemy) and !_is_attacking
+
+func _should_move_to_enemy(enemy: Attackable) -> bool:
+	return enemy != null and _vision_area.overlaps_area(enemy.get_collision_area()) and !_is_attacking
 
 
 func _update_sprite_direction(target_position: Vector2) -> void:
@@ -301,7 +312,7 @@ func _find_close_in_group_units_and_stop_them() -> void:
 		if a.owner == null:
 			continue
 		if a.owner.is_in_group(Globals.unit_group):
-			var unit = a.owner as Unit
+		var unit: Unit = a.owner as Unit
 		if UnitManager.groups.has(_group_guid) and unit._group_guid == _group_guid:
 				unit.stop()
 	UnitManager.groups[_group_guid].group_stopping = false
@@ -332,12 +343,13 @@ func _select_attack_animation() -> StringName:
 	return attack_animation
 
 
-func _stop_attacking() -> void:
-	_targeted_enemy = null
+
+func _stop_attacking(keep_target: bool = false) -> void:
+	if !keep_target:
+		_targeted_enemy = null
 	_is_attacking = false
 	_attack_timer.stop()
 	_anim_sprite.animation = "idle"
-	stop_moving()
 #endregion
 
 #region Listeners
@@ -362,7 +374,6 @@ func _on_attack_area_body_entered(body: Node2D) -> void:
 	_begin_attacking()
 
 
-
 func _on_attack_area_body_exited(body: Node2D) -> void:
 	var unit: Unit = body as Unit
 	if unit == null:
@@ -372,23 +383,26 @@ func _on_attack_area_body_exited(body: Node2D) -> void:
 		return
 
 	var target_cache: Attackable = _targeted_enemy
-	_stop_attacking()
+	_stop_attacking(true)
 
-
-#if !target_cache._is_dying:
-#order_attack(target_cache)
 
 func _on_attack() -> void:
 	_weapon_audio_stream.stream = weapon_sounds[randi_range(0, weapon_sounds.size() - 1)]
 	_weapon_audio_stream.play()
 	_targeted_enemy.take_damage(damage)
 
+
+
 func _on_mouse_overlap() -> void:
 	SelectionHandler.mouse_hovered_unit = self #TODO: stop directly setting this
+
+
 
 func _on_mouse_exit() -> void:
 	if SelectionHandler.mouse_hovered_unit == self:
 		SelectionHandler.mouse_hovered_unit = null
+
+
 
 func _on_navigation_finished() -> void:
 	_cell_block.block_cell()
@@ -397,20 +411,28 @@ func _on_navigation_finished() -> void:
 	if _targeted_enemy == null and _auto_attack:
 		_check_vision_for_enemy_to_attack()
 
+
+
 func _on_target_die(target) -> void:
 	assert (target == _targeted_enemy)
 	_targeted_enemy.sig_dying.disconnect(_on_target_die)
 	_stop_attacking()
 
+
+
 func _on_vision_area_body_entered(body) -> void:
 	if _can_attack_body(body) and _auto_attack:
 		order_attack(body)
+
+
 
 func _on_vision_area_body_exited(body) -> void:
 	if body == _targeted_enemy:
 		assert(!(self is Worker))
 		_stop_attacking()
 		_check_vision_for_enemy_to_attack()
+
+
 
 func _on_velocity_computed(safe_velocity: Vector2) -> void:
 	velocity = safe_velocity

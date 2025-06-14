@@ -90,14 +90,15 @@ func _on_self_die(_me: Attackable) -> void:
 func _setup_health_bar() -> void:
 	if health_bar == null: 
 		return
-	
+	#	health_bar.set_anchors_preset(Control.PRESET_CENTER)
 	health_bar.max_value = max_health
 	health_bar.value = max_health
-	health_bar.position = Vector2(-50, -100)
-	health_bar.add_theme_font_size_override(&"font_size", 1)
-	health_bar.show_percentage = false
-	health_bar.size = Vector2(100, 5)
+	#	health_bar.position = Vector2(-20, -71)
+	#	health_bar.add_theme_font_size_override(&"font_size", 1)
+	#	health_bar.show_percentage = false
+	#	health_bar.size = Vector2(40, 10)
 	health_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var _health_bar_style_box = StyleBoxFlat.new()
-	_health_bar_style_box.bg_color = Color.RED
-	health_bar.add_theme_stylebox_override(&"fill", _health_bar_style_box)
+	health_bar.z_index = Globals.top_z_index
+	#	var _health_bar_style_box = StyleBoxFlat.new()
+	#	_health_bar_style_box.bg_color = Color.RED
+	#	health_bar.add_theme_stylebox_override(&"fill", _health_bar_style_box)

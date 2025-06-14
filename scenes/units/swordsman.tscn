@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://dluhwbliivbp8"]
+[gd_scene load_steps=68 format=3 uid="uid://dluhwbliivbp8"]
 
 [ext_resource type="Script" uid="uid://bf303vsa0bwnq" path="res://scripts/units/swordsman.gd" id="1_ptif3"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_j6ccn"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://dx3d1p5c3wxrs" path="res://scripts/attackable.gd" id="7_vioah"]
 [ext_resource type="AudioStream" uid="uid://cyyjae6dkjpjt" path="res://sound/Gamemaster Audio - Footstep and Foley Sounds/voice_male_b_hurt_pain_set_2_08.wav" id="8_42shu"]
 [ext_resource type="AudioStream" uid="uid://bqtj2ks5lfxgt" path="res://sound/Gamemaster Audio - Footstep and Foley Sounds/voice_male_b_hurt_pain_set_2_09.wav" id="9_4fx2v"]
+[ext_resource type="PackedScene" uid="uid://vmpaix73ewbf" path="res://scenes/ui/health_bar.tscn" id="12_asq2p"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]
 radius = 5.0
@@ -416,11 +417,11 @@ team = 1
 movement_speed = 175.0
 unit_type = 1
 engage_sounds = Array[AudioStream]([ExtResource("2_o5l57"), ExtResource("3_2f4dy"), ExtResource("4_j7v37")])
+metadata/_edit_lock_ = true
 
 [node name="Attackable" type="Node2D" parent="."]
 script = ExtResource("7_vioah")
 hurt_sounds = Array[AudioStream]([ExtResource("6_qgifu"), ExtResource("7_mu5m3"), ExtResource("8_42shu"), ExtResource("9_4fx2v")])
-max_health = null
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true
@@ -474,13 +475,11 @@ debug_color = Color(0, 0.6, 0.701961, 0)
 shape = SubResource("CircleShape2D_gdwjf")
 debug_color = Color(1, 0, 0.109804, 0.113725)
 
-[node name="HealthBar" type="ProgressBar" parent="."]
-offset_left = -64.0
-offset_top = -149.0
-offset_right = 64.0
-offset_bottom = -139.0
-value = 53.13
-show_percentage = false
+[node name="HealthBar" parent="." instance=ExtResource("12_asq2p")]
+offset_left = -31.0
+offset_top = -101.0
+offset_right = 32.0
+offset_bottom = -91.0
 
 [node name="VisionArea" type="Area2D" parent="."]
 
@@ -488,6 +487,13 @@ show_percentage = false
 visible = false
 shape = SubResource("CircleShape2D_xfbis")
 debug_color = Color(0.756863, 0.454902, 0, 0.0666667)
+
+[node name="DebugLabel" type="Label" parent="."]
+offset_left = -55.0
+offset_top = -137.0
+offset_right = 4.0
+offset_bottom = -114.0
+text = "Target: "
 
 [connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]
 [connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]

@@ -13,13 +13,14 @@ var _cell_block: CellBlock
 var _remaining_amount_progress_bar : ProgressBar = ProgressBar.new()
 var _gather_area = Area2D.new()
 var _gather_circle = CollisionShape2D.new()
+var _random_idle_anim_start_frame: int
 
 
 func _ready() -> void:
+	z_index = Globals.default_z_index
 	team = enums.e_team.neutral
 	add_child(amtlabel)
 	amtlabel.position = Vector2(0, -20) # is relative pos
-	z_index = Globals.foreground_z_index
 	object_type = enums.e_object_type.resource
 	
 	_remaining_amount_progress_bar.visible = false
