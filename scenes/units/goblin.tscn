@@ -277,7 +277,6 @@ script = ExtResource("1_0hmiu")
 [node name="Attackable" type="Node2D" parent="."]
 script = ExtResource("7_f1uym")
 hurt_sounds = Array[AudioStream]([ExtResource("6_ljq68"), ExtResource("7_sh3m0")])
-max_health = null
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 target_desired_distance = 21.2
@@ -344,6 +343,13 @@ offset_right = 31.0
 offset_bottom = -68.0
 
 [node name="DebugLabel" type="Label" parent="."]
+offset_left = -55.0
+offset_top = -137.0
+offset_right = 4.0
+offset_bottom = -114.0
+text = "Target: "
+
+[node name="DebugLabel2" type="Label" parent="."]
 offset_left = -55.0
 offset_top = -137.0
 offset_right = 4.0

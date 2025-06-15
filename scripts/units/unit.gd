@@ -52,6 +52,7 @@ var _is_idle               := true
 var _strike_frame_index    := 3 # the frame where the attack animation looks like it is connecting
 var _targeted_enemy: Attackable
 var _weapon_audio_stream   := AudioStreamPlayer2D.new()
+var _debug_label2: Label;
 
 #region Node References
 @onready var _attack_area: Area2D = $AttackArea
@@ -65,6 +66,13 @@ var _weapon_audio_stream   := AudioStreamPlayer2D.new()
 
 #region Built-in Functions
 func _ready() -> void:
+	# ------------------------------------
+	_debug_label2 = Label.new()
+	add_child(_debug_label2)
+	if _debug_label != null:
+		_debug_label2.position = _debug_label.position + Vector2(0,20)
+	_debug_label2.text = "??"
+	# ------------------------------------
 	z_index = Globals.default_z_index
 	ResourceManager._update_resource(cost[enums.e_resource_type.supply], enums.e_resource_type.supply)
 	add_to_group(Globals.unit_group) # TODO: Is this used anymore?
@@ -103,6 +111,8 @@ func _physics_process(_delta: float) -> void:
 		_debug_label.text = "Target: %s" % [_targeted_enemy.name]
 	elif _debug_label != null:
 		_debug_label.text = "No Target"
+	
+	_debug_label2.text = _anim_sprite.animation
 
 	if Input.is_key_pressed(KEY_T):
 		_stop_attacking()
@@ -178,7 +188,6 @@ func can_afford_to_build() -> structs.can_afford_response:
 
 func get_attackable() -> Attackable:
 	return _attackable
-
 
 
 func order_move(in_goal, in_order_type : enums.e_order_type, silent := false) -> void:
@@ -369,8 +378,6 @@ func _on_attack_area_body_entered(body: Node2D) -> void:
 	if  !body.has_node("Attackable") or body.team == team:
 		#print("cannot attack them though")
 		return
-	stop_moving()
-	await _navigation_agent.navigation_finished
 	_begin_attacking()
 
 

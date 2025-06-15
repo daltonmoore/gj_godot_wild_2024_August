@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b92f5516-ff6e-4d8d-9481-b3f9053fd55b" name="Changes" comment="fix indentation">
+    <list default="true" id="b92f5516-ff6e-4d8d-9481-b3f9053fd55b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/units/goblin.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/units/goblin.tscn" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/units/unit.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/units/unit.gd" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -115,7 +117,7 @@
       <workItem from="1749650992333" duration="10312000" />
       <workItem from="1749817279813" duration="2662000" />
       <workItem from="1749918197853" duration="65000" />
-      <workItem from="1749919102946" duration="15700000" />
+      <workItem from="1749919102946" duration="18902000" />
     </task>
     <task id="LOCAL-00001" summary="Remove unused demos, scripts, and assets. Add FancyEditorSoundsSettings with configurable sound and animation options for the editor.">
       <option name="closed" value="true" />
@@ -157,7 +159,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749945041444</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fix indentation">
+      <option name="closed" value="true" />
+      <created>1749945169682</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1749945169682</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -202,6 +212,11 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="GdScriptLineBreakpointTypeId">
+          <url>file://$PROJECT_DIR$/scripts/units/unit.gd</url>
+          <line>380</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint enabled="true" type="GDSCRIPT_EXCEPTION_BP_TYPE" />
@@ -210,6 +225,7 @@
     <watches-manager>
       <configuration name="GDSCRIPT_DEBUG_RUN_CONFIGURATION">
         <watch expression="name" language="GdScript" />
+        <watch expression="_anim_sprite.animation" language="GdScript" />
       </configuration>
     </watches-manager>
   </component>
