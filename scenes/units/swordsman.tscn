@@ -408,7 +408,7 @@ radius = 924.15
 radius = 99.4082
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xfbis"]
-radius = 347.052
+radius = 1115.06
 
 [node name="Swordsman" type="CharacterBody2D" groups=["Attackable"]]
 y_sort_enabled = true
@@ -422,6 +422,7 @@ metadata/_edit_lock_ = true
 [node name="Attackable" type="Node2D" parent="."]
 script = ExtResource("7_vioah")
 hurt_sounds = Array[AudioStream]([ExtResource("6_qgifu"), ExtResource("7_mu5m3"), ExtResource("8_42shu"), ExtResource("9_4fx2v")])
+max_health = 500.0
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true
@@ -484,7 +485,6 @@ offset_bottom = -91.0
 [node name="VisionArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VisionArea"]
-visible = false
 shape = SubResource("CircleShape2D_xfbis")
 debug_color = Color(0.756863, 0.454902, 0, 0.0666667)
 

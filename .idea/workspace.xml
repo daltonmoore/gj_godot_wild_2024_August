@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b92f5516-ff6e-4d8d-9481-b3f9053fd55b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/units/goblin.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/units/goblin.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/units/unit.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/units/unit.gd" afterDir="false" />
-    </list>
+    <list default="true" id="b92f5516-ff6e-4d8d-9481-b3f9053fd55b" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -117,7 +113,7 @@
       <workItem from="1749650992333" duration="10312000" />
       <workItem from="1749817279813" duration="2662000" />
       <workItem from="1749918197853" duration="65000" />
-      <workItem from="1749919102946" duration="18902000" />
+      <workItem from="1749919102946" duration="19013000" />
     </task>
     <task id="LOCAL-00001" summary="Remove unused demos, scripts, and assets. Add FancyEditorSoundsSettings with configurable sound and animation options for the editor.">
       <option name="closed" value="true" />
@@ -167,7 +163,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749945169682</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Add debug label updates and improve script/scene data management&#10;&#10;Updated `unit.gd` to manage a second debug label for animation state display. Enhanced debug visuals in `goblin.tscn` with an additional `DebugLabel2` node. Adjusted task history, breakpoints, and watches in workspace configuration for improved debugging. Cleaned unnecessary lines and improved script readability.">
+      <option name="closed" value="true" />
+      <created>1749949936153</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1749949936153</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -195,7 +199,8 @@
     <MESSAGE value="Refactor unit script: adjust z-index assignment, fix indentation, add attack state check, and streamline movement logic." />
     <MESSAGE value="Add `HealthBar` scene and refactor unit script&#10;&#10;Introduced `ui/health_bar.tscn` with progress bar styling. Refactored `unit.gd` with adjustments to `z_index` assignment, attack state logic, and indentation fixes. Improved movement handling and streamlined combat logic. Fixed a bug where enemy would attack even when target was outside of attack range." />
     <MESSAGE value="fix indentation" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix indentation" />
+    <MESSAGE value="Add debug label updates and improve script/scene data management&#10;&#10;Updated `unit.gd` to manage a second debug label for animation state display. Enhanced debug visuals in `goblin.tscn` with an additional `DebugLabel2` node. Adjusted task history, breakpoints, and watches in workspace configuration for improved debugging. Cleaned unnecessary lines and improved script readability." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add debug label updates and improve script/scene data management&#10;&#10;Updated `unit.gd` to manage a second debug label for animation state display. Enhanced debug visuals in `goblin.tscn` with an additional `DebugLabel2` node. Adjusted task history, breakpoints, and watches in workspace configuration for improved debugging. Cleaned unnecessary lines and improved script readability." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

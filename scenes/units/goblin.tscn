@@ -12,7 +12,7 @@
 radius = 540.268
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_n7gtl"]
-radius = 347.052
+radius = 1154.05
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_m06k7"]
 radius = 100.0
@@ -277,6 +277,7 @@ script = ExtResource("1_0hmiu")
 [node name="Attackable" type="Node2D" parent="."]
 script = ExtResource("7_f1uym")
 hurt_sounds = Array[AudioStream]([ExtResource("6_ljq68"), ExtResource("7_sh3m0")])
+max_health = 500.0
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 target_desired_distance = 21.2

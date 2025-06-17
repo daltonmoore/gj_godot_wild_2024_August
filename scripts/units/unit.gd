@@ -124,6 +124,9 @@ func _physics_process(_delta: float) -> void:
 		return
 
 	_handle_combat()
+	
+	if team == enums.e_team.player:
+		DebugDraw2d.circle(_navigation_agent.target_position,20, 16, Color.BLACK, 2)
 
 
 func _handle_debug_drawing() -> void:
@@ -140,7 +143,7 @@ func _handle_combat() -> void:
 		return
 
 	if _should_move_to_enemy(_targeted_enemy):
-		order_move(_targeted_enemy.global_position, enums.e_order_type.move, true)
+		order_move(_targeted_enemy.global_position, enums.e_order_type.none, true)
 
 
 func _handle_movement() -> void:
@@ -190,12 +193,14 @@ func get_attackable() -> Attackable:
 	return _attackable
 
 
-func order_move(in_goal, in_order_type : enums.e_order_type, silent := false) -> void:
+func order_move(in_goal, in_order_type := enums.e_order_type.none, silent := false) -> void:
 	_is_idle = false
 	if _cell_block._is_blocking_cell:
 		_cell_block.unblock_cell()
 	if in_order_type != enums.e_order_type.attack:
 		_disconnect_signals_on_target_change(_targeted_enemy)
+	if in_order_type == enums.e_order_type.move:
+		_vision_area.monitoring = false
 	if _is_attacking:
 		_stop_attacking()
 	
@@ -281,7 +286,9 @@ func _disconnect_signals_on_target_change(enemy) -> void:
 
 
 func _should_move_to_enemy(enemy: Attackable) -> bool:
-	return enemy != null and _vision_area.overlaps_area(enemy.get_collision_area()) and !_is_attacking
+	return enemy != null \
+	and _vision_area.overlaps_area(enemy.get_collision_area()) \
+	and !_is_attacking
 
 
 func _update_sprite_direction(target_position: Vector2) -> void:
@@ -412,6 +419,7 @@ func _on_mouse_exit() -> void:
 
 
 func _on_navigation_finished() -> void:
+	_vision_area.monitoring = true
 	_cell_block.block_cell()
 	_is_idle = true
 	_anim_sprite.animation = "idle"

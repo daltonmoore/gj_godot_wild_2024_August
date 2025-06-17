@@ -75,7 +75,7 @@ func _physics_process(delta: float) -> void:
 	if _bundle_instance != null and !_bundle_instance.is_queued_for_deletion():
 		_bundle_instance.flip_h = _anim_sprite.flip_h
 
-func order_move(in_goal, in_order_type : enums.e_order_type, silent := false):
+func order_move(in_goal, in_order_type := enums.e_order_type.none, silent := false):
 	super(in_goal, in_order_type, silent)
 	#print(enums.e_order_type.keys()[in_order_type])
 	_current_order_type = in_order_type
