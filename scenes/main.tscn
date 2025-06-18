@@ -75,7 +75,7 @@ limit_left = 0
 limit_top = 0
 limit_right = 2000
 limit_bottom = 2000
-camera_bounds = Rect2(0, 0, 2000, 2000)
+camera_bounds = Rect2(0, 0, 4000, 4000)
 
 [node name="FormationManager" type="Node2D" parent="."]
 script = ExtResource("14_7yv5r")

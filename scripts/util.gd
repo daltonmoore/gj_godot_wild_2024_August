@@ -6,6 +6,7 @@ func create_one_shot_audio_stream(nombre: String, sound_array: Array[AudioStream
 		return
 	
 	var audio_stream = AudioStreamPlayer2D.new()
+	audio_stream.max_distance = Globals.max_audio_stream_distance
 	audio_stream.name = nombre + "_" + str(hash(Time.get_unix_time_from_system()))
 	audio_stream.stream = sound_array[randi_range(0, sound_array.size() - 1)]
 	parent.add_child.call_deferred(audio_stream)

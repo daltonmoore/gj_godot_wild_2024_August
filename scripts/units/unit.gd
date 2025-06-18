@@ -245,6 +245,7 @@ func _acknowledge(silent: bool) -> void:
 	var acknowledger = UnitManager.group_get_acknowledger(_group_guid)
 	if !silent and acknowledger == null or acknowledger == self:
 		var temp_stream = AudioStreamPlayer2D.new()
+		temp_stream.max_distance = Globals.max_audio_stream_distance
 		temp_stream.stream = confirm_acks[randi_range(0, len(confirm_acks) - 1)]
 		_audio_streams.push_back(temp_stream)
 		add_child(temp_stream)
@@ -475,6 +476,7 @@ func _setup_attack() -> void:
 
 func _setup_audio_streams() -> void:
 	add_child(_weapon_audio_stream)
+	_weapon_audio_stream.max_distance = Globals.max_audio_stream_distance
 	weapon_sounds.append(load("res://sound/Minifantasy_Weapons_SFX/Slash_Attacks/Slash_Attack_Sword_1.wav"))
 	weapon_sounds.append(load("res://sound/Minifantasy_Weapons_SFX/Slash_Attacks/Slash_Attack_Sword_2.wav"))
 	weapon_sounds.append(load("res://sound/Minifantasy_Weapons_SFX/Slash_Attacks/Slash_Attack_Sword_3.wav"))

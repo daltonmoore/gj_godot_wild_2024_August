@@ -19,6 +19,8 @@ func _ready() -> void:
 	
 	position = Vector2.ZERO
 	get_parent().position = Vector2.ZERO
+	limit_right = camera_bounds.size.x
+	limit_bottom = camera_bounds.size.y
 	
 
 
