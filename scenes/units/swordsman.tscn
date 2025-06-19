@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=3 uid="uid://dluhwbliivbp8"]
+[gd_scene load_steps=74 format=3 uid="uid://dluhwbliivbp8"]
 
 [ext_resource type="Script" uid="uid://bf303vsa0bwnq" path="res://scripts/units/swordsman.gd" id="1_ptif3"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_j6ccn"]
@@ -12,6 +12,10 @@
 [ext_resource type="AudioStream" uid="uid://cyyjae6dkjpjt" path="res://sound/Gamemaster Audio - Footstep and Foley Sounds/voice_male_b_hurt_pain_set_2_08.wav" id="8_42shu"]
 [ext_resource type="AudioStream" uid="uid://bqtj2ks5lfxgt" path="res://sound/Gamemaster Audio - Footstep and Foley Sounds/voice_male_b_hurt_pain_set_2_09.wav" id="9_4fx2v"]
 [ext_resource type="PackedScene" uid="uid://vmpaix73ewbf" path="res://scenes/ui/health_bar.tscn" id="12_asq2p"]
+[ext_resource type="Script" uid="uid://cpt7sfn43e801" path="res://scripts/ui/ui_detail.gd" id="13_711yu"]
+[ext_resource type="Script" uid="uid://ceg5y3imnxxgt" path="res://scripts/ui/ui_details.gd" id="13_h3shi"]
+[ext_resource type="Texture2D" uid="uid://c3d8oym6oabhr" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Warrior/Blue/Warrior_Blue_Still_Image_Default.png" id="15_32xgc"]
+[ext_resource type="Texture2D" uid="uid://c6gnkab3ivmmx" path="res://art/icons/RPG Graphics Pack - Icons/Pack 1A/boot/boot_03.png" id="16_u61ex"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]
 radius = 5.0
@@ -410,6 +414,20 @@ radius = 99.4082
 [sub_resource type="CircleShape2D" id="CircleShape2D_xfbis"]
 radius = 1115.06
 
+[sub_resource type="Resource" id="Resource_u61ex"]
+script = ExtResource("13_711yu")
+image = ExtResource("15_32xgc")
+use_detail = false
+detail = 0.0
+metadata/_custom_type_script = "uid://cpt7sfn43e801"
+
+[sub_resource type="Resource" id="Resource_252hl"]
+script = ExtResource("13_711yu")
+image = ExtResource("16_u61ex")
+use_detail = true
+detail = 1.0
+metadata/_custom_type_script = "uid://cpt7sfn43e801"
+
 [node name="Swordsman" type="CharacterBody2D" groups=["Attackable"]]
 y_sort_enabled = true
 script = ExtResource("1_ptif3")
@@ -494,6 +512,13 @@ offset_top = -137.0
 offset_right = 4.0
 offset_bottom = -114.0
 text = "Target: "
+
+[node name="UiDetails" type="Node2D" parent="."]
+script = ExtResource("13_h3shi")
+details = Array[ExtResource("13_711yu")]([SubResource("Resource_u61ex"), SubResource("Resource_252hl")])
+
+[node name="UiDetails2" type="Node2D" parent="."]
+script = ExtResource("13_711yu")
 
 [connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]
 [connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_changed"]

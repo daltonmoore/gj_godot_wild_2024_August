@@ -218,7 +218,7 @@ func _setup_timers() -> void:
 		_unit_build_timer.timeout.connect(_finish_building_unit)
 
 func _setup_ui_details() -> void:
-	var ui_detail_one = UI_Detail.new()
+	var ui_detail_one = UiDetail.new()
 	ui_detail_one.image_one_path = "res://art/icons/RPG Graphics Pack - Icons/Pack 1A/armor/armor_09.png"
 	ui_detail_one.detail_one = armor
 	

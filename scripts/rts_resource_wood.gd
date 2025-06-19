@@ -9,7 +9,7 @@ func _ready() -> void:
 
 	$DamagedTimer.timeout.connect(_on_damaged_timer_timeout)
 	
-	var ui_detail_one = UI_Detail.new()
+	var ui_detail_one = UiDetail.new()
 	ui_detail_one.image_one_path = "res://art/craftland/48x48/CL_Crops_Mining_split/CL_Crops_Mining1441.png"
 	ui_detail_one.detail_one = resource_amount
 	var tree_picture = "res://art/craftland/48x48/tree-export.png"

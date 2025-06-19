@@ -4,7 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b92f5516-ff6e-4d8d-9481-b3f9053fd55b" name="Changes" comment="" />
+    <list default="true" id="b92f5516-ff6e-4d8d-9481-b3f9053fd55b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/scripts/ui/ui_details.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/buildings/building_barracks.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/buildings/building_barracks.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/main.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/main.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/ui/hud.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/ui/hud.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/units/swordsman.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/units/swordsman.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/building/building.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/building/building.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/hud.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/hud.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/rts_resource_wood.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/rts_resource_wood.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/ui_detail.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/ui/ui_detail.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/ui_detail.gd.uid" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/ui/ui_detail.gd.uid" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/units/unit.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/units/unit.gd" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -12,6 +25,13 @@
   </component>
   <component name="DpaMonitoringSettings">
     <option name="firstShow" value="false" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Node default" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="PREVIOUS_COMMIT_AUTHORS">
@@ -36,6 +56,9 @@
 }</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="mock:///AIAssistantSnippet.." root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///AIAssistantSnippet.." root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///AIAssistantSnippet.." root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///AIAssistantSnippet.." root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -47,24 +70,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;GdScript Start and Debug.Player GDScript.executor&quot;: &quot;Debug&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;gdscript.promo.shown&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.CommitDialog&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "GdScript Start and Debug.Player GDScript.executor": "Debug",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "gdscript.promo.shown": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CidrLocalAttachDebugger.recentlyUsed">
       <recent name="com.jetbrains.rider.cpp.debugger.RiderCppLLDBDriverConfiguration" />
@@ -114,6 +137,8 @@
       <workItem from="1749817279813" duration="2662000" />
       <workItem from="1749918197853" duration="65000" />
       <workItem from="1749919102946" duration="19013000" />
+      <workItem from="1750250066822" duration="3808000" />
+      <workItem from="1750335096102" duration="10919000" />
     </task>
     <task id="LOCAL-00001" summary="Remove unused demos, scripts, and assets. Add FancyEditorSoundsSettings with configurable sound and animation options for the editor.">
       <option name="closed" value="true" />
@@ -171,7 +196,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749949936153</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Adjust camera bounds, add global max audio distance, and disable debug mode&#10;&#10;Updated `camera_bounds` limit values in `main.tscn`. Introduced `max_audio_stream_distance` global constant and applied it to `AudioStreamPlayer2D` instances across scripts. Disabled debug mode in `globals.gd`. Enhanced camera limit updates in `player_camera.gd`.">
+      <option name="closed" value="true" />
+      <created>1750250320010</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1750250320010</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -200,7 +233,8 @@
     <MESSAGE value="Add `HealthBar` scene and refactor unit script&#10;&#10;Introduced `ui/health_bar.tscn` with progress bar styling. Refactored `unit.gd` with adjustments to `z_index` assignment, attack state logic, and indentation fixes. Improved movement handling and streamlined combat logic. Fixed a bug where enemy would attack even when target was outside of attack range." />
     <MESSAGE value="fix indentation" />
     <MESSAGE value="Add debug label updates and improve script/scene data management&#10;&#10;Updated `unit.gd` to manage a second debug label for animation state display. Enhanced debug visuals in `goblin.tscn` with an additional `DebugLabel2` node. Adjusted task history, breakpoints, and watches in workspace configuration for improved debugging. Cleaned unnecessary lines and improved script readability." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add debug label updates and improve script/scene data management&#10;&#10;Updated `unit.gd` to manage a second debug label for animation state display. Enhanced debug visuals in `goblin.tscn` with an additional `DebugLabel2` node. Adjusted task history, breakpoints, and watches in workspace configuration for improved debugging. Cleaned unnecessary lines and improved script readability." />
+    <MESSAGE value="Adjust camera bounds, add global max audio distance, and disable debug mode&#10;&#10;Updated `camera_bounds` limit values in `main.tscn`. Introduced `max_audio_stream_distance` global constant and applied it to `AudioStreamPlayer2D` instances across scripts. Disabled debug mode in `globals.gd`. Enhanced camera limit updates in `player_camera.gd`." />
+    <option name="LAST_COMMIT_MESSAGE" value="Adjust camera bounds, add global max audio distance, and disable debug mode&#10;&#10;Updated `camera_bounds` limit values in `main.tscn`. Introduced `max_audio_stream_distance` global constant and applied it to `AudioStreamPlayer2D` instances across scripts. Disabled debug mode in `globals.gd`. Enhanced camera limit updates in `player_camera.gd`." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

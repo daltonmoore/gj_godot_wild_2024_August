@@ -1,30 +1,41 @@
-[gd_scene load_steps=7 format=3 uid="uid://s7vspcp2kfa4"]
+[gd_scene load_steps=10 format=3 uid="uid://s7vspcp2kfa4"]
 
 [ext_resource type="Script" uid="uid://nmfh1ed7blsd" path="res://scripts/building/building.gd" id="1_hioce"]
 [ext_resource type="Texture2D" uid="uid://bnvxnqv1u48xg" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/Tower/Tower_Construction.png" id="2_wbwiq"]
 [ext_resource type="Texture2D" uid="uid://bix5k51bgrr7b" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/Castle/Castle_Destroyed.png" id="3_ono4h"]
 [ext_resource type="Texture2D" uid="uid://iwqikkqyenrh" path="res://art/open game art/barracks.png" id="4_fj23l"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="5_ljgri"]
+[ext_resource type="Script" uid="uid://ceg5y3imnxxgt" path="res://scripts/ui/ui_details.gd" id="6_n75du"]
+[ext_resource type="Script" uid="uid://cpt7sfn43e801" path="res://scripts/ui/ui_detail.gd" id="7_d4fkb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tafjs"]
 size = Vector2(285, 181)
 
+[sub_resource type="Resource" id="Resource_q053n"]
+script = ExtResource("7_d4fkb")
+use_detail = false
+metadata/_custom_type_script = "uid://cpt7sfn43e801"
+
 [node name="Building" type="Node2D"]
 script = ExtResource("1_hioce")
-construction_sprite = ExtResource("2_wbwiq")
-destroyed_sprite = ExtResource("3_ono4h")
-built_sprite = ExtResource("4_fj23l")
-total_build_time = 5.0
+armor = null
 building_corners = PackedVector2Array(-140, -80, -140, 80, 140, 80, 140, -80)
+building_type = 3
+built_sprite = ExtResource("4_fj23l")
+build_times = {
+2: 27.0
+}
+built = null
+construction_sprite = ExtResource("2_wbwiq")
 cost = {
 1: 175.0,
 2: 0.0,
 3: 0.0
 }
-building_type = 3
-build_times = {
-2: 27.0
-}
+default_rally_point_location = null
+destroyed_sprite = ExtResource("3_ono4h")
+supply_cap = null
+total_build_time = 5.0
 
 [node name="Selection Circle" type="Sprite2D" parent="."]
 visible = false
@@ -53,6 +64,10 @@ max_value = 1.0
 one_shot = true
 
 [node name="UnitBuildTimer" type="Timer" parent="."]
+
+[node name="UI_Details" type="Node2D" parent="." node_paths=PackedStringArray("details")]
+script = ExtResource("6_n75du")
+details = [SubResource("Resource_q053n")]
 
 [connection signal="mouse_entered" from="Visual/Area2D" to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Visual/Area2D" to="." method="_on_mouse_exited"]

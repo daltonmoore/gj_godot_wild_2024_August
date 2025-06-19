@@ -11,9 +11,9 @@
 [ext_resource type="PackedScene" uid="uid://bg5jrjwfpc88n" path="res://scenes/selection_grid.tscn" id="6_fev7a"]
 [ext_resource type="PackedScene" uid="uid://blr4k6u27v7fn" path="res://scenes/buildings/building_townhall.tscn" id="7_jk4y1"]
 [ext_resource type="Script" uid="uid://d1a2w8kyklvlp" path="res://scripts/units/formation_manager.gd" id="14_7yv5r"]
-[ext_resource type="Texture2D" uid="uid://c4reqfv5say6g" path="res://art/New Tiny Swords (Free Pack)/Tiny Swords (Free Pack)/Decorations/Trees/Tree3.png" id="14_jkv2x"]
+[ext_resource type="Texture2D" uid="uid://c4reqfv5say6g" path="res://art/Tiny Swords (Free Pack)/Decorations/Trees/Tree3.png" id="14_jkv2x"]
 [ext_resource type="PackedScene" uid="uid://bl5akcyrwyd00" path="res://scenes/buildings/building_enemy.tscn" id="14_ra2l4"]
-[ext_resource type="Texture2D" uid="uid://dj2qraku4x783" path="res://art/New Tiny Swords (Free Pack)/Tiny Swords (Free Pack)/Decorations/Trees/Tree4.png" id="15_jbj1t"]
+[ext_resource type="Texture2D" uid="uid://dj2qraku4x783" path="res://art/Tiny Swords (Free Pack)/Decorations/Trees/Tree4.png" id="15_jbj1t"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kmb1v"]
 texture = ExtResource("4_og1vs")

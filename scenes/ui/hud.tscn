@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://bhbncccdbkrqp"]
+[gd_scene load_steps=25 format=3 uid="uid://bhbncccdbkrqp"]
 
 [ext_resource type="Script" uid="uid://b2q4vqo24vr21" path="res://scripts/hud.gd" id="1_8pmqa"]
 [ext_resource type="Script" uid="uid://cwph75ve8tq8k" path="res://scripts/health_bar.gd" id="2_5cj1q"]
@@ -31,6 +31,8 @@ cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
 
 [sub_resource type="Theme" id="Theme_75a3u"]
 default_font = SubResource("FontFile_ifsga")
+
+[sub_resource type="ImageTexture" id="ImageTexture_el1dq"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_tkgln"]
 font_size = 9
@@ -183,6 +185,7 @@ offset_top = -121.0
 offset_right = 144.0
 offset_bottom = -57.0
 grow_vertical = 0
+texture = SubResource("ImageTexture_el1dq")
 expand_mode = 1
 stretch_mode = 5
 

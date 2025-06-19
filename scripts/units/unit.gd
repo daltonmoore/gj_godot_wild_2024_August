@@ -6,7 +6,7 @@ extends CharacterBody2D
 @export var attack_cooldown := 0.5
 @export var damage: float = 10.0
 @export var team: enums.e_team
-@export var movement_speed: float =  100.0
+@export var 	movement_speed: float =  100.0
 
 
 @export_category("Animations")
@@ -45,7 +45,6 @@ var _current_cell: SelectionGridCell:
 var _current_cell_label: Label
 var _current_order_type: enums.e_order_type
 var _death_animated_sprite: AnimatedSprite2D
-var _details
 var _group_guid
 var _is_attacking          := false
 var _is_idle               := true
@@ -62,6 +61,7 @@ var _debug_label2: Label;
 @onready var _navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 @onready var _selection_hover_area: Area2D = $SelectionHoverArea
 @onready var _vision_area: Area2D = $VisionArea
+#@onready var _ui_details: UiDetails = $UiDetails
 #endregion
 
 #region Built-in Functions
@@ -537,9 +537,9 @@ func _setup_signal_connections() -> void:
 	_vision_area.body_exited.connect(_on_vision_area_body_exited)
 
 func _setup_ui_detail() -> void:
-	var ui_detail_one = UI_Detail.new()
+	var ui_detail_one = UiDetail.new()
 	ui_detail_one.image_one_path = "res://art/icons/RPG Graphics Pack - Icons/Pack 1A-Renamed/boot/boot_03.png"
 	ui_detail_one.detail_one = movement_speed
 	var unit_picture_path = "res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Pawn/Blue/Pawn_Blue-still.png"
-	_details = [ui_detail_one, unit_picture_path]
+	#_ui_details.details = [ui_detail_one, unit_picture_path]
 #endregion

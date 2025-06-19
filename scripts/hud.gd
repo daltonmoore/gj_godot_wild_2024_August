@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-@onready var unit_pic = $Root/SelectedUnitInfo/UnitPicture
+@onready var unit_pic:TextureRect = $Root/SelectedUnitInfo/UnitPicture
 @onready var info_box = $Root/SelectedUnitInfo/InfoBox
 @onready var supply_texture_rect = $Root/ResourceContainer/SupplyTextureRect
 @onready var meat_texture_rect = $Root/ResourceContainer/MeatTextureRect
@@ -34,6 +34,7 @@ func update_resource(resource_type : enums.e_resource_type, amount : int) -> voi
 		enums.e_resource_type.supply_cap:
 			$Root/ResourceContainer/SupplyAmount.text = str(ResourceManager.supply) + "/" + str(amount)
 
+# TODO: Make this array an array of selectables instead of buildings and units
 func update_selection(new_selection : Array) -> void:
 	if SelectionHandler.mouse_hovered_ui_element != null:
 		return
@@ -51,7 +52,7 @@ func update_selection(new_selection : Array) -> void:
 		_old_selection_first_item = new_selection[0]
 	
 	if new_selection != null and len(new_selection) == 1:
-		_handle_details(new_selection)
+#		_handle_details(new_selection)
 		
 		# deal with the build queue and progress bar for the building
 		if new_selection[0] is Building:
@@ -104,31 +105,6 @@ func _flash_ui_element(ui_element) -> void:
 		await get_tree().create_timer(.2).timeout
 		supply_texture_rect.modulate = Color.WHITE
 		await get_tree().create_timer(.2).timeout
-
-func _handle_details(new_selection) -> void:
-	if new_selection[0]._details == null:
-		return
-
-	for detail in new_selection[0]._details:
-		if detail is String:
-			unit_pic.texture = load(detail)
-			unit_pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-			unit_pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-			unit_pic.size = Vector2(64, 64)
-		elif detail is UI_Detail:
-			var h_box = HBoxContainer.new()
-			var pic = TextureRect.new()
-			pic.texture = load(detail.image_one_path)
-			pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-			pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-			pic.custom_minimum_size = Vector2(24, 24)
-			h_box.add_child(pic)
-			
-			var label = Label.new()
-			label.text = str(detail.detail_one)
-			h_box.add_child(label)
-			
-			info_box.add_child(h_box)
 
 func _update_building_menu(new_selection) -> void:
 	match new_selection.building_type:
