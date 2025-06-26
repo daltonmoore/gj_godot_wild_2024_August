@@ -47,6 +47,8 @@ var _supply_blocked_sound = load("res://sound/Jingles_Fanfares_SFX_Pack/Jingles_
 var _unit_build_timer = null
 #endregion
 
+@onready var ui_details: UiDetails = $UiDetails
+
 #region Built-in Methods
 
 func _ready() -> void:
@@ -218,9 +220,9 @@ func _setup_timers() -> void:
 		_unit_build_timer.timeout.connect(_finish_building_unit)
 
 func _setup_ui_details() -> void:
-	var ui_detail_one = UiDetail.new()
-	ui_detail_one.image_one_path = "res://art/icons/RPG Graphics Pack - Icons/Pack 1A/armor/armor_09.png"
-	ui_detail_one.detail_one = armor
+	#var ui_detail_one = UiDetail.new()
+	#ui_detail_one.image_one_path = "res://art/icons/RPG Graphics Pack - Icons/Pack 1A/armor/armor_09.png"
+	#ui_detail_one.detail_one = armor
 	
 	var building_picture_path = ""
 	match building_type:
@@ -228,7 +230,7 @@ func _setup_ui_details() -> void:
 			building_picture_path = "res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/Castle/Castle_Blue-export.png"
 	
 	
-	details = [ui_detail_one, building_picture_path]
+	#details = [ui_detail_one, building_picture_path]
 
 func _setup_visual() -> void:
 	if built:

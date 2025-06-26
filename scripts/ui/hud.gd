@@ -52,7 +52,7 @@ func update_selection(new_selection : Array) -> void:
 		_old_selection_first_item = new_selection[0]
 	
 	if new_selection != null and len(new_selection) == 1:
-#		_handle_details(new_selection)
+		_handle_details(new_selection)
 		
 		# deal with the build queue and progress bar for the building
 		if new_selection[0] is Building:
@@ -78,7 +78,30 @@ func update_selection(new_selection : Array) -> void:
 		$Root/BuilderMenu.visible = false
 		$Root/BuildingMenu.visible = false
 
+func _handle_details(new_selection) -> void:
+	if new_selection[0].ui_details == null:
+		return
 
+	for detail in new_selection[0].ui_details.details:
+		if !detail.use_detail:
+			unit_pic.texture = detail.image
+			unit_pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			unit_pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			unit_pic.size = Vector2(64, 64)
+		elif detail is UiDetail:
+			var h_box = HBoxContainer.new()
+			var pic = TextureRect.new()
+			pic.texture = detail.image
+			pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			pic.custom_minimum_size = Vector2(24, 24)
+			h_box.add_child(pic)
+
+			var label = Label.new()
+			label.text = str(detail.detail)
+			h_box.add_child(label)
+
+			info_box.add_child(h_box)
 
 func show_cannot_afford(can_afford_response: structs.can_afford_response) -> void:
 	match can_afford_response.reason:

@@ -1,13 +1,23 @@
-[gd_scene load_steps=7 format=3 uid="uid://blr4k6u27v7fn"]
+[gd_scene load_steps=10 format=3 uid="uid://blr4k6u27v7fn"]
 
 [ext_resource type="Script" uid="uid://nmfh1ed7blsd" path="res://scripts/building/building.gd" id="1_fo44i"]
 [ext_resource type="Texture2D" uid="uid://b8uqks3hooa23" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/Castle/Castle_Construction.png" id="2_bbbag"]
 [ext_resource type="Texture2D" uid="uid://bix5k51bgrr7b" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/Castle/Castle_Destroyed.png" id="3_2aioj"]
 [ext_resource type="Texture2D" uid="uid://3u1h8pvneacc" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Buildings/Castle/Castle_Blue-export.png" id="4_5xs6l"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="5_etvyg"]
+[ext_resource type="Script" uid="uid://ceg5y3imnxxgt" path="res://scripts/ui/ui_details.gd" id="6_b6ku3"]
+[ext_resource type="Script" uid="uid://cpt7sfn43e801" path="res://scripts/ui/ui_detail.gd" id="7_likqt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tafjs"]
 size = Vector2(285, 181)
+
+[sub_resource type="Resource" id="Resource_dqbnb"]
+script = ExtResource("7_likqt")
+image = ExtResource("4_5xs6l")
+ui_detail_type = 1
+use_detail = false
+detail = 0.0
+metadata/_custom_type_script = "uid://cpt7sfn43e801"
 
 [node name="BuildingTownHall" type="Node2D" groups=["Attackable"]]
 script = ExtResource("1_fo44i")
@@ -54,6 +64,10 @@ max_value = 1.0
 one_shot = true
 
 [node name="UnitBuildTimer" type="Timer" parent="."]
+
+[node name="UiDetails" type="Node2D" parent="."]
+script = ExtResource("6_b6ku3")
+details = Array[ExtResource("7_likqt")]([SubResource("Resource_dqbnb")])
 
 [connection signal="mouse_entered" from="Visual/Area2D" to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Visual/Area2D" to="." method="_on_mouse_exited"]

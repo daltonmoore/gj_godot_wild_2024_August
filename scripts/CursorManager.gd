@@ -2,27 +2,21 @@ extends Node2D
 
 signal mouse_over_object(object)
 
-enum cursor_type {
-	default,
-	wood,
-	select,
-	building,
-	attack
-}
+
+
+@export var cursors: Dictionary[enums.E_CursorType, Texture2D]
 
 var current_attackable : Attackable
 var current_hovered_tile : TileData
 var current_hovered_inanimate_object : Selectable
 
-var _cursor_select = load("res://art/cursors/mmorpg-cursorpack-Narehop/cursors/cursor1.png")
-var _cursor_attack = load("res://art/cursors/mmorpg-cursorpack-Narehop/gold-pointer/pointer_23.png")
-var _cursor_default = load("res://art/cursors/mmorpg-cursorpack-Narehop/cursors/cursor8.png")
-var _current_cursor_type = cursor_type.default
-
+var _current_cursor_type := enums.E_CursorType.DEFAULT
 
 func _ready() -> void:
 	#Input.mouse_mode = Input.MOUSE_MODE_CONFINED
 	InputManager.mouse_move.connect(_mouse_move)
+	for cursor_type in cursors.keys():
+		set_cursor_scale(4, cursor_type)
 
 func _mouse_move(event) -> void:
 	if BuildManager._current_ghost != null:
@@ -31,14 +25,14 @@ func _mouse_move(event) -> void:
 	# Updating cursor
 	if SelectionHandler.mouse_hovered_unit != null:
 		if cursor_over_enemy() and SelectionHandler.has_units_selected():
-			Input.set_custom_mouse_cursor(_cursor_attack)
-			_current_cursor_type = cursor_type.attack
+			Input.set_custom_mouse_cursor(cursors[enums.E_CursorType.ATTACK])
+			_current_cursor_type = enums.E_CursorType.ATTACK
 		else:
-			Input.set_custom_mouse_cursor(_cursor_select)
-			_current_cursor_type = cursor_type.select
+			Input.set_custom_mouse_cursor(cursors[enums.E_CursorType.SELECT])
+			_current_cursor_type = enums.E_CursorType.SELECT
 	else:
-		Input.set_custom_mouse_cursor(_cursor_default)
-		_current_cursor_type = cursor_type.default
+		Input.set_custom_mouse_cursor(cursors[enums.E_CursorType.DEFAULT])
+		_current_cursor_type = enums.E_CursorType.DEFAULT
 	
 	if (current_hovered_inanimate_object == null):
 		return
@@ -74,3 +68,14 @@ func set_current_hovered_object(object):
 
 func set_current_attackable(attackable):
 	current_attackable = attackable
+	
+func set_cursor_scale(scale: float, cursor_type: enums.E_CursorType ) -> void:
+	var image: Image = cursors[cursor_type].get_image()
+	# Pixel counts are integars, so we cast Vector2 (using float) to Vector2i (using int)
+	var size := Vector2i(scale * image.get_size())
+	var scaled: Image = image.duplicate()
+	# Resize the image with bilinear interpolation
+	scaled.resize(size.x, size.y, Image.INTERPOLATE_NEAREST)
+	
+	cursors[cursor_type] = ImageTexture.create_from_image(scaled)
+	

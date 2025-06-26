@@ -11,30 +11,29 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tafjs"]
 size = Vector2(285, 181)
 
-[sub_resource type="Resource" id="Resource_q053n"]
+[sub_resource type="Resource" id="Resource_d4fkb"]
 script = ExtResource("7_d4fkb")
+image = ExtResource("4_fj23l")
+ui_detail_type = 1
 use_detail = false
+detail = 0.0
 metadata/_custom_type_script = "uid://cpt7sfn43e801"
 
 [node name="Building" type="Node2D"]
 script = ExtResource("1_hioce")
-armor = null
 building_corners = PackedVector2Array(-140, -80, -140, 80, 140, 80, 140, -80)
 building_type = 3
 built_sprite = ExtResource("4_fj23l")
 build_times = {
 2: 27.0
 }
-built = null
 construction_sprite = ExtResource("2_wbwiq")
 cost = {
 1: 175.0,
 2: 0.0,
 3: 0.0
 }
-default_rally_point_location = null
 destroyed_sprite = ExtResource("3_ono4h")
-supply_cap = null
 total_build_time = 5.0
 
 [node name="Selection Circle" type="Sprite2D" parent="."]
@@ -65,9 +64,9 @@ one_shot = true
 
 [node name="UnitBuildTimer" type="Timer" parent="."]
 
-[node name="UI_Details" type="Node2D" parent="." node_paths=PackedStringArray("details")]
+[node name="UiDetails" type="Node2D" parent="."]
 script = ExtResource("6_n75du")
-details = [SubResource("Resource_q053n")]
+details = Array[ExtResource("7_d4fkb")]([SubResource("Resource_d4fkb")])
 
 [connection signal="mouse_entered" from="Visual/Area2D" to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Visual/Area2D" to="." method="_on_mouse_exited"]

@@ -9,11 +9,11 @@ func _ready() -> void:
 
 	$DamagedTimer.timeout.connect(_on_damaged_timer_timeout)
 	
-	var ui_detail_one = UiDetail.new()
-	ui_detail_one.image_one_path = "res://art/craftland/48x48/CL_Crops_Mining_split/CL_Crops_Mining1441.png"
-	ui_detail_one.detail_one = resource_amount
-	var tree_picture = "res://art/craftland/48x48/tree-export.png"
-	details = [ui_detail_one, tree_picture]
+	#var ui_detail_one = UiDetail.new()
+	#ui_detail_one.image_one_path = "res://art/craftland/48x48/CL_Crops_Mining_split/CL_Crops_Mining1441.png"
+	#ui_detail_one.detail_one = resource_amount
+	#var tree_picture = "res://art/craftland/48x48/tree-export.png"
+	#details = [ui_detail_one, tree_picture]
 	
 	cursor_texture = load("res://art/cursors/mmorpg-cursorpack-Narehop/gold-pointer/pointer_36.png")
 	resource_type = enums.e_resource_type.wood

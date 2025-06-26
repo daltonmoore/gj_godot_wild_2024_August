@@ -3,6 +3,7 @@ class_name UiDetail
 extends Resource
 
 @export var image: Texture2D = null
+@export var ui_detail_type: enums.E_UIDetailType
 var _use_detail: bool = false
 @export var use_detail: bool:
 	get:
@@ -19,6 +20,6 @@ func _get_property_list() -> Array[Dictionary]:
 		"type": TYPE_FLOAT,
 		"usage": PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE if use_detail else PROPERTY_USAGE_STORAGE,
 		"hint": PROPERTY_HINT_RANGE,
-		"hint_string": "0,1"  # Assuming detail should be between 0 and 1
+		"hint_string": "0,200"  # Assuming detail should be between 0 and 1
 	})
 	return properties

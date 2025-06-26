@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://bbqvgiqtvvj75"]
+[gd_scene load_steps=63 format=3 uid="uid://bbqvgiqtvvj75"]
 
 [ext_resource type="Script" uid="uid://4hm4hev80moy" path="res://scripts/units/worker.gd" id="1_ybqxx"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_smnw2"]
@@ -7,6 +7,10 @@
 [ext_resource type="AudioStream" uid="uid://e237u06bp3sc" path="res://sound/536736__egomassive__chop.ogg" id="5_vhbtc"]
 [ext_resource type="Script" uid="uid://dx3d1p5c3wxrs" path="res://scripts/attackable.gd" id="6_0v272"]
 [ext_resource type="PackedScene" uid="uid://vmpaix73ewbf" path="res://scenes/ui/health_bar.tscn" id="7_tts6a"]
+[ext_resource type="Script" uid="uid://ceg5y3imnxxgt" path="res://scripts/ui/ui_details.gd" id="8_62yyd"]
+[ext_resource type="Script" uid="uid://cpt7sfn43e801" path="res://scripts/ui/ui_detail.gd" id="9_a2ouy"]
+[ext_resource type="Texture2D" uid="uid://t3syd2fhsa8w" path="res://art/Tiny Swords (Update 010)/Factions/Knights/Troops/Pawn/Blue/Pawn_Blue-still.png" id="10_d1guf"]
+[ext_resource type="Texture2D" uid="uid://cseyvd3qgen6j" path="res://art/icons/RPG Graphics Pack - Icons/Pack 1B-Renamed/boot/boot_03.png" id="11_62yyd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_78wmw"]
 radius = 3.0
@@ -358,8 +362,25 @@ radius = 40.1123
 [sub_resource type="CircleShape2D" id="CircleShape2D_3ckoi"]
 radius = 347.052
 
+[sub_resource type="Resource" id="Resource_g8j7w"]
+script = ExtResource("9_a2ouy")
+image = ExtResource("10_d1guf")
+ui_detail_type = 1
+use_detail = false
+detail = 0.0
+metadata/_custom_type_script = "uid://cpt7sfn43e801"
+
+[sub_resource type="Resource" id="Resource_nlwm3"]
+script = ExtResource("9_a2ouy")
+image = ExtResource("11_62yyd")
+ui_detail_type = 2
+use_detail = true
+detail = 50.0
+metadata/_custom_type_script = "uid://cpt7sfn43e801"
+
 [node name="Worker" type="CharacterBody2D" groups=["Attackable"]]
 script = ExtResource("1_ybqxx")
+collection_rate = 2.0
 max_resource_holding = 10
 team = 1
 movement_speed = 150.0
@@ -375,7 +396,6 @@ metadata/_edit_group_ = true
 script = ExtResource("6_0v272")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-time_horizon_agents = 2.0
 max_speed = 1000.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -414,7 +434,6 @@ metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SearchAreaSmall"]
-visible = false
 shape = SubResource("CircleShape2D_ynejq")
 debug_color = Color(0, 0.6, 0.701961, 0.0470588)
 
@@ -423,7 +442,6 @@ metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SearchAreaLarge"]
-visible = false
 shape = SubResource("CircleShape2D_4kigh")
 debug_color = Color(0, 0.6, 0.701961, 0)
 
@@ -453,5 +471,9 @@ visible = false
 position = Vector2(83, 53)
 shape = SubResource("CircleShape2D_3ckoi")
 debug_color = Color(0.756863, 0.454902, 0, 0.0666667)
+
+[node name="UiDetails" type="Node2D" parent="."]
+script = ExtResource("8_62yyd")
+details = Array[ExtResource("9_a2ouy")]([SubResource("Resource_g8j7w"), SubResource("Resource_nlwm3")])
 
 [connection signal="path_changed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_path_changed"]

@@ -52,7 +52,7 @@ func _ready() -> void:
 		wood_label.position = Vector2(0, -20) # is relative pos
 	
 	$ResourceGatherTick.timeout.connect(_on_resource_gather_tick_timeout)
-	$ResourceGatherTick.wait_time = collection_rate
+	$ResourceGatherTick.wait_time = 1/collection_rate
 
 func _process(_delta: float) -> void:
 	#auto_label.text = "auto_gather?: %s" % _auto_gather
@@ -107,6 +107,7 @@ func order_move(in_goal, in_order_type := enums.e_order_type.none, silent := fal
 	if (in_order_type != enums.e_order_type.deposit and
 			_is_turning_in_resources and
 			_navigation_agent.navigation_finished.is_connected(_deposit_resources)):
+		print("Disconnecting Deposit Resources from navigation finished")
 		_navigation_agent.navigation_finished.disconnect(_deposit_resources)
 	
 	if _holding_resource_bundle:
@@ -299,6 +300,7 @@ func _find_closest_thing(thing : String, ignore = null, filter = null) -> Node2D
 	var closest_thing
 	var closest_pos = Vector2(10000, 10000)
 	for a in $SearchAreaSmall.get_overlapping_areas():
+		print (a.owner)
 		if ignore != null and ignore == a.owner:
 			continue
 		if a.is_in_group(thing):
@@ -319,7 +321,7 @@ func _find_closest_thing(thing : String, ignore = null, filter = null) -> Node2D
 			if (a.is_in_group(thing) and 
 					(filter == null or (filter != null and is_instance_of(a.owner, filter)))
 				):
-			#print(a.owner.name)
+				print(a.owner.name)
 				if position.distance_to(a.owner.position) < position.distance_to(closest_pos):
 					closest_thing = a.owner
 					closest_pos = a.owner.position

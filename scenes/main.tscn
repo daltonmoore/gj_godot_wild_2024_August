@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://cmw2100mkgw3c"]
+[gd_scene load_steps=17 format=4 uid="uid://cmw2100mkgw3c"]
 
 [ext_resource type="PackedScene" uid="uid://cjh4kr7do3ddx" path="res://scenes/units/player.tscn" id="1_skd3a"]
 [ext_resource type="Script" uid="uid://ts26831k27gk" path="res://scripts/MyTileMap.gd" id="2_hkppm"]
@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://ce2augygiiq14" path="res://art/Tiny Swords (Update 010)/Terrain/Ground/Tilemap_Flat.png" id="4_og1vs"]
 [ext_resource type="PackedScene" uid="uid://b7k5d3rclx1jf" path="res://scenes/gathered_resources/rts_resource_gold.tscn" id="4_xu4uk"]
 [ext_resource type="PackedScene" uid="uid://bbqvgiqtvvj75" path="res://scenes/units/worker.tscn" id="5_gmj38"]
-[ext_resource type="PackedScene" uid="uid://bgv3jfx46sn4t" path="res://scenes/units/goblin.tscn" id="5_noj73"]
 [ext_resource type="PackedScene" uid="uid://bg5jrjwfpc88n" path="res://scenes/selection_grid.tscn" id="6_fev7a"]
 [ext_resource type="PackedScene" uid="uid://blr4k6u27v7fn" path="res://scenes/buildings/building_townhall.tscn" id="7_jk4y1"]
 [ext_resource type="Script" uid="uid://d1a2w8kyklvlp" path="res://scripts/units/formation_manager.gd" id="14_7yv5r"]
@@ -112,11 +111,21 @@ metadata/_edit_lock_ = true
 [node name="Worker" parent="Units" instance=ExtResource("5_gmj38")]
 position = Vector2(128, 288)
 
+[node name="Worker2" parent="Units" instance=ExtResource("5_gmj38")]
+position = Vector2(128, 448)
+
+[node name="Worker3" parent="Units" instance=ExtResource("5_gmj38")]
+position = Vector2(192, 352)
+
+[node name="Worker4" parent="Units" instance=ExtResource("5_gmj38")]
+position = Vector2(224, 480)
+
+[node name="Worker5" parent="Units" instance=ExtResource("5_gmj38")]
+position = Vector2(992, 384)
+debug_individual = true
+
 [node name="Swordsman" parent="Units" instance=ExtResource("4_cdmta")]
 position = Vector2(320, 672)
-
-[node name="Goblin" parent="Units" instance=ExtResource("5_noj73")]
-position = Vector2(1760, 832)
 
 [node name="RTS_Resource_Wood" parent="Units" instance=ExtResource("3_bksns")]
 position = Vector2(672, 480)
@@ -141,6 +150,7 @@ metadata/_edit_lock_ = true
 [node name="BuildingTownHall" parent="." instance=ExtResource("7_jk4y1")]
 position = Vector2(512, 128)
 built = true
+team = 1
 
 [node name="BuildingEnemy" parent="." instance=ExtResource("14_ra2l4")]
 position = Vector2(547, 834)

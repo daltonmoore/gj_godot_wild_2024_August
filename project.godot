@@ -22,7 +22,7 @@ InputManager="*res://scripts/input_manager.gd"
 DebugDraw2d="*res://addons/debugdraw2d/DebugDraw2D.gd"
 Globals="*res://scripts/globals.gd"
 Util="*res://scripts/util.gd"
-CursorManager="*res://scripts/CursorManager.gd"
+CursorManager="*res://scenes/managers/cursor_manager.tscn"
 SelectionHandler="*res://scripts/selection_handler.gd"
 BuildManager="*res://scripts/BuildManager.gd"
 ResourceManager="*res://scripts/resource_manager.gd"
@@ -38,6 +38,9 @@ settings/stdout/print_fps=true
 [display]
 
 window/size/resizable=false
+window/size/window_width_override=1920
+window/size/window_height_override=1080
+window/stretch/mode="canvas_items"
 
 [dotnet]
 

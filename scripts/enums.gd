@@ -63,3 +63,19 @@ enum E_UnitType {
 	ARCHER,
 	SIEGE
 }
+
+enum E_CursorType {
+	DEFAULT,
+	WOOD,
+	SELECT,
+	BUILDING,
+	ATTACK
+}
+
+enum E_UIDetailType {
+	NONE,
+	UNIT_PICTURE,
+	MOVEMENT_SPEED,
+	ATTACK_DAMAGE,
+	
+} 
