@@ -78,6 +78,7 @@ camera_bounds = Rect2(0, 0, 4000, 4000)
 
 [node name="FormationManager" type="Node2D" parent="."]
 script = ExtResource("14_7yv5r")
+debug = true
 metadata/_edit_lock_ = true
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]

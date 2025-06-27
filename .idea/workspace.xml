@@ -5,32 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b92f5516-ff6e-4d8d-9481-b3f9053fd55b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Refactor_unit_script__adjust_z-index_assignment,_fix_indentation,_add_attack_state_check,_/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Refactor_unit_script__adjust_z-index_assignment__fix_indentation__add_attack_state_check__.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project.godot" beforeDir="false" afterPath="$PROJECT_DIR$/project.godot" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/buildings/building_barracks.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/buildings/building_barracks.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/buildings/building_townhall.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/buildings/building_townhall.tscn" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scenes/main.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/main.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/managers/cursor_manager.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/managers/cursor_manager.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/ui/hud.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/ui/hud.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/units/swordsman.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/units/swordsman.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/units/worker.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/units/worker.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/CursorManager.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/CursorManager.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/build_button.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/ui/build_button.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/build_button.gd.uid" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/ui/build_button.gd.uid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/building/building.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/building/building.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/enums.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/enums.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/hud.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/ui/hud.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/hud.gd.uid" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/ui/hud.gd.uid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/rts_resource_wood.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/rts_resource_wood.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/selectable.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/selectable.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/tab_button.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/ui/tab_button.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/tab_button.gd.uid" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/ui/tab_button.gd.uid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/ui/ui_detail.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/ui/ui_detail.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/ui/ui_details.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/ui/ui_details.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/unit_button.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/ui/unit_button.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/unit_button.gd.uid" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/ui/unit_button.gd.uid" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/cell_block.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/cell_block.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/selection_handler.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/selection_handler.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/units/formation_manager.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/units/formation_manager.gd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/units/unit.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/units/unit.gd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/units/worker.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/units/worker.gd" afterDir="false" />
     </list>
@@ -159,6 +138,7 @@
       <workItem from="1750434128890" duration="820000" />
       <workItem from="1750758742003" duration="8056000" />
       <workItem from="1750939580977" duration="12000" />
+      <workItem from="1750940044243" duration="4234000" />
     </task>
     <task id="LOCAL-00001" summary="Remove unused demos, scripts, and assets. Add FancyEditorSoundsSettings with configurable sound and animation options for the editor.">
       <option name="closed" value="true" />
@@ -232,7 +212,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750354952438</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Remove shelved changes, fix z-index assignment, and improve indentation&#10;&#10;Deleted outdated shelved `.xml` and `.patch` files. Updated `z_index` usage in `unit.gd` to use `Globals.default_z_index`. Fixed indentation issues and enhanced logic to avoid unnecessary attack logic execution. Improved workspace and script file consistency.">
+      <option name="closed" value="true" />
+      <created>1750940628566</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1750940628566</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -263,7 +251,8 @@
     <MESSAGE value="Add debug label updates and improve script/scene data management&#10;&#10;Updated `unit.gd` to manage a second debug label for animation state display. Enhanced debug visuals in `goblin.tscn` with an additional `DebugLabel2` node. Adjusted task history, breakpoints, and watches in workspace configuration for improved debugging. Cleaned unnecessary lines and improved script readability." />
     <MESSAGE value="Adjust camera bounds, add global max audio distance, and disable debug mode&#10;&#10;Updated `camera_bounds` limit values in `main.tscn`. Introduced `max_audio_stream_distance` global constant and applied it to `AudioStreamPlayer2D` instances across scripts. Disabled debug mode in `globals.gd`. Enhanced camera limit updates in `player_camera.gd`." />
     <MESSAGE value="Refactor UI detail handling and integrate `UiDetail` and `UiDetails`&#10;&#10;Renamed and modularized `UI_Detail` to `UiDetail` and `UiDetails` for better clarity and scalability. Updated associated scripts (`hud.gd`, `unit.gd`, etc.) and scenes to reflect the changes. Enhanced property and script export logic for detailed customization. Adjusted resource and path names for consistency in scenes and scripts." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor UI detail handling and integrate `UiDetail` and `UiDetails`&#10;&#10;Renamed and modularized `UI_Detail` to `UiDetail` and `UiDetails` for better clarity and scalability. Updated associated scripts (`hud.gd`, `unit.gd`, etc.) and scenes to reflect the changes. Enhanced property and script export logic for detailed customization. Adjusted resource and path names for consistency in scenes and scripts." />
+    <MESSAGE value="Remove shelved changes, fix z-index assignment, and improve indentation&#10;&#10;Deleted outdated shelved `.xml` and `.patch` files. Updated `z_index` usage in `unit.gd` to use `Globals.default_z_index`. Fixed indentation issues and enhanced logic to avoid unnecessary attack logic execution. Improved workspace and script file consistency." />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove shelved changes, fix z-index assignment, and improve indentation&#10;&#10;Deleted outdated shelved `.xml` and `.patch` files. Updated `z_index` usage in `unit.gd` to use `Globals.default_z_index`. Fixed indentation issues and enhanced logic to avoid unnecessary attack logic execution. Improved workspace and script file consistency." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -280,11 +269,6 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="GdScriptLineBreakpointTypeId">
-          <url>file://$PROJECT_DIR$/scripts/units/worker.gd</url>
-          <line>106</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint enabled="true" type="GDSCRIPT_EXCEPTION_BP_TYPE" />

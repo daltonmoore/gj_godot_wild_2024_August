@@ -67,11 +67,12 @@ var _debug_label2: Label;
 #region Built-in Functions
 func _ready() -> void:
 	# ------------------------------------
-	_debug_label2 = Label.new()
-	add_child(_debug_label2)
-	if _debug_label != null:
-		_debug_label2.position = _debug_label.position + Vector2(0,20)
-	_debug_label2.text = "??"
+	if debug_individual or Globals.debug:
+		_debug_label2 = Label.new()
+		add_child(_debug_label2)
+		if _debug_label != null:
+			_debug_label2.position = _debug_label.position + Vector2(0,20)
+		_debug_label2.text = "??"
 	# ------------------------------------
 	z_index = Globals.default_z_index
 	ResourceManager._update_resource(cost[enums.e_resource_type.supply], enums.e_resource_type.supply)
@@ -111,7 +112,8 @@ func _physics_process(_delta: float) -> void:
 	elif _debug_label != null:
 		_debug_label.text = "No Target"
 	
-	_debug_label2.text = _anim_sprite.animation
+	if _debug_label2 != null:
+		_debug_label2.text = _anim_sprite.animation
 
 	if Input.is_key_pressed(KEY_T):
 		_stop_attacking()

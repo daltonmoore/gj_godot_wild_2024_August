@@ -26,6 +26,7 @@ func block_cell() -> void:
 			Vector2(half_x, -half_y),
 		]
 	)
+	DebugDraw2d.rect(global_position, shape_size, Color.RED, 1, 5)
 	_nav_mesh_block.position = global_position
 	NavHandler.update_obstacle(self, _nav_mesh_block, 
 		func():

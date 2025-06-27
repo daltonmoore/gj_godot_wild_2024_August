@@ -19,6 +19,8 @@ var _selection_grid : SelectionGrid
 var mouse_hovered_unit_label = Label.new()
 
 func _ready() -> void:
+	if Globals.debug:
+		Hud.add_child(mouse_hovered_unit_label)
 	_double_click_timer.wait_time = 0.25
 	_double_click_timer.one_shot = true
 	add_child(_double_click_timer)
@@ -29,6 +31,8 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	queue_redraw()
+	if mouse_hovered_unit_label != null and mouse_hovered_unit != null:
+		mouse_hovered_unit_label.text = mouse_hovered_unit.name
 
 func _draw():
 	if(_stop_drawing_dude):
@@ -98,12 +102,12 @@ func _handle_click_release():
 		DebugDraw2d.line(top_right,end, Color.GREEN, .5, debug_box_lifetime)
 	#endregion
 	
-	_select_units()
-	_select_selectable_objects()
+	if not _select_units():
+		_select_selectable_objects()
 
 
 
-func _select_units() -> void:
+func _select_units() -> bool:
 	var newly_selected_units: Array[Unit] = _get_newly_selected_units()
 
 	if not Input.is_action_pressed("Add To Selection"):
@@ -112,6 +116,8 @@ func _select_units() -> void:
 		newly_selected_units.append_array(selected_units)
 
 	_apply_new_selection(newly_selected_units)
+	
+	return newly_selected_units.size() > 0
 
 
 func _get_newly_selected_units() -> Array[Unit]:

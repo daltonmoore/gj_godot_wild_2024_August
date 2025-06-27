@@ -40,9 +40,9 @@ var wood_label = Label.new()
 func _ready() -> void:
 	super()
 	_auto_attack = false
-	add_child(wood_label)
-
-	if debug_individual:
+	
+	if debug_individual or Globals.debug:
+		add_child(wood_label)
 		add_child(deposit_label)
 		add_child(auto_label)
 		add_child(going_to_new_resource_label)
@@ -55,10 +55,8 @@ func _ready() -> void:
 	$ResourceGatherTick.wait_time = 1/collection_rate
 
 func _process(_delta: float) -> void:
-	#auto_label.text = "auto_gather?: %s" % _auto_gather
-	wood_label.text = "wood: %s" % _current_resource_holding
-	# Debug name text
-	if debug_individual:
+	if debug_individual or Globals.debug:
+		wood_label.text = "wood: %s" % _current_resource_holding
 		if _current_cell != null:
 			_current_cell_label.text = "%s" % _current_cell.grid_pos
 		else:
@@ -75,41 +73,57 @@ func _physics_process(delta: float) -> void:
 	if _bundle_instance != null and !_bundle_instance.is_queued_for_deletion():
 		_bundle_instance.flip_h = _anim_sprite.flip_h
 
-func order_move(in_goal, in_order_type := enums.e_order_type.none, silent := false):
+func order_move(in_goal, in_order_type := enums.e_order_type.none, silent := false) -> void:
 	super(in_goal, in_order_type, silent)
-	#print(enums.e_order_type.keys()[in_order_type])
 	_current_order_type = in_order_type
-	
-	if in_order_type == enums.e_order_type.move:
+
+	_handle_auto_gather(in_order_type)
+	_handle_gathering_state(in_goal)
+	_handle_building_state(in_order_type)
+	_handle_resource_state(in_order_type)
+	_handle_deposit_state(in_order_type)
+	_update_resource_bundle()
+
+func _handle_auto_gather(order_type: int) -> void:
+	if order_type == enums.e_order_type.move:
 		_auto_gather = false
-	
-	#TODO: make this a variable instead of magic 5
-	if (in_goal.distance_to(position) > 5 and _is_gathering):
+
+func _handle_gathering_state(goal: Vector2) -> void:
+	if goal.distance_to(position) > 5 and _is_gathering:
 		_stop_gathering()
-	
-	#TODO: this is difficult to understand
-	if (in_order_type != enums.e_order_type.build and _current_building != null and
-			(_navigation_agent.navigation_finished.is_connected(_begin_construction) or
-			_current_building.finish_building.is_connected(_on_finish_construction))
-		):
-		_current_building.finish_building.disconnect(_on_finish_construction)
-		_current_building.stop_building()
+
+func _handle_building_state(order_type: int) -> void:
+	if _current_building == null or order_type == enums.e_order_type.build:
+		return
+
+	var is_construction_connected = _navigation_agent.navigation_finished.is_connected(_begin_construction)
+	var is_finish_connected = _current_building.finish_building.is_connected(_on_finish_construction)
+
+	if is_construction_connected or is_finish_connected:
+		if is_finish_connected:
+			_current_building.finish_building.disconnect(_on_finish_construction)
+			_current_building.stop_building()
+		if is_construction_connected:
+			_navigation_agent.navigation_finished.disconnect(_begin_construction)
 		_current_building = null
-		_navigation_agent.navigation_finished.disconnect(_begin_construction)
-	
-	# clear resource goal if we issue new move order while on the way to gather
-	if (in_order_type != enums.e_order_type.gather and _resource_goal != null and !_auto_gather):
-		if _resource_goal.sig_can_gather.is_connected(_wait_for_can_gather):
-			_resource_goal.sig_can_gather.disconnect(_wait_for_can_gather)
-		_resource_goal = null
-		
-	
-	if (in_order_type != enums.e_order_type.deposit and
-			_is_turning_in_resources and
-			_navigation_agent.navigation_finished.is_connected(_deposit_resources)):
+
+func _handle_resource_state(order_type: int) -> void:
+	if order_type == enums.e_order_type.gather or _resource_goal == null or _auto_gather:
+		return
+
+	if _resource_goal.sig_can_gather.is_connected(_wait_for_can_gather):
+		_resource_goal.sig_can_gather.disconnect(_wait_for_can_gather)
+	_resource_goal = null
+
+func _handle_deposit_state(order_type: int) -> void:
+	if order_type == enums.e_order_type.deposit:
+		return
+
+	if _is_turning_in_resources and _navigation_agent.navigation_finished.is_connected(_deposit_resources):
 		print("Disconnecting Deposit Resources from navigation finished")
 		_navigation_agent.navigation_finished.disconnect(_deposit_resources)
-	
+
+func _update_resource_bundle() -> void:
 	if _holding_resource_bundle:
 		_set_bundle_anim("run")
 
@@ -119,7 +133,7 @@ func order_deposit_resources(building: Building):
 		_navigation_agent.navigation_finished.connect(_deposit_resources)
 	order_move(building.get_random_point_along_perimeter(position), enums.e_order_type.deposit, _auto_gather)
 
-func order_gather_resource(resource: RTS_Resource_Base):
+func order_gather_resource(resource: RTS_Resource_Base) -> void:
 	if _current_resource_holding >= max_resource_holding:
 		#print("Not gathering anymore because holding max resources already")
 		return
@@ -134,12 +148,11 @@ func order_gather_resource(resource: RTS_Resource_Base):
 	if !resource.exhausted.is_connected(_on_resource_exhausted):
 		resource.exhausted.connect(_on_resource_exhausted)
 	_current_resource_type = resource.resource_type
+	#TODO:when should the unit drop all they are holding?
+	#AOE2 clears it out when they start collecting a different resource
 	#TODO:take dot into account for gatherpos location
 	order_move(resource.get_random_gather_point(), enums.e_order_type.gather, _auto_gather)
 	
-	
-	#TODO:when should the unit drop all they are holding?
-	#		AOE2 clears it out when they start collecting a different resource
 
 func build(building) -> void:
 	#print(building)

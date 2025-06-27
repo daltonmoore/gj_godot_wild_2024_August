@@ -14,9 +14,9 @@ func _ready() -> void:
 	if !debug:
 		return
 	
-	#for x in 20:
-		#for y in 20:
-			#DebugDraw2d.rect(tile_map_layer.map_to_local(Vector2i(x,y)), Vector2(grid_size, grid_size), Color.BLUE,1, INF)
+	for x in 20:
+		for y in 20:
+			DebugDraw2d.rect(tile_map_layer.map_to_local(Vector2i(x,y)), Vector2(grid_size, grid_size), Color.BLUE,1, 500)
 
 func get_formation_for_currently_selected_units(_event) -> void:
 	# do not do a move formation if we are issuing an attack order on a single unit.
