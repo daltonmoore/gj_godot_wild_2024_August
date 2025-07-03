@@ -15,6 +15,7 @@ var _gather_area = Area2D.new()
 var _gather_circle = CollisionShape2D.new()
 var _random_idle_anim_start_frame: int
 
+@onready var ui_details: UiDetails = $UiDetails
 
 func _ready() -> void:
 	z_index = Globals.default_z_index

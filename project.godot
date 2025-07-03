@@ -18,17 +18,17 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-InputManager="*res://scripts/input_manager.gd"
+CursorManager="*res://scenes/managers/cursor_manager.tscn"
+InputManager="*res://scripts/managers/input_manager.gd"
 DebugDraw2d="*res://addons/debugdraw2d/DebugDraw2D.gd"
 Globals="*res://scripts/globals.gd"
 Util="*res://scripts/util.gd"
-CursorManager="*res://scenes/managers/cursor_manager.tscn"
-SelectionHandler="*res://scripts/selection_handler.gd"
-BuildManager="*res://scripts/BuildManager.gd"
-ResourceManager="*res://scripts/resource_manager.gd"
+BuildManager="*res://scripts/managers/BuildManager.gd"
+ResourceManager="*res://scripts/managers/resource_manager.gd"
 UnitManager="*res://scripts/units/unit_manager.gd"
-NavHandler="*res://scripts/nav_handler.gd"
+NavHandler="*res://scripts/managers/nav_handler.gd"
 Hud="*res://scenes/ui/hud.tscn"
+SelectionHandler="*res://scenes/managers/selection_handler.tscn"
 CommandManager="*res://scenes/managers/command_manager.tscn"
 
 [debug]
@@ -48,7 +48,7 @@ project/assembly_name="Game Jam - Godot Wild 2024 August"
 
 [editor_plugins]
 
-enabled=PackedStringArray()
+enabled=PackedStringArray("res://addons/fancy_editor_sounds/plugin.cfg")
 
 [global_group]
 

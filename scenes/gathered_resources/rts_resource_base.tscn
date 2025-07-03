@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=3 uid="uid://de03bl6on0rcu"]
+
+[ext_resource type="Script" uid="uid://ceg5y3imnxxgt" path="res://scripts/ui/ui_details.gd" id="2_nfdaq"]
+[ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_wbe25"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8o2w2"]
+size = Vector2(44, 44)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xrl6t"]
+size = Vector2(29, 45.5)
+
+[node name="RTS_Resource_Base" type="Node2D"]
+
+[node name="Selection Circle" type="Sprite2D" parent="."]
+self_modulate = Color(0, 1, 0, 1)
+scale = Vector2(2.67188, 1.6875)
+texture = ExtResource("2_wbe25")
+metadata/_edit_lock_ = true
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+
+[node name="DestroyedSprite" type="AnimatedSprite2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="GatherPos" type="Node2D" parent="."]
+position = Vector2(-1, 46)
+metadata/_edit_lock_ = true
+
+[node name="Area2D" type="Area2D" parent="." groups=["BlockConstruction"]]
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="DefaultCollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_8o2w2")
+metadata/_edit_lock_ = true
+
+[node name="DamagedTimer" type="Timer" parent="."]
+
+[node name="NavMeshBlockerStaticBody" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NavMeshBlockerStaticBody"]
+position = Vector2(-3, -5.25)
+shape = SubResource("RectangleShape2D_xrl6t")
+debug_color = Color(0.805249, 0.416272, 0, 0.42)
+
+[node name="UiDetails" type="Node2D" parent="."]
+script = ExtResource("2_nfdaq")
+
+[node name="TeamFlag" type="Sprite2D" parent="."]
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_mouse_exited"]

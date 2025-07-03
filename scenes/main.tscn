@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://cmw2100mkgw3c"]
+[gd_scene load_steps=19 format=4 uid="uid://cmw2100mkgw3c"]
 
 [ext_resource type="PackedScene" uid="uid://cjh4kr7do3ddx" path="res://scenes/units/player.tscn" id="1_skd3a"]
 [ext_resource type="Script" uid="uid://ts26831k27gk" path="res://scripts/MyTileMap.gd" id="2_hkppm"]
@@ -10,9 +10,10 @@
 [ext_resource type="PackedScene" uid="uid://bg5jrjwfpc88n" path="res://scenes/selection_grid.tscn" id="6_fev7a"]
 [ext_resource type="PackedScene" uid="uid://blr4k6u27v7fn" path="res://scenes/buildings/building_townhall.tscn" id="7_jk4y1"]
 [ext_resource type="Script" uid="uid://d1a2w8kyklvlp" path="res://scripts/units/formation_manager.gd" id="14_7yv5r"]
-[ext_resource type="Texture2D" uid="uid://c4reqfv5say6g" path="res://art/Tiny Swords (Free Pack)/Decorations/Trees/Tree3.png" id="14_jkv2x"]
+[ext_resource type="PackedScene" uid="uid://dw0qcyxe54gt7" path="res://scenes/gathered_resources/rts_resource_sheep.tscn" id="14_a8y0u"]
 [ext_resource type="PackedScene" uid="uid://bl5akcyrwyd00" path="res://scenes/buildings/building_enemy.tscn" id="14_ra2l4"]
-[ext_resource type="Texture2D" uid="uid://dj2qraku4x783" path="res://art/Tiny Swords (Free Pack)/Decorations/Trees/Tree4.png" id="15_jbj1t"]
+[ext_resource type="Script" uid="uid://r08vm6ym506l" path="res://scripts/selectable.gd" id="15_muem4"]
+[ext_resource type="Texture2D" uid="uid://c71sk3vsx2hct" path="res://art/creatures/duck/Fall (36x36).png" id="16_dp3eg"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kmb1v"]
 texture = ExtResource("4_og1vs")
@@ -65,6 +66,8 @@ polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-24, -24, -24, 1992, 1992, 1992, 1992, -24)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a8y0u"]
+
 [node name="main" type="Node2D"]
 metadata/_edit_lock_ = true
 
@@ -79,6 +82,7 @@ camera_bounds = Rect2(0, 0, 4000, 4000)
 [node name="FormationManager" type="Node2D" parent="."]
 script = ExtResource("14_7yv5r")
 debug = true
+grid_size = 64
 metadata/_edit_lock_ = true
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
@@ -161,10 +165,18 @@ points = PackedVector2Array(480, 1206)
 width = 5.0
 default_color = Color(1, 1, 1, 0.447059)
 
-[node name="Tree3" type="Sprite2D" parent="."]
-position = Vector2(1624, -744)
-texture = ExtResource("14_jkv2x")
+[node name="RTS_Resource_Sheep" parent="." instance=ExtResource("14_a8y0u")]
+position = Vector2(832, 608)
 
-[node name="Tree4" type="Sprite2D" parent="."]
-position = Vector2(1624, -936)
-texture = ExtResource("15_jbj1t")
+[node name="TEST_Selectable" type="Node2D" parent="."]
+position = Vector2(864, 672)
+script = ExtResource("15_muem4")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="TEST_Selectable"]
+texture = ExtResource("16_dp3eg")
+
+[node name="Area2D" type="Area2D" parent="TEST_Selectable"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TEST_Selectable/Area2D"]
+shape = SubResource("RectangleShape2D_a8y0u")

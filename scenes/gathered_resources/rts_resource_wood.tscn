@@ -1,8 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://50tod2hsjvde"]
+[gd_scene load_steps=18 format=3 uid="uid://50tod2hsjvde"]
 
-[ext_resource type="Script" uid="uid://dc2emis3p2cbo" path="res://scripts/rts_resource_wood.gd" id="1_ca76u"]
+[ext_resource type="Script" uid="uid://dc2emis3p2cbo" path="res://scripts/resources/rts_resource_wood.gd" id="1_ca76u"]
 [ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_vsvtk"]
 [ext_resource type="Texture2D" uid="uid://dwkx5adlawplg" path="res://art/Tiny Swords (Update 010)/Resources/Trees/Tree.png" id="3_u1ymq"]
+[ext_resource type="Script" uid="uid://ceg5y3imnxxgt" path="res://scripts/ui/ui_details.gd" id="4_sfvp0"]
+[ext_resource type="Script" uid="uid://cpt7sfn43e801" path="res://scripts/ui/ui_detail.gd" id="5_lycaw"]
+[ext_resource type="Texture2D" uid="uid://0avvjtvvg4n7" path="res://art/Tiny Swords (Free Pack)/Decorations/Trees/Tree1.png" id="6_odi2v"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sjpuy"]
 size = Vector2(29, 45.5)
@@ -54,6 +57,14 @@ animations = [{
 "name": &"default",
 "speed": 10.0
 }]
+
+[sub_resource type="Resource" id="Resource_0vvmp"]
+script = ExtResource("5_lycaw")
+image = ExtResource("6_odi2v")
+ui_detail_type = 0
+use_detail = false
+detail = 0.0
+metadata/_custom_type_script = "uid://cpt7sfn43e801"
 
 [node name="RTS_Resource_Wood" type="Node2D"]
 script = ExtResource("1_ca76u")
@@ -115,6 +126,10 @@ sprite_frames = SubResource("SpriteFrames_5mctb")
 autoplay = "default"
 frame_progress = 0.834258
 speed_scale = 0.2
+
+[node name="UiDetails" type="Node2D" parent="."]
+script = ExtResource("4_sfvp0")
+details = Array[ExtResource("5_lycaw")]([SubResource("Resource_0vvmp")])
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_mouse_exited"]

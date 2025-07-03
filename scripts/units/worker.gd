@@ -252,7 +252,9 @@ func _stop_gathering(going_to_new_resource:= false, auto_gather:= false, deposit
 	
 	if deposit:
 		_resource_goal.exhausted.disconnect(_on_resource_exhausted)
-		order_deposit_resources(_find_closest_townhall())
+		var _closest_townhall = _find_closest_townhall()
+		assert(_closest_townhall != null)
+		order_deposit_resources(_closest_townhall)
 	# only clear resource_goal if we are going to a new one, want to keep for auto gather
 	if going_to_new_resource:
 		_resource_goal = null
@@ -301,42 +303,39 @@ func _set_bundle_anim(type: String):
 		_bundle_instance.animation = "walking_"+amt+"_bob"
 
 func _find_closest_townhall() -> Building:
-	var cloest_townhall = _find_closest_thing("TurnInPoint")
-	return cloest_townhall as Building
+	var closest_townhall = _find_closest_thing("TurnInPoint", true)
+	return closest_townhall as Building
 
 func _find_next_closest_resource() -> RTS_Resource_Base:
 	#assert (_resource_goal.resource_amount == 0)
-	var closest_resource = _find_closest_thing("Resource", _resource_goal, _current_resource_type)
+	var closest_resource = _find_closest_thing("Resource", false, _resource_goal, _current_resource_type)
 	return closest_resource as RTS_Resource_Base
 
-func _find_closest_thing(thing : String, ignore = null, filter = null) -> Node2D:
+func _find_closest_thing(thing : String, use_team: bool, ignore = null, filter = null) -> Node2D:
+	var closest_thing
+	closest_thing = _search_for_thing($SearchAreaSmall, thing, use_team, ignore, filter)
+	if closest_thing == null:
+		closest_thing = _search_for_thing($SearchAreaLarge, thing, use_team, ignore, filter)
+	
+	return closest_thing
+
+
+func _search_for_thing(_search_area: Area2D, thing, use_team:bool, ignore, filter) -> Node2D:
 	var closest_thing
 	var closest_pos = Vector2(10000, 10000)
-	for a in $SearchAreaSmall.get_overlapping_areas():
-		print (a.owner)
+	for a in _search_area.get_overlapping_areas():
 		if ignore != null and ignore == a.owner:
 			continue
-		if a.is_in_group(thing):
+		if a.owner == null:
+			continue
+			
+		if a.is_in_group(thing) and (!use_team or a.owner.team == team):
 			if filter != null:
 				var res = a.owner as RTS_Resource_Base
 				if res != null:
 					if res.resource_type != filter:
 						continue
-			#print("found closest thing = %s" % a.owner.name)
 			if position.distance_to(a.owner.position) < position.distance_to(closest_pos):
 				closest_thing = a.owner
 				closest_pos = a.owner.position
-	
-	if closest_thing == null:
-		for a in $SearchAreaLarge.get_overlapping_areas():
-			if ignore != null and ignore == a.owner:
-				continue
-			if (a.is_in_group(thing) and 
-					(filter == null or (filter != null and is_instance_of(a.owner, filter)))
-				):
-				print(a.owner.name)
-				if position.distance_to(a.owner.position) < position.distance_to(closest_pos):
-					closest_thing = a.owner
-					closest_pos = a.owner.position
-	
 	return closest_thing

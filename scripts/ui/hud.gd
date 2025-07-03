@@ -64,6 +64,7 @@ func update_selection(new_selection : Array) -> void:
 			else:
 				unit_current_build_h_box.visible = true
 		
+		# TODO: Make the name come from UiDetails
 		$Root/SelectedUnitInfo/SelectedObjectName.text = new_selection[0].name
 		if new_selection[0] is Worker:
 			$Root/BuilderMenu.visible = true

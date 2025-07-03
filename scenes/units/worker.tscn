@@ -396,6 +396,7 @@ metadata/_edit_group_ = true
 script = ExtResource("6_0v272")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+target_desired_distance = 20.0
 max_speed = 1000.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

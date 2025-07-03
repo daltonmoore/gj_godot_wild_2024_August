@@ -138,7 +138,7 @@ func _handle_box_selection(units_in_box: Array[Unit]) -> Array[Unit]:
 func _handle_single_unit_selection() -> Array[Unit]:
 	if not mouse_hovered_unit:
 		return []
-
+	
 	if _is_double_clicking_selected_unit():
 		return _selection_grid.get_units_in_select_box(get_viewport().get_visible_rect(), mouse_hovered_unit.unit_type)
 

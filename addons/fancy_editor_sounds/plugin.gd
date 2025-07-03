@@ -906,18 +906,16 @@ func add_shader_edit(container: TabContainer, tab_number: int) -> void:
 
 	var text_shader_editor = container.get_tab_control(tab_number)
 	if not text_shader_editor or "TextShaderEditor" not in text_shader_editor.name:
-			return
+		return
 
-    var previous_editors = editors.duplicate()
+	var previous_editors = editors.duplicate()
 # Find the CodeEdit component(s) in this text_shader_editor
-var code_edit: CodeEdit = find_node_by_class_name(text_shader_editor, "CodeEdit")
+	var code_edit: CodeEdit = find_node_by_class_name(text_shader_editor, "CodeEdit")
 
-var editor_id = text_shader_editor.name + "_" + str(code_edit)
-if not
-
-previous_editors.has(editor_id):
+	var editor_id = text_shader_editor.name + "_" + str(code_edit)
+	if not previous_editors.has(editor_id):
 		add_new_editor(code_edit, editor_id)
-    else:
+	else:
 		editors[editor_id].code_edit = code_edit
 
 func initial_shader_editor_lookup(container: TabContainer) -> void:
