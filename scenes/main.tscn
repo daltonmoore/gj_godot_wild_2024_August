@@ -168,6 +168,12 @@ default_color = Color(1, 1, 1, 0.447059)
 [node name="RTS_Resource_Sheep" parent="." instance=ExtResource("14_a8y0u")]
 position = Vector2(832, 608)
 
+[node name="RTS_Resource_Sheep2" parent="." instance=ExtResource("14_a8y0u")]
+position = Vector2(800, 672)
+
+[node name="RTS_Resource_Sheep3" parent="." instance=ExtResource("14_a8y0u")]
+position = Vector2(768, 608)
+
 [node name="TEST_Selectable" type="Node2D" parent="."]
 position = Vector2(864, 672)
 script = ExtResource("15_muem4")

@@ -5,41 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b92f5516-ff6e-4d8d-9481-b3f9053fd55b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_base.tscn" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_sheep.tscn" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/resources/rts_resource_animated.gd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/resources/rts_resource_sheep.gd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/resources/rts_resource_sheep.gd.uid" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/GdSdk_Master.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/addons/fancy_editor_sounds/plugin.gd" beforeDir="false" afterPath="$PROJECT_DIR$/addons/fancy_editor_sounds/plugin.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project.godot" beforeDir="false" afterPath="$PROJECT_DIR$/project.godot" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_gold.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_gold.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_wood.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_wood.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_sheep.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_sheep.tscn" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scenes/main.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/main.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/managers/cursor_manager.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/managers/cursor_manager.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/units/worker.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/units/worker.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/BuildManager.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/BuildManager.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/BuildManager.gd.uid" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/BuildManager.gd.uid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/CommandManager.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/CommandManager.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/CommandManager.gd.uid" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/CommandManager.gd.uid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/CursorManager.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/CursorManager.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/CursorManager.gd.uid" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/CursorManager.gd.uid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/input_manager.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/input_manager.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/input_manager.gd.uid" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/input_manager.gd.uid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/nav_handler.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/nav_handler.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/nav_handler.gd.uid" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/nav_handler.gd.uid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/resource_manager.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/resource_manager.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/resource_manager.gd.uid" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/resource_manager.gd.uid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/rts_resource_base.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/resources/rts_resource_base.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/rts_resource_base.gd.uid" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/resources/rts_resource_base.gd.uid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/rts_resource_gold.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/resources/rts_resource_gold.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/rts_resource_gold.gd.uid" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/resources/rts_resource_gold.gd.uid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/rts_resource_wood.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/resources/rts_resource_wood.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/rts_resource_wood.gd.uid" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/resources/rts_resource_wood.gd.uid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/selection_handler.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/selection_handler.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/selection_handler.gd.uid" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/selection_handler.gd.uid" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/ui/hud.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/ui/hud.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/units/worker.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/units/worker.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/managers/CursorManager.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/CursorManager.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/managers/selection_handler.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/selection_handler.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/resources/rts_resource_sheep.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/resources/rts_resource_sheep.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/selection_grid_cell.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/selection_grid_cell.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/units/unit.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/units/unit.gd" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -173,7 +147,11 @@
       <workItem from="1751281905223" duration="929000" />
       <workItem from="1751283715736" duration="3049000" />
       <workItem from="1751362461901" duration="7924000" />
-      <workItem from="1751545815623" duration="648000" />
+      <workItem from="1751545815623" duration="4542000" />
+      <workItem from="1751640068926" duration="1230000" />
+      <workItem from="1751979266701" duration="5770000" />
+      <workItem from="1752062130816" duration="4883000" />
+      <workItem from="1752241844697" duration="359000" />
     </task>
     <task id="LOCAL-00001" summary="Remove unused demos, scripts, and assets. Add FancyEditorSoundsSettings with configurable sound and animation options for the editor.">
       <option name="closed" value="true" />
@@ -263,7 +241,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751027603595</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Organize resources and managers, improve path consistency, and add RTS_Resource_Sheep integration&#10;&#10;Refactored script paths for improved categorization and clarity (`resources/`, `managers/`). Added `RTS_Resource_Sheep` inheritance chain under `RTS_Resource_Base` and adjusted worker logic to handle new resource types. Integrated `rts_resource_sheep.tscn` into `main.tscn` and updated workspace-related configurations. Ensured workspace and scripts align with updated resource management workflow.">
+      <option name="closed" value="true" />
+      <created>1751548946007</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1751548946007</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -296,7 +282,8 @@
     <MESSAGE value="Refactor UI detail handling and integrate `UiDetail` and `UiDetails`&#10;&#10;Renamed and modularized `UI_Detail` to `UiDetail` and `UiDetails` for better clarity and scalability. Updated associated scripts (`hud.gd`, `unit.gd`, etc.) and scenes to reflect the changes. Enhanced property and script export logic for detailed customization. Adjusted resource and path names for consistency in scenes and scripts." />
     <MESSAGE value="Remove shelved changes, fix z-index assignment, and improve indentation&#10;&#10;Deleted outdated shelved `.xml` and `.patch` files. Updated `z_index` usage in `unit.gd` to use `Globals.default_z_index`. Fixed indentation issues and enhanced logic to avoid unnecessary attack logic execution. Improved workspace and script file consistency." />
     <MESSAGE value="Fixed issue where you would select hovered inanimate objects during select box selection. So you would be selecting units but hovered over a tree and the tree would be selected  &#10;&#10;Optimize formation manager debugging and refactor worker state handling&#10;&#10;Enabled `FormationManager` debug mode and restored debug visuals. Modularized worker state handling in `worker.gd` with dedicated functions for resource, building, and deposit management. Improved debug label updates using `Globals.debug` across scripts. Cleaned redundant and outdated comments. Enhanced script and workspace consistency." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed issue where you would select hovered inanimate objects during select box selection. So you would be selecting units but hovered over a tree and the tree would be selected  &#10;&#10;Optimize formation manager debugging and refactor worker state handling&#10;&#10;Enabled `FormationManager` debug mode and restored debug visuals. Modularized worker state handling in `worker.gd` with dedicated functions for resource, building, and deposit management. Improved debug label updates using `Globals.debug` across scripts. Cleaned redundant and outdated comments. Enhanced script and workspace consistency." />
+    <MESSAGE value="Organize resources and managers, improve path consistency, and add RTS_Resource_Sheep integration&#10;&#10;Refactored script paths for improved categorization and clarity (`resources/`, `managers/`). Added `RTS_Resource_Sheep` inheritance chain under `RTS_Resource_Base` and adjusted worker logic to handle new resource types. Integrated `rts_resource_sheep.tscn` into `main.tscn` and updated workspace-related configurations. Ensured workspace and scripts align with updated resource management workflow." />
+    <option name="LAST_COMMIT_MESSAGE" value="Organize resources and managers, improve path consistency, and add RTS_Resource_Sheep integration&#10;&#10;Refactored script paths for improved categorization and clarity (`resources/`, `managers/`). Added `RTS_Resource_Sheep` inheritance chain under `RTS_Resource_Base` and adjusted worker logic to handle new resource types. Integrated `rts_resource_sheep.tscn` into `main.tscn` and updated workspace-related configurations. Ensured workspace and scripts align with updated resource management workflow." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -322,6 +309,7 @@
       <configuration name="GDSCRIPT_DEBUG_RUN_CONFIGURATION">
         <watch expression="name" language="GdScript" />
         <watch expression="_anim_sprite.animation" language="GdScript" />
+        <watch expression="_timer.time_left" />
       </configuration>
     </watches-manager>
   </component>

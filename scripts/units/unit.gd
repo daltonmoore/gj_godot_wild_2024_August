@@ -115,9 +115,6 @@ func _physics_process(_delta: float) -> void:
 	if _debug_label2 != null:
 		_debug_label2.text = _anim_sprite.animation
 
-	if Input.is_key_pressed(KEY_T):
-		_stop_attacking()
-
 	_handle_debug_drawing()
 	_handle_movement()
 
@@ -268,6 +265,7 @@ func _begin_attacking() -> void:
 func _can_attack_body(body) -> bool:
 	return (_is_idle and
 			body is CharacterBody2D and 
+			"team" in body and
 			body.team != team)
 
 

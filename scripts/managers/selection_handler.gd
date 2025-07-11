@@ -71,7 +71,6 @@ func _handle_click_release():
 	var bot_left = Vector2(start.x, _select_box.end.y)
 	var end = _select_box.end
 	
-	#region Debug Selection
 	if Globals.debug:
 		# Axes
 		DebugDraw2d.line_vector(Vector2.ZERO, Vector2.UP * 40, Color.BLACK, 1, INF)
@@ -100,7 +99,6 @@ func _handle_click_release():
 		DebugDraw2d.line(start,bot_left, Color.GREEN, .5, debug_box_lifetime)
 		DebugDraw2d.line(bot_left,end, Color.GREEN, .5, debug_box_lifetime)
 		DebugDraw2d.line(top_right,end, Color.GREEN, .5, debug_box_lifetime)
-	#endregion
 	
 	if not _select_units():
 		_select_selectable_objects()
