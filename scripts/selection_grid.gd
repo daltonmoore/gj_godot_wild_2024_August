@@ -68,14 +68,15 @@ func cell_exited(cell, body):
 # we'll have start cell = (5,3) and end cell = (2, 2)
 # so instead of starting at cell (0, 0), we will just start at (2, 2) 
 # because it is the lesser of the two points. And we can iterate
-func get_units_in_select_box(select_box: Rect2, unit_type := enums.E_UnitType.NONE) -> Array[Unit]:
-	var corners: Dictionary = _get_select_box_corners(select_box)
-	var grid_coords         := _calculate_grid_coordinates(corners)
-	var selected_cells      := _get_cells_in_range(grid_coords)
-	var planes              := _create_boundary_planes(corners)
-	var units               := _get_units_from_cells(selected_cells)
+func get_things_in_select_box(select_box: Rect2, unit_type := enums.E_UnitType.NONE, 
+		object_type := enums.e_object_type.none) -> Array[Variant]:
+	var corners: 		Dictionary 	= _get_select_box_corners(select_box)
+	var grid_coords: 	Dictionary 	= _calculate_grid_coordinates(corners)
+	var selected_cells: Array 		= _get_cells_in_range(grid_coords)
+	var planes: 		Array 		= _create_boundary_planes(corners)
+	var things:			Array		= _get_things_from_cells(selected_cells)
 
-	return _filter_units_in_box(units, planes, unit_type)
+	return _filter_things_in_box(things, planes, unit_type)
 
 
 func _calculate_grid_coordinates(corners: Dictionary) -> Dictionary:
@@ -127,33 +128,40 @@ func _create_boundary_planes(corners: Dictionary) -> Array[Variant]:
 	return planes
 
 
-func _get_units_from_cells(cells: Array) -> Array[Unit]:
-	var unit_array: Array[Unit] = []
+func _get_things_from_cells(cells: Array) -> Array[Variant]:
+	var thing_array: Array[Variant] = []
 	for cell in cells:
 		if cell_to_units_dict.has(cell.grid_pos):
-			unit_array.append_array(cell_to_units_dict[cell.grid_pos])
-	return unit_array
+			thing_array.append_array(cell_to_units_dict[cell.grid_pos])
+	return thing_array
 
 
-func _filter_units_in_box(units: Array[Unit], planes: Array, unit_type: int) -> Array[Unit]:
-	var selected_units: Array[Unit] = []
+func _filter_things_in_box(things: Array[Variant], planes: Array, unit_type: enums.E_UnitType) -> Array[Variant]:
+	var selected_things: Array[Variant] = []
 
-	for unit in units:
-		if not _is_valid_unit_type(unit, unit_type):
-			continue
+	for thing in things:
+		var should_select := false
+		
+		if thing as Unit:
+			if _matches_unit_type(thing, unit_type): 
+				should_select = _is_thing_inside_planes(thing, planes)
+		elif thing as Movable:
+			should_select = _is_thing_inside_planes(thing, planes)
+		
+		if should_select: 
+			selected_things.append(thing)
+		
+		if debug:
+			if should_select:
+				DebugDraw2d.circle(thing.position, 10, 32, Color.GREEN, 1, 1)
+			else:
+				DebugDraw2d.circle(thing.position, 10, 32, Color.RED, 1, 1)
 
-		if _is_unit_inside_planes(unit, planes):
-			selected_units.append(unit)
-			if debug:
-				DebugDraw2d.circle(unit.position, 10, 32, Color.GREEN, 1, 1)
-		elif debug:
-			DebugDraw2d.circle(unit.position, 10, 32, Color.RED, 1, 1)
-
-	return selected_units
+	return selected_things
 
 
 
-func _is_valid_unit_type(unit: Unit, unit_type: int) -> bool:
+func _matches_unit_type(unit: Unit, unit_type: enums.E_UnitType) -> bool:
 	if unit_type != enums.E_UnitType.NONE and unit.unit_type != unit_type:
 		if debug:
 			print("Unit %s's Unit Type is %d and the passed Unit Type selector is %d" % [unit.name, unit.unit_type, unit_type])
@@ -162,9 +170,9 @@ func _is_valid_unit_type(unit: Unit, unit_type: int) -> bool:
 	return true
 
 
-func _is_unit_inside_planes(unit: Unit, planes: Array) -> bool:
+func _is_thing_inside_planes(thing: Variant, planes: Array) -> bool:
 	for plane in planes:
-		var distance = plane.normal.dot(unit.position) - plane.d
+		var distance = plane.normal.dot(thing.position) - plane.d
 		if distance > 0:
 			return false
 	return true

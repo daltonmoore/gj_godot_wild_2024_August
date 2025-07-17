@@ -41,7 +41,7 @@ func _mouse_move(event) -> void:
 		enums.e_object_type.resource:
 			# TODO: only have selected workers instead of any selected unit do this logic
 			# we only want to display different cursors when we have units selected that can mine/gather the resources
-			if (len(SelectionHandler.selected_units) > 0):
+			if (len(SelectionHandler.selected_things) > 0):
 				Input.set_custom_mouse_cursor(current_hovered_inanimate_object.cursor_texture)
 		_:
 			Input.set_custom_mouse_cursor(current_hovered_inanimate_object.cursor_texture)

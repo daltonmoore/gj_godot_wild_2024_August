@@ -22,9 +22,9 @@ func get_formation_for_currently_selected_units(_event) -> void:
 	# do not do a move formation if we are issuing an attack order on a single unit.
 	# could be a problem when we do attack move
 	if (CursorManager.cursor_over_anything() or 
-			(SelectionHandler.selected_units.size() > 0 and 
-			SelectionHandler.selected_units[0] != null and
-			SelectionHandler.selected_units[0].team == enums.e_team.enemy)
+			(SelectionHandler.selected_things.size() > 0 and 
+			SelectionHandler.selected_things[0] != null and
+			SelectionHandler.selected_things[0].team == enums.e_team.enemy)
 	):
 		return
 		
@@ -33,7 +33,7 @@ func get_formation_for_currently_selected_units(_event) -> void:
 	var silent := false
 	var col := 0
 	var offset = Vector2.ZERO
-	for unit in SelectionHandler.selected_units: # __debug_test_grid_locked_units
+	for unit in SelectionHandler.selected_things: # __debug_test_grid_locked_units
 		if unit == null:
 			continue
 		

@@ -21,7 +21,6 @@ var _cursor_texture
 var _health: float
 var _in_selection := false
 var _is_dying := false
-var _sprite = null
 var _selection_grid: SelectionGrid
 #endregion
 
@@ -39,11 +38,10 @@ func _ready() -> void:
 	
 	if owner is Building or owner is EnemyBuilding:
 		_collision_area = owner.get_node("Visual/Area2D")
-		_sprite = owner.get_node("Visual")
+#		_sprite = owner.get_node("Visual")
 		_corpse_scene = load("res://scenes/buildings/building_rubble.tscn")
 	else:
 		_collision_area = owner.get_node("SelectionHoverArea")
-		_sprite = owner.get_node("AnimatedSprite2D")
 
 func set_in_selection(val) -> void:
 	_in_selection = val
@@ -80,7 +78,7 @@ func _on_mouse_exited() -> void:
 		CursorManager.set_current_attackable(null)
 
 func _on_self_die(_me: Attackable) -> void:
-	_sprite.visible = false
+	owner._anim_sprite.visible = false
 	if _in_selection:
 		SelectionHandler.remove_from_selection(owner)
 	if owner is Unit:

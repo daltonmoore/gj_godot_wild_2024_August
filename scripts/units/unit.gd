@@ -32,6 +32,7 @@ extends CharacterBody2D
 @export var engage_sounds : Array[AudioStream] = []
 @export var weapon_sounds : Array[AudioStream] = []
 
+var _anim_sprite : AnimatedSprite2D
 
 var _audio_streams         := []
 var _attack_timer: Timer
@@ -56,7 +57,6 @@ var _debug_label2: Label;
 #region Node References
 @onready var _attack_area: Area2D = $AttackArea
 @onready var _attackable : Attackable = $Attackable
-@onready var _anim_sprite : AnimatedSprite2D = $AnimatedSprite2D
 @onready var _debug_label: Label = $DebugLabel
 @onready var _navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 @onready var _selection_hover_area: Area2D = $SelectionHoverArea
@@ -66,6 +66,7 @@ var _debug_label2: Label;
 
 #region Built-in Functions
 func _ready() -> void:
+	_anim_sprite = $AnimatedSprite2D
 	# ------------------------------------
 	if debug_individual or Globals.debug:
 		_debug_label2 = Label.new()
@@ -266,7 +267,7 @@ func _can_attack_body(body) -> bool:
 	return (_is_idle and
 			body is CharacterBody2D and 
 			"team" in body and
-			body.team != team)
+			(body.team != team and body.team != enums.e_team.neutral))
 
 
 func _check_vision_for_enemy_to_attack() -> void:

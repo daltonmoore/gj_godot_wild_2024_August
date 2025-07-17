@@ -1,27 +1,39 @@
-extends CharacterBody2D
+class_name Movable
+extends Unit
 
-@export var movement_speed: float =  100.0
-
-var _is_attacking := false
 var _timer_idle_eat_grass : Timer
 
-@onready var _anim_sprite : AnimatedSprite2D = $Sheep/Sprite
-@onready var _navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 
 func _ready() -> void:
+	_anim_sprite = $Sheep/Sprite
 	_timer_idle_eat_grass = Timer.new()
 	_timer_idle_eat_grass.wait_time = 4
 	add_child(_timer_idle_eat_grass)
 	_timer_idle_eat_grass.timeout.connect(_idle_eat_grass)
 	_timer_idle_eat_grass.start()
-	InputManager.right_click_pressed.connect(_go_to)
 	
 func _process(_delta: float) -> void:
 	_handle_movement()
 	
-func _go_to(event) -> void:
-	var mouse_pos = get_global_mouse_position()
-	_navigation_agent.set_target_position(mouse_pos)
+# this is lifted from the Unit script. Could possibly move this to some kind of interface or have Unit inherit from Movable
+func order_move(in_goal, _in_order_type := enums.e_order_type.none, _silent := false) -> void:
+	if _cell_block._is_blocking_cell:
+		_cell_block.unblock_cell()
+
+	_anim_sprite.animation = "move"
+	set_movement_target(in_goal)
+
+func set_selection_circle_visible(new_visible) -> void:
+	$"Sheep/Selection Circle".visible = new_visible
+
+func set_in_selection(val):
+#	this is for when the thing dies they remove themselves from selection
+#	_attackable.set_in_selection(val)
+	print("do nothing")
+	
+func set_movement_target(movement_target: Vector2) -> void:
+	_navigation_agent.set_target_position(movement_target)
+	
 	
 func _handle_movement() -> void:
 	if _navigation_agent.is_navigation_finished():

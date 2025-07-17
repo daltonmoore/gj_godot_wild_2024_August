@@ -7,12 +7,16 @@
     <list default="true" id="b92f5516-ff6e-4d8d-9481-b3f9053fd55b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/libraries/GdSdk_Master.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project.godot" beforeDir="false" afterPath="$PROJECT_DIR$/project.godot" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_sheep.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_sheep.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/main.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/main.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/attackable.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/attackable.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/enums.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/enums.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/managers/CommandManager.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/CommandManager.gd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/managers/CursorManager.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/CursorManager.gd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/managers/selection_handler.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/selection_handler.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/resources/rts_resource_sheep.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/resources/rts_resource_sheep.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/selection_grid_cell.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/selection_grid_cell.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/movable.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/movable.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/selection_grid.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/selection_grid.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/units/formation_manager.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/units/formation_manager.gd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/units/unit.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/units/unit.gd" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -81,7 +85,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;ml.llm.LLMConfigurable&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.build.godotPlugin&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -151,7 +155,10 @@
       <workItem from="1751640068926" duration="1230000" />
       <workItem from="1751979266701" duration="5770000" />
       <workItem from="1752062130816" duration="4883000" />
-      <workItem from="1752241844697" duration="359000" />
+      <workItem from="1752241844697" duration="2797000" />
+      <workItem from="1752582600310" duration="331000" />
+      <workItem from="1752672938315" duration="3380000" />
+      <workItem from="1752747889077" duration="6481000" />
     </task>
     <task id="LOCAL-00001" summary="Remove unused demos, scripts, and assets. Add FancyEditorSoundsSettings with configurable sound and animation options for the editor.">
       <option name="closed" value="true" />
@@ -249,7 +256,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751548946007</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="I'm about to try to refactor selection_handler.gd to handle sheep">
+      <option name="closed" value="true" />
+      <created>1752242977638</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1752242977638</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -283,7 +298,8 @@
     <MESSAGE value="Remove shelved changes, fix z-index assignment, and improve indentation&#10;&#10;Deleted outdated shelved `.xml` and `.patch` files. Updated `z_index` usage in `unit.gd` to use `Globals.default_z_index`. Fixed indentation issues and enhanced logic to avoid unnecessary attack logic execution. Improved workspace and script file consistency." />
     <MESSAGE value="Fixed issue where you would select hovered inanimate objects during select box selection. So you would be selecting units but hovered over a tree and the tree would be selected  &#10;&#10;Optimize formation manager debugging and refactor worker state handling&#10;&#10;Enabled `FormationManager` debug mode and restored debug visuals. Modularized worker state handling in `worker.gd` with dedicated functions for resource, building, and deposit management. Improved debug label updates using `Globals.debug` across scripts. Cleaned redundant and outdated comments. Enhanced script and workspace consistency." />
     <MESSAGE value="Organize resources and managers, improve path consistency, and add RTS_Resource_Sheep integration&#10;&#10;Refactored script paths for improved categorization and clarity (`resources/`, `managers/`). Added `RTS_Resource_Sheep` inheritance chain under `RTS_Resource_Base` and adjusted worker logic to handle new resource types. Integrated `rts_resource_sheep.tscn` into `main.tscn` and updated workspace-related configurations. Ensured workspace and scripts align with updated resource management workflow." />
-    <option name="LAST_COMMIT_MESSAGE" value="Organize resources and managers, improve path consistency, and add RTS_Resource_Sheep integration&#10;&#10;Refactored script paths for improved categorization and clarity (`resources/`, `managers/`). Added `RTS_Resource_Sheep` inheritance chain under `RTS_Resource_Base` and adjusted worker logic to handle new resource types. Integrated `rts_resource_sheep.tscn` into `main.tscn` and updated workspace-related configurations. Ensured workspace and scripts align with updated resource management workflow." />
+    <MESSAGE value="I'm about to try to refactor selection_handler.gd to handle sheep" />
+    <option name="LAST_COMMIT_MESSAGE" value="I'm about to try to refactor selection_handler.gd to handle sheep" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -12,7 +12,8 @@ enum e_resource_type {
 enum e_object_type {
 	none,
 	building,
-	resource
+	resource,
+	unit
 }
 
 

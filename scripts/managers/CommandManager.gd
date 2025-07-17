@@ -28,7 +28,7 @@ func _draw() -> void:
 			2)
 
 func _order(_event) -> void:
-	if SelectionHandler.selected_units != null and len(SelectionHandler.selected_units) > 0:
+	if SelectionHandler.selected_things != null and len(SelectionHandler.selected_things) > 0:
 		_order_units()
 
 func _on_resource_selected_flash_timer_timeout():
@@ -40,7 +40,7 @@ func _on_resource_selected_flash_timer_timeout():
 		$SelectedFlashTimer.stop()
 
 func _order_units() -> void:
-	var first_selected_unit = SelectionHandler.selected_units[0]
+	var first_selected_unit = SelectionHandler.selected_things[0]
 	if (BuildManager.get_ghost() != null or 
 			(first_selected_unit != null and 
 			!first_selected_unit.is_queued_for_deletion() and 
@@ -63,7 +63,7 @@ func _handle_gather_build_deposit() -> void:
 	var resource := CursorManager.current_hovered_inanimate_object as RTS_Resource_Base
 	var building := CursorManager.current_hovered_inanimate_object as Building
 	
-	for unit in SelectionHandler.selected_units:
+	for unit in SelectionHandler.selected_things:
 		var worker = unit as Worker
 		
 		if worker == null:
@@ -78,7 +78,7 @@ func _handle_gather_build_deposit() -> void:
 				worker.order_deposit_resources(building)
 
 func _handle_move_attack() -> void:
-	for u in SelectionHandler.selected_units:
+	for u in SelectionHandler.selected_things:
 		if u == null:
 			continue
 		if CursorManager.cursor_over_enemy():
@@ -90,7 +90,7 @@ func _handle_move_attack() -> void:
 				#u.order_attack(CursorManager.current_hovered_inanimate_object)
 
 func build(building) -> void:
-	for u in SelectionHandler.selected_units:
+	for u in SelectionHandler.selected_things:
 		u.build(building)
 
 func free() -> void:

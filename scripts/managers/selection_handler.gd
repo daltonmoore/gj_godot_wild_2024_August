@@ -5,7 +5,7 @@ signal selection_changed(selection)
 
 var mouse_hovered_unit: Unit
 var mouse_hovered_ui_element
-var selected_units: Array[Unit] = []
+var selected_things: Array[Variant] = []
 
 var _current_selected_object
 var _double_click_timer = Timer.new()
@@ -42,11 +42,11 @@ func _draw():
 	draw_rect(_select_box, Color.WEB_GREEN, false)
 
 func remove_from_selection(unit) -> void:
-	var index = selected_units.find(unit)
+	var index = selected_things.find(unit)
 	if index == -1:
 		return
 	
-	selected_units.remove_at(index)
+	selected_things.remove_at(index)
 
 # Doesn't work because it fires the event twice. One call for graphics frame and one for physics frame
 # more info here: https://stackoverflow.com/questions/69981662/godot-input-is-action-just-pressed-runs-twice
@@ -106,28 +106,33 @@ func _handle_click_release():
 
 
 func _select_units() -> bool:
-	var newly_selected_units: Array[Unit] = _get_newly_selected_units()
+	var newly_selected_units: Array[Variant] = _get_newly_selected_things(enums.e_object_type.unit)
 
 	if not Input.is_action_pressed("Add To Selection"):
 		_clear_old_selection()
 	else:
-		newly_selected_units.append_array(selected_units)
+		newly_selected_units.append_array(selected_things)
 
 	_apply_new_selection(newly_selected_units)
 	
 	return newly_selected_units.size() > 0
 
 
-func _get_newly_selected_units() -> Array[Unit]:
+func _get_newly_selected_things(object_type: enums.e_object_type) -> Array[Variant]:
 	if _select_box.size != Vector2.ZERO:
-		var units_in_box := _selection_grid.get_units_in_select_box(_select_box)
-		return _handle_box_selection(units_in_box)
+		var units_in_box := _selection_grid.get_things_in_select_box(_select_box)
+		for i in units_in_box.size():
+			var thing: Movable = (units_in_box[i] as Movable) 
+			if thing != null:
+				DebugDraw2d.circle_filled(thing.position)
+			
+		return _handle_hover_unit_while_boxing_selection(units_in_box)
 
 	return _handle_single_unit_selection()
 
 
-func _handle_box_selection(units_in_box: Array[Unit]) -> Array[Unit]:
-	var result := units_in_box
+func _handle_hover_unit_while_boxing_selection(things_in_box: Array[Variant]) -> Array[Variant]:
+	var result := things_in_box
 	if mouse_hovered_unit:
 		result.push_back(mouse_hovered_unit)
 	return result
@@ -138,7 +143,7 @@ func _handle_single_unit_selection() -> Array[Unit]:
 		return []
 	
 	if _is_double_clicking_selected_unit():
-		return _selection_grid.get_units_in_select_box(get_viewport().get_visible_rect(), mouse_hovered_unit.unit_type)
+		return _selection_grid.get_things_in_select_box(get_viewport().get_visible_rect(), mouse_hovered_unit.unit_type)
 
 	if _double_click_timer.is_stopped():
 		_double_click_timer.start()
@@ -147,26 +152,26 @@ func _handle_single_unit_selection() -> Array[Unit]:
 
 
 func _is_double_clicking_selected_unit() -> bool:
-	return selected_units != null \
+	return selected_things != null \
 	and !_double_click_timer.is_stopped() \
-	and selected_units.size() > 0 \
-	and selected_units[0] == mouse_hovered_unit
+	and selected_things.size() > 0 \
+	and selected_things[0] == mouse_hovered_unit
 
 
 func _clear_old_selection() -> void:
-	if not selected_units:
+	if not selected_things:
 		return
 
-	for unit in selected_units:
-		unit.set_selection_circle_visible(false)
-		unit.set_in_selection(false)
+	for thing in selected_things:
+		thing.set_selection_circle_visible(false)
+		thing.set_in_selection(false)
 
 
-func _apply_new_selection(newly_selected_units: Array[Unit]) -> void:
-	selected_units = newly_selected_units
-	selection_changed.emit(newly_selected_units)
+func _apply_new_selection(newly_selected_things: Array[Variant]) -> void:
+	selected_things = newly_selected_things
+	selection_changed.emit(newly_selected_things)
 
-	for unit_node in selected_units:
+	for unit_node in selected_things:
 		if not unit_node is Unit:
 			continue
 
@@ -189,7 +194,7 @@ func _select_selectable_objects():
 	Hud.update_selection([_current_selected_object])
 
 func has_units_selected() -> bool:
-	return selected_units.size() > 0
+	return selected_things.size() > 0
 
 #TODO: make this wait on a signal instead
 # weird hack to wait for setting selection grid

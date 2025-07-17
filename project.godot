@@ -46,10 +46,6 @@ window/stretch/mode="canvas_items"
 
 project/assembly_name="Game Jam - Godot Wild 2024 August"
 
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/fancy_editor_sounds/plugin.cfg")
-
 [global_group]
 
 friendly_units=""
