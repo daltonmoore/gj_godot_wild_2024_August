@@ -12,6 +12,9 @@ func _ready() -> void:
 	_timer_idle_eat_grass.timeout.connect(_idle_eat_grass)
 	_timer_idle_eat_grass.start()
 	
+	_setup_audio_streams()
+	_setup_signal_connections()
+	
 func _process(_delta: float) -> void:
 	_handle_movement()
 	
@@ -27,9 +30,7 @@ func set_selection_circle_visible(new_visible) -> void:
 	$"Sheep/Selection Circle".visible = new_visible
 
 func set_in_selection(val):
-#	this is for when the thing dies they remove themselves from selection
-#	_attackable.set_in_selection(val)
-	print("do nothing")
+	_attackable.set_in_selection(val)
 	
 func set_movement_target(movement_target: Vector2) -> void:
 	_navigation_agent.set_target_position(movement_target)

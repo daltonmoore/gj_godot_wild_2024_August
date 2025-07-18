@@ -10,7 +10,6 @@
 [ext_resource type="AudioStream" uid="uid://cyyjae6dkjpjt" path="res://sound/Gamemaster Audio - Footstep and Foley Sounds/voice_male_b_hurt_pain_set_2_08.wav" id="5_4miyr"]
 [ext_resource type="Texture2D" uid="uid://r0of5l0qjbuu" path="res://art/Tiny Swords (Update 010)/Resources/Resources/M_Idle.png" id="5_hrog1"]
 [ext_resource type="Texture2D" uid="uid://3vw1tkvtxrt3" path="res://art/Tiny Swords (Update 010)/Resources/Resources/M_Spawn.png" id="6_11bm3"]
-[ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="6_a7v8m"]
 [ext_resource type="AudioStream" uid="uid://bqtj2ks5lfxgt" path="res://sound/Gamemaster Audio - Footstep and Foley Sounds/voice_male_b_hurt_pain_set_2_09.wav" id="6_u225c"]
 [ext_resource type="Script" uid="uid://cpt7sfn43e801" path="res://scripts/ui/ui_detail.gd" id="8_p6rr6"]
 [ext_resource type="Script" uid="uid://ceg5y3imnxxgt" path="res://scripts/ui/ui_details.gd" id="9_g1v33"]
@@ -19,75 +18,6 @@
 [ext_resource type="PackedScene" uid="uid://vmpaix73ewbf" path="res://scenes/ui/health_bar.tscn" id="17_7jvft"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tus3r"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_tgmap"]
-atlas = ExtResource("5_hrog1")
-region = Rect2(0, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_gnc20"]
-atlas = ExtResource("6_11bm3")
-region = Rect2(0, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2xhi5"]
-atlas = ExtResource("6_11bm3")
-region = Rect2(128, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qj1mw"]
-atlas = ExtResource("6_11bm3")
-region = Rect2(256, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_jkuc0"]
-atlas = ExtResource("6_11bm3")
-region = Rect2(384, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_nrdki"]
-atlas = ExtResource("6_11bm3")
-region = Rect2(512, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ba042"]
-atlas = ExtResource("6_11bm3")
-region = Rect2(640, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_3hvhe"]
-atlas = ExtResource("6_11bm3")
-region = Rect2(768, 0, 128, 128)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_krrhm"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_tgmap")
-}],
-"loop": true,
-"name": &"idle",
-"speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_gnc20")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_2xhi5")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qj1mw")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_jkuc0")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_nrdki")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ba042")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_3hvhe")
-}],
-"loop": false,
-"name": &"spawn",
-"speed": 10.0
-}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4hddq"]
 size = Vector2(45, 40)
@@ -275,31 +205,95 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_11bm3"]
 size = Vector2(12, 5)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_tgmap"]
+atlas = ExtResource("5_hrog1")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gnc20"]
+atlas = ExtResource("6_11bm3")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2xhi5"]
+atlas = ExtResource("6_11bm3")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qj1mw"]
+atlas = ExtResource("6_11bm3")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jkuc0"]
+atlas = ExtResource("6_11bm3")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nrdki"]
+atlas = ExtResource("6_11bm3")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ba042"]
+atlas = ExtResource("6_11bm3")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3hvhe"]
+atlas = ExtResource("6_11bm3")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_krrhm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tgmap")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gnc20")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2xhi5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qj1mw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jkuc0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nrdki")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ba042")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3hvhe")
+}],
+"loop": false,
+"name": &"spawn",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qy57p"]
+radius = 19.0263
+
 [node name="Movable Sheep" type="CharacterBody2D"]
 motion_mode = 1
 script = ExtResource("10_tus3r")
+team = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_tus3r")
 
 [node name="Attackable" type="Node2D" parent="."]
 script = ExtResource("2_qy57p")
 hurt_sounds = Array[AudioStream]([ExtResource("3_7jvft"), ExtResource("4_cu7ba"), ExtResource("5_4miyr"), ExtResource("6_u225c")])
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_tus3r")
-
-[node name="DestroyedSprite" type="AnimatedSprite2D" parent="."]
-visible = false
-sprite_frames = SubResource("SpriteFrames_krrhm")
-animation = &"spawn"
-metadata/_edit_lock_ = true
-
-[node name="GatherPos" type="Node2D" parent="."]
-position = Vector2(0, 8)
-metadata/_edit_lock_ = true
-
 [node name="Sheep" type="Node2D" parent="."]
 script = ExtResource("2_11bm3")
 
 [node name="Area2D" type="Area2D" parent="Sheep" groups=["BlockConstruction"]]
+visible = false
 collision_layer = 0
 collision_mask = 0
 metadata/_edit_group_ = true
@@ -330,11 +324,14 @@ debug_color = Color(0.803922, 0.415686, 0, 0.145098)
 
 [node name="DamagedTimer" type="Timer" parent="Sheep"]
 
-[node name="Selection Circle" type="Sprite2D" parent="Sheep"]
+[node name="DestroyedSprite" type="AnimatedSprite2D" parent="."]
 visible = false
-self_modulate = Color(0, 1, 0, 1)
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("6_a7v8m")
+sprite_frames = SubResource("SpriteFrames_krrhm")
+animation = &"spawn"
+metadata/_edit_lock_ = true
+
+[node name="GatherPos" type="Node2D" parent="."]
+position = Vector2(0, 8)
 metadata/_edit_lock_ = true
 
 [node name="TeamFlag" type="Sprite2D" parent="."]
@@ -346,3 +343,10 @@ offset_left = -31.0
 offset_top = -101.0
 offset_right = 32.0
 offset_bottom = -91.0
+
+[node name="SelectionHoverArea" type="Area2D" parent="."]
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SelectionHoverArea"]
+shape = SubResource("CircleShape2D_qy57p")

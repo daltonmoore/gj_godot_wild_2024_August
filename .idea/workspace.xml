@@ -5,18 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b92f5516-ff6e-4d8d-9481-b3f9053fd55b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/GdSdk_Master.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project.godot" beforeDir="false" afterPath="$PROJECT_DIR$/project.godot" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_sheep.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_sheep.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/attackable.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/attackable.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/enums.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/enums.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/managers/CommandManager.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/CommandManager.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/managers/CursorManager.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/CursorManager.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/managers/selection_handler.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/selection_handler.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/main.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/main.tscn" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/movable.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/movable.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/selection_grid.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/selection_grid.gd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/units/formation_manager.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/units/formation_manager.gd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/units/unit.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/units/unit.gd" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -158,7 +150,8 @@
       <workItem from="1752241844697" duration="2797000" />
       <workItem from="1752582600310" duration="331000" />
       <workItem from="1752672938315" duration="3380000" />
-      <workItem from="1752747889077" duration="6481000" />
+      <workItem from="1752747889077" duration="6659000" />
+      <workItem from="1752845636315" duration="3443000" />
     </task>
     <task id="LOCAL-00001" summary="Remove unused demos, scripts, and assets. Add FancyEditorSoundsSettings with configurable sound and animation options for the editor.">
       <option name="closed" value="true" />
@@ -264,7 +257,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752242977638</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Refactor selection handling to support multi-object selection&#10;&#10;Updated `selection_handler.gd` to generalize selection logic for units and other objects. Renamed methods and variables to reflect multi-object handling (`selected_units` to `selected_things`, etc.). Adjusted related scripts and scenes for compatibility (`selection_grid.gd`, `formation_manager.gd`, etc.). Enhanced `Movable` script with shared functionality and integrated `Attackable` logic into applicable nodes.">
+      <option name="closed" value="true" />
+      <created>1752755353442</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1752755353442</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -299,7 +300,8 @@
     <MESSAGE value="Fixed issue where you would select hovered inanimate objects during select box selection. So you would be selecting units but hovered over a tree and the tree would be selected  &#10;&#10;Optimize formation manager debugging and refactor worker state handling&#10;&#10;Enabled `FormationManager` debug mode and restored debug visuals. Modularized worker state handling in `worker.gd` with dedicated functions for resource, building, and deposit management. Improved debug label updates using `Globals.debug` across scripts. Cleaned redundant and outdated comments. Enhanced script and workspace consistency." />
     <MESSAGE value="Organize resources and managers, improve path consistency, and add RTS_Resource_Sheep integration&#10;&#10;Refactored script paths for improved categorization and clarity (`resources/`, `managers/`). Added `RTS_Resource_Sheep` inheritance chain under `RTS_Resource_Base` and adjusted worker logic to handle new resource types. Integrated `rts_resource_sheep.tscn` into `main.tscn` and updated workspace-related configurations. Ensured workspace and scripts align with updated resource management workflow." />
     <MESSAGE value="I'm about to try to refactor selection_handler.gd to handle sheep" />
-    <option name="LAST_COMMIT_MESSAGE" value="I'm about to try to refactor selection_handler.gd to handle sheep" />
+    <MESSAGE value="Refactor selection handling to support multi-object selection&#10;&#10;Updated `selection_handler.gd` to generalize selection logic for units and other objects. Renamed methods and variables to reflect multi-object handling (`selected_units` to `selected_things`, etc.). Adjusted related scripts and scenes for compatibility (`selection_grid.gd`, `formation_manager.gd`, etc.). Enhanced `Movable` script with shared functionality and integrated `Attackable` logic into applicable nodes." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor selection handling to support multi-object selection&#10;&#10;Updated `selection_handler.gd` to generalize selection logic for units and other objects. Renamed methods and variables to reflect multi-object handling (`selected_units` to `selected_things`, etc.). Adjusted related scripts and scenes for compatibility (`selection_grid.gd`, `formation_manager.gd`, etc.). Enhanced `Movable` script with shared functionality and integrated `Attackable` logic into applicable nodes." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -316,6 +318,16 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="GdScriptLineBreakpointTypeId">
+          <url>file://$PROJECT_DIR$/scripts/managers/CursorManager.gd</url>
+          <line>26</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="GdScriptLineBreakpointTypeId">
+          <url>file://$PROJECT_DIR$/scripts/units/unit.gd</url>
+          <line>411</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint enabled="true" type="GDSCRIPT_EXCEPTION_BP_TYPE" />

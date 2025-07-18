@@ -527,13 +527,15 @@ func _setup_debug_labels() -> void:
 
 func _setup_signal_connections() -> void:
 	_anim_sprite.frame_changed.connect(_on_anim_frame_changed)
-	_attack_area.body_entered.connect(_on_attack_area_body_entered)
-	_attack_area.body_exited.connect(_on_attack_area_body_exited)
+	if _attack_area:
+		_attack_area.body_entered.connect(_on_attack_area_body_entered)
+		_attack_area.body_exited.connect(_on_attack_area_body_exited)
 	_navigation_agent.navigation_finished.connect(_on_navigation_finished)
 	_navigation_agent.velocity_computed.connect(Callable(_on_velocity_computed))
 	_selection_hover_area.mouse_entered.connect(_on_mouse_overlap)
 	_selection_hover_area.mouse_exited.connect(_on_mouse_exit)
-	_vision_area.body_entered.connect(_on_vision_area_body_entered)
-	_vision_area.body_exited.connect(_on_vision_area_body_exited)
+	if _vision_area:
+		_vision_area.body_entered.connect(_on_vision_area_body_entered)
+		_vision_area.body_exited.connect(_on_vision_area_body_exited)
 
 #endregion
