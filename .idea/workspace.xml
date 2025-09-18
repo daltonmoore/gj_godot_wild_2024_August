@@ -6,9 +6,20 @@
   <component name="ChangeListManager">
     <list default="true" id="b92f5516-ff6e-4d8d-9481-b3f9053fd55b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_sheep.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_sheep.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/gathered_resources/rts_resource_sheep.tscn" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/scenes/main.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/main.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/movable.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/movable.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/ui/hud.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/ui/hud.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/units/swordsman.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/units/swordsman.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/enums.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/enums.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/globals.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/globals.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/managers/CommandManager.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/CommandManager.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/managers/CursorManager.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/CursorManager.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/managers/selection_handler.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/managers/selection_handler.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/movable.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/units/sheep.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/resources/rts_resource_animated.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/resources/rts_resource_animated.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/selection_grid.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/selection_grid.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/ui/hud.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/ui/hud.gd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/ui/ui_detail.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/ui/ui_detail.gd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/units/unit.gd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/units/unit.gd" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -106,6 +117,7 @@
       <option name="ENV_FILE_PATHS" value="" />
       <option name="REDIRECT_INPUT_PATH" value="" />
       <option name="PTY_MODE" value="Auto" />
+      <option name="MIXED_MODE_DEBUG" value="0" />
       <method v="2" />
     </configuration>
   </component>
@@ -152,6 +164,10 @@
       <workItem from="1752672938315" duration="3380000" />
       <workItem from="1752747889077" duration="6659000" />
       <workItem from="1752845636315" duration="3443000" />
+      <workItem from="1752939115631" duration="15201000" />
+      <workItem from="1753084457161" duration="3338000" />
+      <workItem from="1753272063545" duration="713000" />
+      <workItem from="1755263966855" duration="631000" />
     </task>
     <task id="LOCAL-00001" summary="Remove unused demos, scripts, and assets. Add FancyEditorSoundsSettings with configurable sound and animation options for the editor.">
       <option name="closed" value="true" />
@@ -319,27 +335,15 @@
           <option name="timeStamp" value="3" />
         </breakpoint>
         <line-breakpoint enabled="true" type="GdScriptLineBreakpointTypeId">
-          <url>file://$PROJECT_DIR$/scripts/managers/CursorManager.gd</url>
-          <line>26</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="GdScriptLineBreakpointTypeId">
-          <url>file://$PROJECT_DIR$/scripts/units/unit.gd</url>
-          <line>411</line>
-          <option name="timeStamp" value="6" />
+          <url>file://$PROJECT_DIR$/scripts/managers/CommandManager.gd</url>
+          <line>84</line>
+          <option name="timeStamp" value="22" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint enabled="true" type="GDSCRIPT_EXCEPTION_BP_TYPE" />
       </default-breakpoints>
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="GDSCRIPT_DEBUG_RUN_CONFIGURATION">
-        <watch expression="name" language="GdScript" />
-        <watch expression="_anim_sprite.animation" language="GdScript" />
-        <watch expression="_timer.time_left" />
-      </configuration>
-    </watches-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -59,8 +59,9 @@ func cursor_over_neutral_or_friendly_selectable() -> bool:
 		current_hovered_inanimate_object.team == enums.e_team.neutral))
 
 func cursor_over_enemy() -> bool:
-	return ((SelectionHandler.mouse_hovered_unit != null and SelectionHandler.mouse_hovered_unit.team == enums.e_team.enemy) or
-		current_attackable != null)
+	return ((SelectionHandler.mouse_hovered_unit != null 
+		and SelectionHandler.mouse_hovered_unit.team == enums.e_team.enemy) 
+		or current_attackable != null)
 
 func cursor_over_resource() -> bool:
 	return current_hovered_inanimate_object is RTS_Resource_Base

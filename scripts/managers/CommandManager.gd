@@ -82,7 +82,7 @@ func _handle_move_attack() -> void:
 		if u == null:
 			continue
 		if CursorManager.cursor_over_enemy():
-			u.order_attack(CursorManager.current_attackable)
+			u.order_attack(SelectionHandler.mouse_hovered_unit._attackable)
 			#if SelectionHandler.mouse_hovered_unit != null:
 				#u.order_attack(SelectionHandler.mouse_hovered_unit)
 			#else:

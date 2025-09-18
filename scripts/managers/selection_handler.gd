@@ -122,7 +122,7 @@ func _get_newly_selected_things(object_type: enums.e_object_type) -> Array[Varia
 	if _select_box.size != Vector2.ZERO:
 		var units_in_box := _selection_grid.get_things_in_select_box(_select_box)
 		for i in units_in_box.size():
-			var thing: Movable = (units_in_box[i] as Movable) 
+			var thing: Sheep = (units_in_box[i] as Sheep) 
 			if thing != null:
 				DebugDraw2d.circle_filled(thing.position)
 			
@@ -138,7 +138,7 @@ func _handle_hover_unit_while_boxing_selection(things_in_box: Array[Variant]) ->
 	return result
 
 
-func _handle_single_unit_selection() -> Array[Unit]:
+func _handle_single_unit_selection() -> Array[Variant]:
 	if not mouse_hovered_unit:
 		return []
 	

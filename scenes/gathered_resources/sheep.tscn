@@ -1,7 +1,8 @@
-[gd_scene load_steps=54 format=3 uid="uid://dw0qcyxe54gt7"]
+[gd_scene load_steps=60 format=3 uid="uid://dw0qcyxe54gt7"]
 
+[ext_resource type="Script" uid="uid://dsf85qfjrhub4" path="res://scripts/units/sheep.gd" id="1_7jvft"]
 [ext_resource type="Texture2D" uid="uid://btkl4vosn5b1p" path="res://art/Tiny Swords (Free Pack)/Decorations/Sheep/Sheep_Grass.png" id="2_4hddq"]
-[ext_resource type="Script" uid="uid://cixtvup6esr70" path="res://scripts/resources/rts_resource_sheep.gd" id="2_11bm3"]
+[ext_resource type="Texture2D" uid="uid://cbnayhrym7wdc" path="res://art/shapes/thin circle 64x64.png" id="2_7jvft"]
 [ext_resource type="Script" uid="uid://dx3d1p5c3wxrs" path="res://scripts/attackable.gd" id="2_qy57p"]
 [ext_resource type="AudioStream" uid="uid://dj87lt4qasl84" path="res://sound/Gamemaster Audio - Footstep and Foley Sounds/voice_male_b_hurt_pain_set_1_04.wav" id="3_7jvft"]
 [ext_resource type="Texture2D" uid="uid://dq0f4a1ucqard" path="res://art/Tiny Swords (Free Pack)/Decorations/Sheep/Sheep_Idle.png" id="3_mmep2"]
@@ -14,10 +15,22 @@
 [ext_resource type="Script" uid="uid://cpt7sfn43e801" path="res://scripts/ui/ui_detail.gd" id="8_p6rr6"]
 [ext_resource type="Script" uid="uid://ceg5y3imnxxgt" path="res://scripts/ui/ui_details.gd" id="9_g1v33"]
 [ext_resource type="Texture2D" uid="uid://dgssd5tdgawb1" path="res://art/Tiny Swords (Free Pack)/Decorations/Sheep/Sheep Icon.png" id="9_tus3r"]
-[ext_resource type="Script" uid="uid://bht0xlhxrnh11" path="res://scripts/movable.gd" id="10_tus3r"]
+[ext_resource type="Texture2D" uid="uid://33fixop34i30" path="res://art/Tiny Swords (Update 010)/UI/Buttons/Button_Blue.png" id="11_tbcaf"]
+[ext_resource type="Texture2D" uid="uid://bksluiwnjrg68" path="res://art/Tiny Swords (Update 010)/UI/Buttons/Button_Blue_Pressed.png" id="12_a54wv"]
+[ext_resource type="Texture2D" uid="uid://cum7tbxea3upw" path="res://art/Tiny Swords (Update 010)/UI/Buttons/Button_Hover.png" id="13_t6ki0"]
 [ext_resource type="PackedScene" uid="uid://vmpaix73ewbf" path="res://scenes/ui/health_bar.tscn" id="17_7jvft"]
+[ext_resource type="Texture2D" uid="uid://oye3iiuamgb3" path="res://art/Tiny Swords (Update 010)/UI/Ribbons/white_Ribbon_Blue_Connection_Left-sheet.png" id="19_t6ki0"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tus3r"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qy57p"]
+radius = 19.0263
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7jvft"]
+radius = 402.305
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cu7ba"]
+radius = 99.4082
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4hddq"]
 size = Vector2(45, 40)
@@ -25,9 +38,19 @@ size = Vector2(45, 40)
 [sub_resource type="Resource" id="Resource_a7v8m"]
 script = ExtResource("8_p6rr6")
 image = ExtResource("9_tus3r")
-ui_detail_type = 1
+ui_detail_type = 0
 use_detail = false
 detail = 0.0
+metadata/_custom_type_script = "uid://cpt7sfn43e801"
+
+[sub_resource type="Resource" id="Resource_g6n7f"]
+script = ExtResource("8_p6rr6")
+ui_detail_type = 4
+use_detail = false
+detail = 37.063
+texture_normal = ExtResource("11_tbcaf")
+texture_pressed = ExtResource("12_a54wv")
+texture_hovered = ExtResource("13_t6ki0")
 metadata/_custom_type_script = "uid://cpt7sfn43e801"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_11bm3"]
@@ -202,9 +225,6 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_11bm3"]
-size = Vector2(12, 5)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_tgmap"]
 atlas = ExtResource("5_hrog1")
 region = Rect2(0, 0, 128, 128)
@@ -274,13 +294,19 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_qy57p"]
-radius = 19.0263
-
 [node name="Movable Sheep" type="CharacterBody2D"]
 motion_mode = 1
-script = ExtResource("10_tus3r")
-team = 2
+script = ExtResource("1_7jvft")
+can_attack_things = false
+team = 1
+unit_type = 4
+
+[node name="Selection Circle" type="Sprite2D" parent="."]
+visible = false
+self_modulate = Color(0, 1, 0, 1)
+position = Vector2(-1, 1.85)
+scale = Vector2(0.84375, 0.598437)
+texture = ExtResource("2_7jvft")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_tus3r")
@@ -289,40 +315,48 @@ shape = SubResource("CircleShape2D_tus3r")
 script = ExtResource("2_qy57p")
 hurt_sounds = Array[AudioStream]([ExtResource("3_7jvft"), ExtResource("4_cu7ba"), ExtResource("5_4miyr"), ExtResource("6_u225c")])
 
-[node name="Sheep" type="Node2D" parent="."]
-script = ExtResource("2_11bm3")
+[node name="SelectionHoverArea" type="Area2D" parent="."]
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
 
-[node name="Area2D" type="Area2D" parent="Sheep" groups=["BlockConstruction"]]
-visible = false
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SelectionHoverArea"]
+shape = SubResource("CircleShape2D_qy57p")
+
+[node name="VisionArea" type="Area2D" parent="."]
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisionArea"]
+shape = SubResource("CircleShape2D_7jvft")
+debug_color = Color(0.756863, 0.454902, 0, 0.0666667)
+
+[node name="AttackArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+shape = SubResource("CircleShape2D_cu7ba")
+debug_color = Color(1, 0, 0.109804, 0.113725)
+
+[node name="Area2D" type="Area2D" parent="." groups=["BlockConstruction"]]
 collision_layer = 0
 collision_mask = 0
 metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
-[node name="DefaultCollisionShape2D" type="CollisionShape2D" parent="Sheep/Area2D"]
+[node name="DefaultCollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0.5, -4)
 shape = SubResource("RectangleShape2D_4hddq")
 metadata/_edit_lock_ = true
 
-[node name="UiDetails" type="Node2D" parent="Sheep"]
+[node name="UiDetails" type="Node2D" parent="."]
 script = ExtResource("9_g1v33")
-details = Array[ExtResource("8_p6rr6")]([SubResource("Resource_a7v8m")])
+details = Array[ExtResource("8_p6rr6")]([SubResource("Resource_a7v8m"), SubResource("Resource_g6n7f")])
 
-[node name="Sprite" type="AnimatedSprite2D" parent="Sheep"]
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_tgmap")
 animation = &"eat grass"
 frame = 4
 frame_progress = 0.5311
-
-[node name="NavMeshBlockerStaticBody" type="StaticBody2D" parent="Sheep"]
-collision_layer = 0
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sheep/NavMeshBlockerStaticBody"]
-shape = SubResource("RectangleShape2D_11bm3")
-debug_color = Color(0.803922, 0.415686, 0, 0.145098)
-
-[node name="DamagedTimer" type="Timer" parent="Sheep"]
+metadata/_edit_lock_ = true
 
 [node name="DestroyedSprite" type="AnimatedSprite2D" parent="."]
 visible = false
@@ -335,6 +369,9 @@ position = Vector2(0, 8)
 metadata/_edit_lock_ = true
 
 [node name="TeamFlag" type="Sprite2D" parent="."]
+position = Vector2(19, -38)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("19_t6ki0")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 
@@ -344,9 +381,9 @@ offset_top = -101.0
 offset_right = 32.0
 offset_bottom = -91.0
 
-[node name="SelectionHoverArea" type="Area2D" parent="."]
-metadata/_edit_group_ = true
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SelectionHoverArea"]
-shape = SubResource("CircleShape2D_qy57p")
+[node name="DebugLabel" type="Label" parent="."]
+offset_left = -55.0
+offset_top = -137.0
+offset_right = 4.0
+offset_bottom = -114.0
+text = "Target: "

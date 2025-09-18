@@ -4,6 +4,7 @@ extends CharacterBody2D
 @export_category("Combat")
 @export var attack_range := 100.0
 @export var attack_cooldown := 0.5
+@export var can_attack_things := true
 @export var damage: float = 10.0
 @export var team: enums.e_team
 @export var movement_speed: float =  100.0
@@ -16,6 +17,7 @@ extends CharacterBody2D
 	"down": [],
 }
 
+@export var _run_animation := "run"
 @export var debug_individual := false
 
 @export_category("Misc")
@@ -27,6 +29,7 @@ extends CharacterBody2D
 }
 
 @export var unit_type: enums.E_UnitType
+
 @export_category("Audio")
 @export var confirm_acks: Array[AudioStream] = []
 @export var engage_sounds : Array[AudioStream] = []
@@ -57,7 +60,7 @@ var _debug_label2: Label;
 #region Node References
 @onready var _attack_area: Area2D = $AttackArea
 @onready var _attackable : Attackable = $Attackable
-@onready var _debug_label: Label = $DebugLabel
+@onready var _debug_label: Label = $DebugLabel # for debugging targets
 @onready var _navigation_agent: NavigationAgent2D = get_node("NavigationAgent2D")
 @onready var _selection_hover_area: Area2D = $SelectionHoverArea
 @onready var _vision_area: Area2D = $VisionArea
@@ -82,7 +85,13 @@ func _ready() -> void:
 	_setup_attack()
 	_setup_audio_streams()
 	_setup_signal_connections()
+	_setup_debug()
+	
+	await get_tree().process_frame
+	_cell_block.block_cell()
 
+
+func _setup_debug() -> void:
 	if debug_individual or Globals.debug:
 		_setup_debug_labels()
 		for c in get_children():
@@ -102,20 +111,9 @@ func _ready() -> void:
 				var shape: Node = c.get_child(0)
 				if shape is CollisionShape2D:
 					shape.visible = false
-	await get_tree().process_frame
-	_cell_block.block_cell()
-
 
 
 func _physics_process(_delta: float) -> void:
-	if (_debug_label != null and _targeted_enemy != null):
-		_debug_label.text = "Target: %s" % [_targeted_enemy.name]
-	elif _debug_label != null:
-		_debug_label.text = "No Target"
-	
-	if _debug_label2 != null:
-		_debug_label2.text = _anim_sprite.animation
-
 	_handle_debug_drawing()
 	_handle_movement()
 
@@ -123,14 +121,25 @@ func _physics_process(_delta: float) -> void:
 		return
 
 	_handle_combat()
-	
-	if team == enums.e_team.player:
-		DebugDraw2d.circle(_navigation_agent.target_position,20, 16, Color.BLACK, 2)
 
 
 func _handle_debug_drawing() -> void:
+	if (!debug_individual && !Globals.debug):
+		return
+	
+	if (_debug_label != null and _targeted_enemy != null):
+		_debug_label.text = "Target: %s" % [_targeted_enemy.name]
+	elif _debug_label != null:
+		_debug_label.text = "No Target"
+
+	if _debug_label2 != null:
+		_debug_label2.text = _anim_sprite.animation
+
 	if _current_cell != null and debug_individual:
 		DebugDraw2d.rect(_current_cell.position)
+
+	if team == enums.e_team.player:
+		DebugDraw2d.circle(_navigation_agent.target_position,20, 16, Color.BLACK, 2)
 
 
 func _handle_combat() -> void:
@@ -159,7 +168,7 @@ func _handle_movement() -> void:
 
 	if not _is_attacking:
 		_update_sprite_direction(next_path_position)
-	_anim_sprite.animation = "run"
+	_anim_sprite.animation = _run_animation
 
 #endregion
 
@@ -204,7 +213,7 @@ func order_move(in_goal, in_order_type := enums.e_order_type.none, silent := fal
 		_stop_attacking()
 	
 	_acknowledge(silent)
-	_anim_sprite.animation = "run"
+	_anim_sprite.animation = _run_animation
 	set_movement_target(in_goal)
 
 func order_attack(enemy):
@@ -267,7 +276,7 @@ func _can_attack_body(body) -> bool:
 	return (_is_idle and
 			body is CharacterBody2D and 
 			"team" in body and
-			(body.team != team and body.team != enums.e_team.neutral))
+			(body.team != team and body.team != enums.e_team.neutral) and can_attack_things)
 
 
 func _check_vision_for_enemy_to_attack() -> void:
@@ -404,6 +413,7 @@ func _on_attack_area_body_exited(body: Node2D) -> void:
 func _on_attack() -> void:
 	_weapon_audio_stream.stream = weapon_sounds[randi_range(0, weapon_sounds.size() - 1)]
 	_weapon_audio_stream.play()
+	assert(_targeted_enemy != null)
 	_targeted_enemy.take_damage(damage)
 
 
@@ -489,7 +499,7 @@ func _setup_audio_streams() -> void:
 	clean_timer.wait_time = .5
 	clean_timer.timeout.connect(func(): 
 		var stream = _audio_streams.pop_back()
-		if stream != null and !stream.is_queued_for_deletion() and !stream.playing:
+		if (stream != null and !stream.is_queued_for_deletion() and !stream.playing):
 			stream.queue_free()
 		elif stream != null:
 			_audio_streams.push_back(stream)

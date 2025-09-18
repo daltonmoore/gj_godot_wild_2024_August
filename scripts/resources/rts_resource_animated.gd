@@ -4,7 +4,7 @@ extends RTS_Resource_Base
 
 func _ready() -> void:
 	super()
-	var animatedSprite = ($Sprite as AnimatedSprite2D)
+	var animatedSprite := ($"../Sprite" as AnimatedSprite2D)
 	_random_idle_anim_start_frame = randi_range(0, animatedSprite.sprite_frames.get_frame_count("idle"))
 	animatedSprite.frame = _random_idle_anim_start_frame
 

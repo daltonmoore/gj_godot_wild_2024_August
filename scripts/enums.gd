@@ -46,7 +46,8 @@ enum e_team {
 	none,
 	player,
 	neutral,
-	enemy
+	enemy,
+	count
 }
 
 enum e_cannot_build_reason {
@@ -62,7 +63,8 @@ enum E_UnitType {
 	WORKER,
 	WARRIOR,
 	ARCHER,
-	SIEGE
+	SIEGE,
+	SHEEP
 }
 
 enum E_CursorType {
@@ -78,5 +80,5 @@ enum E_UIDetailType {
 	UNIT_PICTURE,
 	MOVEMENT_SPEED,
 	ATTACK_DAMAGE,
-	
+	DEBUG_BUTTON,
 } 

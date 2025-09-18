@@ -1,6 +1,6 @@
 extends Node2D
 
-const debug: bool = false
+const debug: bool = true
 const max_audio_stream_distance: float = 1000.0
 const unit_group: String = "units"
 const top_z_index: int        = 10

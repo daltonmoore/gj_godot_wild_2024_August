@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bhbncccdbkrqp"]
+[gd_scene load_steps=26 format=3 uid="uid://bhbncccdbkrqp"]
 
 [ext_resource type="Script" uid="uid://b2q4vqo24vr21" path="res://scripts/ui/hud.gd" id="1_8pmqa"]
 [ext_resource type="Script" uid="uid://cwph75ve8tq8k" path="res://scripts/health_bar.gd" id="2_5cj1q"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dgbhc7ncxrn5o" path="res://art/ui/Square.png" id="5_4mwhn"]
 [ext_resource type="Texture2D" uid="uid://eptiijv022f2" path="res://art/ui/Circle.png" id="5_17vfo"]
 [ext_resource type="Texture2D" uid="uid://007ikq8bfojc" path="res://art/icons/tradingicons/TradingIcons_t/TradingIcons_75_t.png" id="5_127jg"]
+[ext_resource type="Texture2D" uid="uid://33fixop34i30" path="res://art/Tiny Swords (Update 010)/UI/Buttons/Button_Blue.png" id="6_1e6lo"]
 [ext_resource type="Texture2D" uid="uid://dg7sa7y03or8v" path="res://art/ui/Circle_yellow.png" id="6_gktx7"]
 [ext_resource type="Texture2D" uid="uid://bm7mdfqpe51m2" path="res://art/icons/tradingicons/TradingIcons_t/addons/TradingIcons_140_t.PNG" id="6_tvcen"]
 [ext_resource type="Texture2D" uid="uid://04vjnqkkxtpb" path="res://art/icons/strategygameicons/SGI_164.PNG" id="7_1ttpl"]
@@ -133,7 +134,8 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -30.0
+offset_top = -152.0
+offset_right = 463.0
 grow_vertical = 0
 
 [node name="ColorRect" type="ColorRect" parent="Root/SelectedUnitInfo"]
@@ -176,11 +178,16 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="InfoBox" type="VBoxContainer" parent="Root/SelectedUnitInfo"]
-layout_mode = 2
-offset_left = 162.0
-offset_top = -91.0
-offset_right = 448.0
-offset_bottom = 23.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 157.0
+offset_top = 27.0
+offset_right = -1.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
 metadata/_edit_group_ = true
 
 [node name="debug_currently_building_hbox" type="HBoxContainer" parent="Root/SelectedUnitInfo/InfoBox"]
@@ -294,6 +301,14 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture_normal = ExtResource("5_0cmxh")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="TextureButton" type="TextureButton" parent="Root/SelectedUnitInfo/InfoBox"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+texture_normal = ExtResource("6_1e6lo")
 ignore_texture_size = true
 stretch_mode = 5
 

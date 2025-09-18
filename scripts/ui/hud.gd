@@ -83,26 +83,81 @@ func _handle_details(new_selection) -> void:
 	if new_selection[0].ui_details == null:
 		return
 
-	for detail in new_selection[0].ui_details.details:
-		if !detail.use_detail:
-			unit_pic.texture = detail.image
-			unit_pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-			unit_pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-			unit_pic.size = Vector2(64, 64)
-		elif detail is UiDetail:
-			var h_box = HBoxContainer.new()
-			var pic = TextureRect.new()
-			pic.texture = detail.image
-			pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-			pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-			pic.custom_minimum_size = Vector2(24, 24)
-			h_box.add_child(pic)
+	for d in new_selection[0].ui_details.details:
+		var ui_detail := d as UiDetail
+		if ui_detail == null:
+			continue
+		match ui_detail.ui_detail_type:
+			enums.E_UIDetailType.UNIT_PICTURE:
+				unit_pic.texture = ui_detail.image
+				unit_pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+				unit_pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+				unit_pic.size = Vector2(64, 64)
+			
+			enums.E_UIDetailType.DEBUG_BUTTON:
+				var h_box = HBoxContainer.new()
+				var button = TextureButton.new()
+				var label = Label.new()
+				label.text = "Current team is %s" % enums.e_team.keys()[new_selection[0].team]
+				match new_selection[0].team:
+					enums.e_team.player:
+						new_selection[0].get_node("TeamFlag").modulate = Color(0.047058824, 0.17254902, 0.5529412)
+					enums.e_team.neutral:
+						new_selection[0].get_node("TeamFlag").modulate = Color(0.99215686, 0.83137256, 0.0)
+					enums.e_team.enemy:
+						new_selection[0].get_node("TeamFlag").modulate = Color(1.0, 0.0, 0.0)
+					enums.e_team.none:
+						new_selection[0].get_node("TeamFlag").modulate = Color()
+				
+				button.pressed.connect(func(): 
+					print("Button pressed!")
+					var next_team = new_selection[0].team + 1
+					if next_team >= enums.e_team.count:
+						next_team = 0
+					new_selection[0].team = next_team
+					print("Changing team to %s" % enums.e_team.keys()[next_team])
+					label.text = str("Switch team from %s" % [enums.e_team.keys()[next_team]])
+					match next_team:
+						enums.e_team.player:
+							new_selection[0].get_node("TeamFlag").modulate = Color(0.047058824, 0.17254902, 0.5529412)
+						enums.e_team.neutral:
+							new_selection[0].get_node("TeamFlag").modulate = Color(0.99215686, 0.83137256, 0.0)
+						enums.e_team.enemy:
+							new_selection[0].get_node("TeamFlag").modulate = Color(1.0, 0.0, 0.0)
+						enums.e_team.none:
+							new_selection[0].get_node("TeamFlag").modulate = Color()
+				)
+				button.texture_normal = ui_detail.texture_normal
+				button.texture_pressed = ui_detail.texture_pressed
+				button.texture_hover = ui_detail.texture_hovered
+				button.ignore_texture_size = true
+				button.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
+				button.custom_minimum_size = Vector2(35, 35)
+				button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+				h_box.add_child(button)
+			
+				
+				h_box.add_child(label)
+			
+				info_box.add_child(h_box)
 
-			var label = Label.new()
-			label.text = str(detail.detail)
-			h_box.add_child(label)
-
-			info_box.add_child(h_box)
+			enums.E_UIDetailType.MOVEMENT_SPEED, enums.E_UIDetailType.ATTACK_DAMAGE:
+				var h_box = HBoxContainer.new()
+				var pic = TextureRect.new()
+				pic.texture = ui_detail.image
+				pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+				pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+				pic.custom_minimum_size = Vector2(24, 24)
+				h_box.add_child(pic)
+	
+				var label = Label.new()
+				label.text = str(ui_detail.detail)
+				h_box.add_child(label)
+	
+				info_box.add_child(h_box)
+			
+			_, enums.E_UIDetailType.NONE:
+				pass
 
 func show_cannot_afford(can_afford_response: structs.can_afford_response) -> void:
 	match can_afford_response.reason:
@@ -144,11 +199,7 @@ func _update_unit_build_progress_bar(new_value, max_value, build_queue) -> void:
 	if unit_build_progress_bar != null:
 		unit_build_progress_bar.max_value = max_value
 		unit_build_progress_bar.value = new_value
-	
-	#if (unit_build_pic != null and 
-			#(unit_build_pic.texture == null or 
-			#unit_build_pic.texture.resource_path != build_queue[0].image_path)):
-		#unit_build_pic.texture = load(build_queue[0].image_path)
+		
 
 func _on_build_queue_updated(build_queue) -> void:
 	if unit_build_queue_container != null:

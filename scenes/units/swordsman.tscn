@@ -425,9 +425,9 @@ metadata/_custom_type_script = "uid://cpt7sfn43e801"
 [sub_resource type="Resource" id="Resource_7yi0h"]
 script = ExtResource("14_32xgc")
 image = ExtResource("16_u61ex")
-ui_detail_type = 2
+ui_detail_type = 0
 use_detail = true
-detail = 125.0
+detail = 0.0
 metadata/_custom_type_script = "uid://cpt7sfn43e801"
 
 [node name="Swordsman" type="CharacterBody2D" groups=["Attackable"]]
@@ -439,6 +439,10 @@ unit_type = 1
 engage_sounds = Array[AudioStream]([ExtResource("2_o5l57"), ExtResource("3_2f4dy"), ExtResource("4_j7v37")])
 metadata/_edit_lock_ = true
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -3)
+shape = SubResource("CircleShape2D_78wmw")
+
 [node name="Attackable" type="Node2D" parent="."]
 script = ExtResource("7_vioah")
 hurt_sounds = Array[AudioStream]([ExtResource("6_qgifu"), ExtResource("7_mu5m3"), ExtResource("8_42shu"), ExtResource("9_4fx2v")])
@@ -447,10 +451,6 @@ max_health = 500.0
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true
 max_speed = 1000.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -3)
-shape = SubResource("CircleShape2D_78wmw")
 
 [node name="Selection Circle" type="Sprite2D" parent="."]
 visible = false

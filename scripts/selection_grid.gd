@@ -145,8 +145,6 @@ func _filter_things_in_box(things: Array[Variant], planes: Array, unit_type: enu
 		if thing as Unit:
 			if _matches_unit_type(thing, unit_type): 
 				should_select = _is_thing_inside_planes(thing, planes)
-		elif thing as Movable:
-			should_select = _is_thing_inside_planes(thing, planes)
 		
 		if should_select: 
 			selected_things.append(thing)
